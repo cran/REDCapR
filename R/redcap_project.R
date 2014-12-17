@@ -17,6 +17,7 @@
 #' library(REDCapR) #Load the package into the current R session.
 #' uri <- "https://bbmc.ouhsc.edu/redcap/api/"
 #' token <- "D70F9ACD1EDD6F151C6EA78683944E98"
+#' \dontrun{
 #' project <- redcap_project$new(redcap_uri=uri, token=token)
 #' dsAll <- project$read()
 #' 
@@ -29,7 +30,6 @@
 #' dsMales <- project$read(records=idsOfMales, batch_size=2)$data
 #' dsShorties <- project$read(records=idsOfShorties)$data
 #' 
-#' \dontrun{
 #' #Switch the Genders
 #' sex_original <- dsThreeColumns$sex
 #' dsThreeColumns$sex <- (1 - dsThreeColumns$sex)
@@ -57,7 +57,7 @@ redcap_project <- setRefClass(
       fields = NULL, fields_collapsed = "", 
       export_data_access_groups = FALSE,
       raw_or_label = 'raw',
-      verbose = TRUE, cert_location = NULL) {
+      verbose = TRUE, config_options = NULL) {
       
       "Exports records from a REDCap project."
 
@@ -79,14 +79,14 @@ redcap_project <- setRefClass(
       fields = fields, fields_collapsed = fields_collapsed, 
       export_data_access_groups = export_data_access_groups,
       raw_or_label = raw_or_label,
-      verbose = verbose, cert_location=cert_location 
+      verbose = verbose, config_options=config_options 
     ) )
     },
     
     write = function( 
       ds_to_write,
       batch_size = 100L, interbatch_delay = 0,
-      verbose = TRUE, cert_location = NULL) {
+      verbose = TRUE, config_options = NULL) {
       
       "Imports records to a REDCap project."
       
@@ -94,7 +94,7 @@ redcap_project <- setRefClass(
         ds_to_write = ds_to_write,
         batch_size = batch_size, interbatch_delay = interbatch_delay,
         redcap_uri = redcap_uri, token = token, 
-        verbose = verbose, cert_location=cert_location 
+        config_options = config_options 
       ))      
     }
     

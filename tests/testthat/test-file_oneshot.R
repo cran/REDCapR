@@ -9,17 +9,19 @@ context("FileOneshot")
 # token <- "D70F9ACD1EDD6F151C6EA78683944E98" #For `UnitTestPhiFree` account on pid=213.
 
 
-test_that("NameComesFromREDCap", {  
+test_that("NameComesFromREDCap", {
+  testthat::skip_on_cran()
   start_clean_result <- REDCapR:::clean_start_simple(batch=FALSE)
   project <- start_clean_result$redcap_project
   
-  expected_outcome_message <- "5 records and 17 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
+  expected_outcome_message <- "5 records and 24 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
   expect_message(
     returned_object <- redcap_read_oneshot(redcap_uri=project$redcap_uri, token=project$token, raw_or_label="raw"),
     regexp = expected_outcome_message
   )
     
-  start_time <- Sys.time() - lubridate::seconds(1) #Knock off a second inc ase there's small time imprecisions
+#   start_time <- Sys.time() - lubridate::seconds(1) #Knock off a second inc ase there's small time imprecisions
+  start_time <- Sys.time() - 1 #Knock off a second in case there are small time imprecisions
   path_of_expected <- base::file.path(devtools::inst(name="REDCapR"), "test_data/mugshot_1.jpg")
   info_expected <- file.info(path_of_expected)
   record <- 1
@@ -55,20 +57,20 @@ test_that("NameComesFromREDCap", {
   expect_more_than(info_actual$mtime, expected=start_time, label="The downloaded file's modification time should not precede this function's start time.")
   expect_more_than(info_actual$ctime, expected=start_time, label="The downloaded file's last change time should not precede this function's start time.")
   expect_more_than(info_actual$atime, expected=start_time, label="The downloaded file's last access time should not precede this function's start time.")
-  expect_equal(info_actual$exe, "no", "The downloaded file should not be an executible.")
 })
 
-test_that("FullPathSpecified", {    
+test_that("FullPathSpecified", {
+  testthat::skip_on_cran()
   start_clean_result <- REDCapR:::clean_start_simple(batch=FALSE)
   project <- start_clean_result$redcap_project
   
-  expected_outcome_message <- "5 records and 17 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
+  expected_outcome_message <- "5 records and 24 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
   expect_message(
     returned_object <- redcap_read_oneshot(redcap_uri=project$redcap_uri, token=project$token, raw_or_label="raw"),
     regexp = expected_outcome_message
   )
   
-  start_time <- Sys.time() - lubridate::seconds(1) #Knock off a second inc ase there's small time imprecisions
+  start_time <- Sys.time() - 1 #Knock off a second in case there are small time imprecisions
   path_of_expected <- base::file.path(devtools::inst(name="REDCapR"), "test_data/mugshot_2.jpg")
   info_expected <- file.info(path_of_expected)
   record <- 2
@@ -104,20 +106,20 @@ test_that("FullPathSpecified", {
   expect_more_than(info_actual$mtime, expected=start_time, label="The downloaded file's modification time should not precede this function's start time.")
   expect_more_than(info_actual$ctime, expected=start_time, label="The downloaded file's last change time should not precede this function's start time.")
   expect_more_than(info_actual$atime, expected=start_time, label="The downloaded file's last access time should not precede this function's start time.")
-  expect_equal(info_actual$exe, "no", "The downloaded file should not be an executible.")
 })
 
-test_that("RelativePath", {    
+test_that("RelativePath", {
+  testthat::skip_on_cran()
   start_clean_result <- REDCapR:::clean_start_simple(batch=FALSE)
   project <- start_clean_result$redcap_project
   
-  expected_outcome_message <- "5 records and 17 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
+  expected_outcome_message <- "5 records and 24 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
   expect_message(
     returned_object <- redcap_read_oneshot(redcap_uri=project$redcap_uri, token=project$token, raw_or_label="raw"),
     regexp = expected_outcome_message
   )
   
-  start_time <- Sys.time() - lubridate::seconds(1) #Knock off a second inc ase there's small time imprecisions
+  start_time <- Sys.time() - 1 #Knock off a second in case there are small time imprecisions
   path_of_expected <- base::file.path(devtools::inst(name="REDCapR"), "test_data/mugshot_3.jpg")
   info_expected <- file.info(path_of_expected)
   record <- 3
@@ -153,5 +155,4 @@ test_that("RelativePath", {
   expect_more_than(info_actual$mtime, expected=start_time, label="The downloaded file's modification time should not precede this function's start time.")
   expect_more_than(info_actual$ctime, expected=start_time, label="The downloaded file's last change time should not precede this function's start time.")
   expect_more_than(info_actual$atime, expected=start_time, label="The downloaded file's last access time should not precede this function's start time.")
-  expect_equal(info_actual$exe, "no", "The downloaded file should not be an executible.")
 })

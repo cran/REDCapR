@@ -6,7 +6,7 @@
 <!-- rmarkdown v1 -->
 
 # Troubleshooting REDCap API Calls
-There are many links in the pipeline between your institution's [REDCap](http://www.project-redcap.org/) server and the API user.  When the end result is unsuccesful, this document should help narrow the location of the possible problem.  The first two sections will be relevant to almost any language interacting with the API.  The remaining sections are possibly relevant only to your language (eg, Python, R, SAS, bash), or your software library ([redcap](https://github.com/jeffreyhorner/redcap) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) in R and [PyCap](http://pycap.readthedocs.org/en/latest/) in Python).
+There are many links in the pipeline between your institution's [REDCap](http://www.project-redcap.org/) server and the API user.  When the end result is unsuccesful, this document should help narrow the location of the possible problem.  The first two sections will be relevant to almost any language interacting with the API.  The remaining sections are possibly relevant only to your language (eg, Python, R, SAS, bash), or your software library ([redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) in R and [PyCap](http://pycap.readthedocs.org/en/latest/) in Python).
 
 ## Server Configuration and Authorization
 This first group of checks primarily focuses on the server and the logins accounts.  Unlike later sections, REDCap administrator privileges are necessary for most of these checks.
@@ -44,7 +44,7 @@ This section group examines potential problems that occur after it leaves a work
  If it helps to start with a different REDCap server, you can use this dummy project containing fake data hosted by the [OUHSC BBMC](http://ouhsc.edu/bbmc/).  The url is `https://bbmc.ouhsc.edu/redcap/api/`.  There are three key-value pairs: (1) the 'token' is `9A81268476645C4E5F03428B8AC3AA7B`, (2) the 'content' is `record`, and (3) the 'format' should be `CSV`.  When checking your own server, the token value should change, but the content and format should not.  It should return five records in a CSV format.  The 'status' should be `200 OK`.  The result should look roughly like this.  Notice the line breaks were included in the text values themselves.
 
   ```
-  record_id,first_name,last_name,address,telephone,email,dob,age,ethnicity,race,sex,height,weight,bmi,comments,demographics_complete
+  record_id,name_first,name_last,address,telephone,email,dob,age,ethnicity,race,sex,height,weight,bmi,comments,demographics_complete
   "1","Nutmeg","Nutmouse","14 Rose Cottage St.
   Kenning UK, 323232","(432) 456-4848","nutty@mouse.com","2003-08-30",10,1,2,0,5,1,400,"Character in a book, with some guessing",2
   "2","Tumtum","Nutmouse","14 Rose Cottage Blvd.
@@ -72,7 +72,7 @@ This section group examines potential problems that occur after it leaves a work
  The values they enter should be exactly the same as those entered in the previous step.  A failure here (assuming the previous step was successful) suggests a network or firewall issue.  If the server is behind your institution's firewall, verify the user is connecting successfully through the VPN.
 
 ## Exporting from REDCap to R
-There are several ways to call REDCap's API from [R](http://cran.r-project.org/).  The packages [redcap](https://github.com/jeffreyhorner/redcap) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) both rely on the [RCurl](http://cran.r-project.org/web/packages/RCurl) package.
+There are several ways to call REDCap's API from [R](http://cran.r-project.org/).  The packages [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) both rely on the [httr](http://cran.r-project.org/web/packages/httr/index.html) package, which calls the [RCurl](http://cran.r-project.org/web/packages/RCurl) package.
  
  1. **Is RCurl installed on the user's local machine?**
  If so, running `library(RCurl)` should produce the following output if you're starting with a fresh session of R:
@@ -87,7 +87,7 @@ There are several ways to call REDCap's API from [R](http://cran.r-project.org/)
  There are several ways to do this, but the easiest is probably to run `update.packages(ask=FALSE, repos="http://cran.rstudio.com")`.  The optional argument `ask` prevents the user from needing to respond 'Y' to each outdated package.
  
  1. **Can the user query a *test* project using RCurl?**
- Both the [redcap](https://github.com/jeffreyhorner/redcap) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) packages employ something similar to the following function in [RCurl](http://cran.r-project.org/web/packages/RCurl).  If you're curious, here is the relevant source code for [redcap](https://github.com/jeffreyhorner/redcap/blob/master/R/exportRecords.R) and [REDCapR](https://github.com/OuhscBbmc/REDCapR/blob/master/R/redcap_read_oneshot.R).
+ Both the [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) packages employ something similar to the following function in [RCurl](http://cran.r-project.org/web/packages/RCurl).  If you're curious, here is the relevant source code for [redcapAPI](https://github.com/nutterb/redcapAPI/blob/master/R/exportRecords.R) and [REDCapR](https://github.com/OuhscBbmc/REDCapR/blob/master/R/redcap_read_oneshot.R).
 
  If this check fails, consider attempting again with the uri and token used above in the Postman example.
 
@@ -138,7 +138,7 @@ There are several ways to call REDCap's API from [R](http://cran.r-project.org/)
     redcap_uri <- "https://the.urlofyourinsitution.edu/api/" #Adapt this to your server.
     token <- "your-secret-token" #Adapt this to your user's token.
     records_collapsed <- "1,2,3" #This assumes that their dataset contains ID values of 1, 2, and 3.  Adapt this to their dataset.
-    fields_collapsed <- "record_id,first_name,last_name" #This assumes that their dataset contains variables called 'recordid', 'first_name', and 'last_name'.  Adapt this to their dataset.
+    fields_collapsed <- "record_id,name_first,name_last" #This assumes that their dataset contains variables called 'record_id', 'name_first', and 'name_last'.  Adapt this to their dataset.
 
     raw_text <- RCurl::postForm(
       uri = redcap_uri
@@ -214,7 +214,7 @@ Starting to read 5 records  at 2014-06-27 17:19:49
 Reading batch 1 of 1, with ids 1 through 5.
 5 records and 16 columns were read from REDCap in 0.42 seconds.
 
-  record_id first_name last_name                                 address      telephone               email
+  record_id name_first name_last                                 address      telephone               email
 1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232 (432) 456-4848     nutty@mouse.com
 2         2     Tumtum  Nutmouse 14 Rose Cottage Blvd.\nKenning UK 34243 (234) 234-2343    tummy@mouse.comm
 3         3     Marcus      Wood          243 Hill St.\nGuthrie OK 73402 (433) 435-9865        mw@mwood.net
@@ -271,6 +271,83 @@ Reading batch 1 of 1, with ids 1 through 5.
  1. **Is the export operation still unsuccessful using REDCapR?**
  If so the "Can the user query a *entire* REDCap project using RCurl?" check succeeded, but the REDCapR checks did not, consider posting a new [GitHub issue](https://github.com/OuhscBbmc/REDCapR/issues) to the package developers.
 
+## Exporting from REDCap to R, using redcapAPI
+ [redcapAPI](https://github.com/nutterb/redcapAPI) is a package that uses [httr](http://cran.r-project.org/web/packages/RCurl) (via [httr](https://github.com/hadley/httr)) to communicate with REDCap, and wraps convience functions around it to reduce the size and complexity of the user's code.  
+
+ If you're not using redcapAPI, you can skip this section and proceed to 'Importing into REDCap from R' below.  More specific discussion about `redcapAPI` can be found at the [package's wiki](https://github.com/nutterb/redcapAPI/wiki).
+
+ 1. **Is redcapAPI installed on the user's machine?**   
+ Currently, the easiest way to install `redcapAPI` is from CRAN.
+ ```r
+    install.packages("redcapAPI")
+ ```
+ 
+  Developmental versions may be available on GitHub.
+  ``` r
+    install.packages("devtools", repos="http://cran.rstudio.com")
+    devtools::install_github(repo="nutterb/redcapAPI")
+  ```
+
+ 1. **Does redcapAPI load successfully on the user's machine?**    
+ If so, running `library(redcapAPI)` should produce the following output if you're starting with a fresh session of R:
+  ```r
+    library(redcapAPI)
+    ## Loading required package: redcapAPI
+  ```
+
+ 1. **Can the user export from an example project?**    
+ This is the same fake data hosted by the [OUHSC BBMC](http://ouhsc.edu/bbmc/) as in the previous section.
+  ```r
+    library(redcapAPI) #Load the package into the current R session.
+    rcon <- redcapConnection(url = "https://bbmc.ouhsc.edu/redcap/api/",
+                             token = "9A81268476645C4E5F03428B8AC3AA7B")
+    exportRecords(rcon)
+  ```
+
+  The previous code should produce similar output.  Notice there are five rows and the columns will wrap around if your console window is too narrow.
+  ```
+  record_id name_first name_last                                 address      telephone               email
+1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232 (432) 456-4848     nutty@mouse.com
+2         2     Tumtum  Nutmouse 14 Rose Cottage Blvd.\nKenning UK 34243 (234) 234-2343    tummy@mouse.comm
+3         3     Marcus      Wood          243 Hill St.\nGuthrie OK 73402 (433) 435-9865        mw@mwood.net
+4         4      Trudy       DAG          342 Elm\nDuncanville TX, 75116 (987) 654-3210 peroxide@blonde.com
+5         5   John Lee    Walker      Hotel Suite\nNew Orleans LA, 70115 (333) 333-4444  left@hippocket.com
+
+         dob age ethnicity race sex height weight   bmi
+1 2003-08-30  10         1    2   0   5.00      1 400.0
+2 2003-03-10  10         1    6   1   6.00      1 277.8
+3 1934-04-09  79         0    4   1 180.00     80  24.7
+4 1952-11-02  61         1    4   0 165.00     54  19.8
+5 1955-04-15  58         1    4   1 193.04    104  27.9
+
+                                                                                                     comments
+1                                                                     Character in a book, with some guessing
+2                                                                          A mouse character from a good book
+3                                                                                          completely made up
+4 This record doesn't have a DAG assigned\n\nSo call up Trudy on the telephone\nSend her a letter in the mail
+5                 Had a hand for trouble and a eye for cash\n\nHe had a gold watch chain and a black mustache
+
+  demographics_complete
+1                     2
+2                     2
+3                     2
+4                     2
+5                     2
+  ```
+
+ 1. **Can the user export from their own project?**
+ The code is similar to the previous check, but the `uri` and `token` values will need to be modified.
+  ``` r
+  library(redcapAPI) #Load the package into the current R session, if you haven't already.
+  rcon <- redcapConnection(url = "https://the.urlofyourinsitution.edu/api/", #Adapt this to your server.
+                           token = "your-secret-token") #Adapt this to your user's token.
+  exportRecords(rcon)
+  ```
+
+ 1. **Is the export operation still unsuccessful using redcapAPI?**
+ If so the "Can the user query a *entire* REDCap project using RCurl?" check succeeded, but the redcapAPI checks did not, consider posting a new [GitHub issue](https://github.com/nutterb/redcapAPI/issues) to the package developers.
+
+
 ## Importing into REDCap from R
 Troubleshooting import operations is trickier than export operations for two major reasons.  First, the database potentially persists your *import* mistakes.  In contrast, repeatedly *exporting* data won't affect subsequent reads.  Considering cloning the REDCap project for testing until the problem is resolved.  Remember to create a new token (because they're not automatically created when projects are cloned, even when users are copied), and to modify your code's token to point to the new testing clone.
 
@@ -279,7 +356,7 @@ Troubleshooting import operations is trickier than export operations for two maj
  1. **Can the user import the *entire* project?**
 
  1. **Can the user import a *subset* of the project?**
-
+ 
 ## Other software for communication and automation with REDCap
 REDCap is used in many enviroments, andit's not surprising that a lot of libraries have been developed that cater to different scenarios and languages.  Here's a partial list, and please [email me](mailto:wibeasley@hotmail.com) if there are more that should be included.
  **Actively developed in the past two years**
