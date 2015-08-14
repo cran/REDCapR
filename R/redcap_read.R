@@ -17,6 +17,8 @@
 #' @param records_collapsed A single string, where the desired ID values are separated by commas.  Optional.
 #' @param fields An array, where each element corresponds a desired project field.  Optional.
 #' @param fields_collapsed A single string, where the desired field names are separated by commas.  Optional.
+#' @param events An array, where each element corresponds a desired project event  Optional.
+#' @param events_collapsed A single string, where the desired event names are separated by commas.  Optional.
 #' @param export_data_access_groups A boolean value that specifies whether or not to export the ``redcap_data_access_group'' field when data access groups are utilized in the project. Default is \code{FALSE}. See the details below.
 #' @param raw_or_label A string (either \code{'raw'} or \code{'label'} that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.  Default is \code{'raw'}.
 #' @param verbose A boolean value indicating if \code{message}s should be printed to the R console during the operation.  The verbose output might contain sensitive information (\emph{e.g.} PHI), so turn this off if the output might be visible somewhere public. Optional.
@@ -40,11 +42,20 @@
 #' the subset's subjects.  This is repeated for each subset, before returning a unified \code{data.frame}.
 #' 
 #' The function allows a delay between calls, which allows the server to attend to other users' requests.
+#' 
+#' For \code{redcap_read} to function properly, the user must have Export permissions for the 
+#' `Full Data Set'.  Users with only `De-Identified' export privileges can still use 
+#' \code{redcap_read_oneshot}.  To grant the appropriate permissions: 
+#' \enumerate{
+#'  \item go to `User Rights' in the REDCap project site, 
+#'  \item select the desired user, and then select `Edit User Privileges', 
+#'  \item in the `Data Exports' radio buttons, select `Full Data Set'.
+#' }
+#' 
 #' @author Will Beasley
 #' @references The official documentation can be found on the REDCap wiki (\url{https://iwg.devguard.com/trac/redcap/wiki/ApiDocumentation}).  
 #' Also see the `API Examples' page on the REDCap wiki (\url{https://iwg.devguard.com/trac/redcap/wiki/ApiExamples}). 
 #' A user account is required to access the wiki, which typically is granted only to REDCap administrators.  
-#' If you do not
 #' 
 #' The official \href{http://curl.haxx.se}{cURL site} discusses the process of using SSL to verify the server being connected to.
 #' 
@@ -57,11 +68,12 @@
 #' }
 #' 
 
-redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_error = FALSE,
+redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_error=FALSE,
                          redcap_uri, token, records=NULL, records_collapsed="", 
                          fields=NULL, fields_collapsed="", 
-                         export_data_access_groups = FALSE,
-                         raw_or_label = 'raw',
+                         events=NULL, events_collapsed="",
+                         export_data_access_groups=FALSE,
+                         raw_or_label='raw',
                          verbose=TRUE, config_options=NULL, id_position=1L) {  
   if( missing(redcap_uri) )
     stop("The required parameter `redcap_uri` was missing from the call to `redcap_read()`.")
@@ -69,19 +81,30 @@ redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_erro
   if( missing(token) )
     stop("The required parameter `token` was missing from the call to `redcap_read()`.")
   
-  if( nchar(records_collapsed)==0 )
+  if( all(nchar(records_collapsed)==0) )
     records_collapsed <- ifelse(is.null(records), "", paste0(records, collapse=",")) #This is an empty string if `records` is NULL.
-  if( nchar(fields_collapsed)==0 )
+  if( (length(fields_collapsed)==0L) | is.null(fields_collapsed) | all(nchar(fields_collapsed)==0) )
     fields_collapsed <- ifelse(is.null(fields), "", paste0(fields, collapse=",")) #This is an empty string if `fields` is NULL.
+  if( all(nchar(events_collapsed)==0) )
+    events_collapsed <- ifelse(is.null(events), "", paste0(events, collapse=",")) #This is an empty string if `events` is NULL.
   
   #   export_data_access_groups_string <- ifelse(export_data_access_groups, "true", "false")
 
   start_time <- Sys.time()
+  
+  metadata <- REDCapR::redcap_metadata_read(
+    redcap_uri = redcap_uri, 
+    token = token, 
+    verbose = verbose, 
+    config_options = config_options
+  )
+  
   initial_call <- REDCapR::redcap_read_oneshot(
     redcap_uri = redcap_uri, 
     token = token, 
     records_collapsed = records_collapsed,
-    fields_collapsed = fields_collapsed, 
+    fields_collapsed = metadata$data[1, "field_name"], 
+    events_collapsed = events_collapsed,
     verbose = verbose, 
     config_options = config_options
   )
@@ -90,23 +113,34 @@ redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_erro
   ### Stop and return to the caller if the initial query failed.
   ###
   if( !initial_call$success ) {
-    outcome_message <- paste0("The initial call failed with the code: ", initial_call$status_code, ".")
+    outcome_messages <- paste0("The initial call failed with the code: ", initial_call$status_code, ".")
     elapsed_seconds <- as.numeric(difftime(Sys.time(), start_time, units="secs"))
     return( list(
       data = data.frame(), 
       records_collapsed = "failed in initial batch call", 
       fields_collapsed = "failed in initial batch call",
+      events_collapsed = "failed in initial batch call",
       elapsed_seconds = elapsed_seconds, 
       status_code = initial_call$status_code,
-      outcome_message = outcome_message,
+      outcome_messages = outcome_messages,
       success = initial_call$success
     ) )
   }
   ###
   ### Continue as intended if the initial query succeeded.
   ###
-  uniqueIDs <- sort(unique(initial_call$data[, id_position]))
+  uniqueIDs <- sort(unique(initial_call$data[, 1]))
   
+  if( all(nchar(uniqueIDs)==32L) )
+    warning("It appears that the REDCap record IDs have been hashed. ", 
+            "For `redcap_read` to function properly, the user must have Export permissions for the 'Full Data Set'. ",
+            "To grant the appropriate permissions: ",
+            "(1) go to 'User Rights' in the REDCap project site, ",
+            "(2) select the desired user, and then select 'Edit User Privileges', ",
+            "(3) in the 'Data Exports' radio buttons, select 'Full Data Set'.\n",
+            "Users with only `De-Identified` export privileges can still use ",
+            "`redcap_read_oneshot()` and `redcap_write_oneshot()`.")
+
   ds_glossary <- REDCapR::create_batch_glossary(row_count=length(uniqueIDs), batch_size=batch_size)
   lst_batch <- NULL
   lst_status_code <- NULL
@@ -124,11 +158,12 @@ redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_erro
       message("Reading batch ", i, " of ", nrow(ds_glossary), ", with subjects ", min(selected_ids), " through ", max(selected_ids), 
               " (ie, ", length(selected_ids), " unique subject records).")
     }
-    
+#     browser()
     read_result <- REDCapR::redcap_read_oneshot(redcap_uri = redcap_uri,
                                         token = token,  
                                         records = selected_ids,
                                         fields_collapsed = fields_collapsed,
+                                        events_collapsed = events_collapsed,
                                         export_data_access_groups = export_data_access_groups, 
                                         raw_or_label = raw_or_label,
                                         verbose = verbose, 
@@ -175,6 +210,7 @@ redcap_read <- function( batch_size=100L, interbatch_delay=0.5, continue_on_erro
     outcome_messages = outcome_message_combined,
     records_collapsed = records_collapsed,
     fields_collapsed = fields_collapsed,
+    events_collapsed = events_collapsed,
     elapsed_seconds = elapsed_seconds
   ) )
 }

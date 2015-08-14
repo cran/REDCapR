@@ -40,21 +40,27 @@
 #'   dv = rnorm(n=100)
 #' )
 #' create_batch_glossary(nrow(d), batch_size=40)
-#' 
 
 create_batch_glossary <- function( row_count, batch_size ) {
-  digit_count <- nchar(row_count) #Determine the number of characters needed to express the number of rows.
-  start_index <- seq(from=1, to=row_count, by=batch_size)
+  if( !(!is.na(row_count) & (length(row_count)==1L) & (row_count[1]>=1) | (class(row_count) == "integer")) )
+    stop("`row_count` must be a positive scalar integer.")
+  if( !(!is.na(batch_size) & (length(batch_size)==1L) & (batch_size[1]>=1) | (class(batch_size) == "integer")) )
+    stop("`batch_size` must be a positive scalar integer.")
   
-  ds_batch <- data.frame(id=seq_along(start_index), start_index=start_index)
-  ds_batch$stop_index <- mapply(function(i) ifelse(i<length(start_index), start_index[i+1]-1, row_count), ds_batch$id )
+  start_index <- base::seq.int(from=1, to=row_count, by=batch_size)
   
-  ds_batch$index_pretty <- stringr::str_pad(ds_batch$id, width=max(nchar(ds_batch$id)), pad="0")
-  ds_batch$start_index_pretty <- stringr::str_pad(ds_batch$start_index, width=digit_count, pad="0")
-  ds_batch$stop_index_pretty <- stringr::str_pad(ds_batch$stop_index, width=digit_count, pad="0")
-  ds_batch$label <- paste0(ds_batch$index_pretty, "_", ds_batch$start_index_pretty, "_", ds_batch$stop_index_pretty)
+  ds_batch <- base::data.frame(id=seq_along(start_index), start_index=start_index)
+  ds_batch$stop_index <- base::mapply(function(i) base::ifelse(i<length(start_index), start_index[i+1]-1, row_count), ds_batch$id )
+ 
+  sprintf_format_1 <- base::paste0("%0.", base::max(base::nchar(ds_batch$id)), "i")
+  sprintf_format_2 <- base::paste0("%0.", base::nchar(row_count), "i")
   
-  return(ds_batch)
+  ds_batch$index_pretty <- base::sprintf(sprintf_format_1, ds_batch$id)
+  ds_batch$start_index_pretty <-base::sprintf(sprintf_format_2, ds_batch$start_index)
+  ds_batch$stop_index_pretty <- base::sprintf(sprintf_format_2, ds_batch$stop_index)
+  ds_batch$label <- base::paste0(ds_batch$index_pretty, "_", ds_batch$start_index_pretty, "_", ds_batch$stop_index_pretty)
+  
+  return( ds_batch )
 }
 
 # REDCapR::create_batch_glossary(100, 3)

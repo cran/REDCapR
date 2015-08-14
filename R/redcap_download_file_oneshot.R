@@ -73,14 +73,14 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 	if( missing(token) )
 		stop("The required parameter `token` was missing from the call to `redcap_download_file_oneshot()`.")     
 	
-  if( missing( config_options ) | is.null(config_options) ) {
-    cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
-    
-    if( !base::file.exists(cert_location) )
-      stop(paste0("The file specified by `cert_location`, (", cert_location, ") could not be found."))
-    
-    config_options <- list(cainfo=cert_location)
-  }
+  # if( missing( config_options ) | is.null(config_options) ) {
+  #   cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
+  #   
+  #   if( !base::file.exists(cert_location) )
+  #     stop(paste0("The file specified by `cert_location`, (", cert_location, ") could not be found."))
+  #   
+  #   config_options <- list(cainfo=cert_location)
+  # }
 		
 	post_body <- list(
 		token = token,
@@ -118,7 +118,7 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 		}
 		
 		if( missing(directory) & is.null(directory) ) {
-		  file_path <- file_name #Qualify the file with its full path.
+		  file_path <- file_name #Use relative path.
     } else {
 		  file_path <- file.path(directory, file_name) #Qualify the file with its full path.
     }
@@ -140,7 +140,7 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 		raw_text <- ""
 	} 
 	else { #If the operation was unsuccessful, then...
-		outcome_message <- paste0("file NOT not downloaded ")
+		outcome_message <- paste0("file NOT downloaded ")
 		recordsAffectedCount <- 0
 		record_id <- numeric(0) #Return an empty vector.
 		raw_text <- httr::content(result, type="text")
@@ -158,6 +158,7 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 		affected_ids = record_id,
 		elapsed_seconds = elapsed_seconds,
 		raw_text = raw_text,
-		file_name = file_name
+		file_name = file_name,
+		file_path = file_path
 	))
 }

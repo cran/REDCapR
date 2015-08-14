@@ -1,18 +1,23 @@
 
 populate_project_simple <- function( batch = FALSE ) {
-  if( !require(testthat) ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
+  if( !requireNamespace("testthat") ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
+  
   #Declare the server & user information
+  # uri <- "https://www.redcapplugins.org/api/"
   uri <- "https://bbmc.ouhsc.edu/redcap/api/"
+  
+  # token <- "D96029BFCE8FFE76737BFC33C2BCC72E" #For `UnitTestPhiFree` account and the simple project (pid 27) on Vandy's test server.
   # token <- "9A81268476645C4E5F03428B8AC3AA7B" #For `UnitTestPhiFree` account and the simple project (pid 153)
   token <- "D70F9ACD1EDD6F151C6EA78683944E98" #For `UnitTestPhiFree` account and the simple project (pid 213)
+  
   project <- REDCapR::redcap_project$new(redcap_uri=uri, token=token)
   path_in_simple <- base::file.path(devtools::inst(name="REDCapR"), "test_data/project_simple/simple_data.csv")
  
   #Write the file to disk (necessary only when you wanted to change the data).  Don't uncomment; just run manually.
   # returned_object <- redcap_read_oneshot(redcap_uri=uri, token=token, raw_or_label="raw")
-  # write.csv(returned_object$data, file="./inst/test_data/project_simple/simple_data.csv", row.names=FALSE)
+  # utils::write.csv(returned_object$data, file="./inst/test_data/project_simple/simple_data.csv", row.names=FALSE)
   # returned_object_metadata <- redcap_metadata_read(redcap_uri=uri, token=token)
-  # write.csv(returned_object_metadata$data, file="./inst/test_data/project_simple/simple_metadata.csv", row.names=FALSE)
+  # utils::write.csv(returned_object_metadata$data, file="./inst/test_data/project_simple/simple_metadata.csv", row.names=FALSE)
     
   #Read in the data in R's memory from a csv file.
   dsToWrite <- utils::read.csv(file=path_in_simple, stringsAsFactors=FALSE)
@@ -31,6 +36,7 @@ populate_project_simple <- function( batch = FALSE ) {
       returned_object <- REDCapR::redcap_write_oneshot(ds=dsToWrite, redcap_uri=uri, token=token, verbose=TRUE)
     }
   )
+  # For internal inspection: REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token, verbose=TRUE)
   
   #If uploading the data was successful, then upload the image files.
   if( returned_object$success) {
@@ -42,15 +48,15 @@ populate_project_simple <- function( batch = FALSE ) {
   return( list(is_success=returned_object$success, redcap_project=project) )
 }
 clear_project_simple <- function( verbose = TRUE ) {
-  if( !require(testthat) ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
+  if( !requireNamespace("testthat", quietly=TRUE) ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
   pathDeleteTestRecord <- "https://bbmc.ouhsc.edu/redcap/plugins/redcapr/delete_redcapr_simple.php"
   
-  cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
-  config_options <- list(cainfo=cert_location, sslversion=3)
+  # cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
+  # config_options <- list(cainfo=cert_location, sslversion=3)
   # httr::url_ok(pathDeleteTestRecord)
   
   #Returns a boolean value if successful
-  (was_successful <- httr::url_success(url=pathDeleteTestRecord, config=config_options))
+  (was_successful <- httr::url_success(url=pathDeleteTestRecord))#, config=config_options))
   
   #Print a message and return a boolean value
   if( verbose ) 
@@ -58,19 +64,22 @@ clear_project_simple <- function( verbose = TRUE ) {
   return( was_successful )
 }
 
-clean_start_simple <- function( batch = FALSE ) {
-  if( !require(testthat) ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
+clean_start_simple <- function( batch = FALSE, delay_in_seconds = 1 ) {
+  if( !requireNamespace("testthat", quietly=TRUE) ) stop("The function REDCapR:::populate_project_simple() cannot run if the `testthat` package is not installed.  Please install it and try again.")
   testthat::expect_message(
     clear_result <- clear_project_simple(),
     regexp = "clear_project_simple success: TRUE."   
   )
   testthat::expect_true(clear_result, "Clearing the results from the simple project should be successful.")
+  base::Sys.sleep(delay_in_seconds) #Pause after deleting records.
   
   testthat::expect_message(
     populate_result <- populate_project_simple(batch=batch),
     regexp = "populate_project_simple success: TRUE."    
   )
   testthat::expect_true(populate_result$is_success, "Population the the simple project should be successful.")
+  base::Sys.sleep(delay_in_seconds) #Pause after writing records.
+  
   return( populate_result )
 }
 

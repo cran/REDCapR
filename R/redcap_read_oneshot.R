@@ -12,6 +12,8 @@
 #' @param records_collapsed A single string, where the desired ID values are separated by commas.  Optional.
 #' @param fields An array, where each element corresponds a desired project field.  Optional.
 #' @param fields_collapsed A single string, where the desired field names are separated by commas.  Optional.
+#' @param events An array, where each element corresponds a desired project event  Optional.
+#' @param events_collapsed A single string, where the desired event names are separated by commas.  Optional.
 #' @param export_data_access_groups A boolean value that specifies whether or not to export the ``redcap_data_access_group'' field when data access groups are utilized in the project. Default is \code{FALSE}. See the details below.
 #' @param raw_or_label A string (either \code{'raw'} or \code{'label'} that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.  Default is \code{'raw'}.
 #' @param verbose A boolean value indicating if \code{message}s should be printed to the R console during the operation.  The verbose output might contain sensitive information (\emph{e.g.} PHI), so turn this off if the output might be visible somewhere public. Optional.
@@ -99,13 +101,13 @@
 
 redcap_read_oneshot <- function( redcap_uri, token, records=NULL, records_collapsed="", 
                          fields=NULL, fields_collapsed="", 
+                         events=NULL, events_collapsed="",
                          export_data_access_groups=FALSE,
                          raw_or_label='raw', verbose=TRUE, config_options=NULL ) {
   #TODO: NULL verbose parameter pulls from getOption("verbose")
   #TODO: warns if any requested fields aren't entirely lowercase.
   #TODO: validate export_data_access_groups
   #TODO: validate raw_or_label
-  
   
   start_time <- Sys.time()
   
@@ -115,40 +117,26 @@ redcap_read_oneshot <- function( redcap_uri, token, records=NULL, records_collap
   if( missing(token) )
     stop("The required parameter `token` was missing from the call to `redcap_read_oneshot()`.")
   
-  # if( missing(records_collapsed) & !missing(records) )
-  #   records_collapsed <- paste0(records, collapse=",")
-  # if( missing(fields_collapsed) & !missing(fields) )
-  #   fields_collapsed <- paste0(fields, collapse=",")
+  # browser() #| missing(fields_collapsed)
   
-  if( nchar(records_collapsed)==0 )
+  if( all(nchar(records_collapsed)==0) )
     records_collapsed <- ifelse(is.null(records), "", paste0(records, collapse=",")) #This is an empty string if `records` is NULL.
-  if( nchar(fields_collapsed)==0 )
+  if( (length(fields_collapsed)==0L) | is.null(fields_collapsed) | all(nchar(fields_collapsed)==0L) )
     fields_collapsed <- ifelse(is.null(fields), "", paste0(fields, collapse=",")) #This is an empty string if `fields` is NULL.
+  if( all(nchar(events_collapsed)==0) )
+    events_collapsed <- ifelse(is.null(events), "", paste0(events, collapse=",")) #This is an empty string if `events` is NULL.
   
   export_data_access_groups_string <- ifelse(export_data_access_groups, "true", "false")
   
-  if( missing( config_options ) | is.null(config_options) ) {
-    cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
-    
-    if( !base::file.exists(cert_location) )
-      stop(paste0("The file specified by `cert_location`, (", cert_location, ") could not be found."))
-    
-    config_options <- list(cainfo=cert_location)
-  }
+  # if( missing( config_options ) | is.null(config_options) ) {
+  #   cert_location <- system.file("ssl_certs/mozilla_ca_root.crt", package="REDCapR")
+  #   
+  #   if( !base::file.exists(cert_location) )
+  #     stop(paste0("The file specified by `cert_location`, (", cert_location, ") could not be found."))
+  #   
+  #   config_options <- list(cainfo=cert_location)
+  # }
       
-  #curl_options <- RCurl::curlOptions(cainfo=cert_location, sslversion=3)
-  # raw_text <- RCurl::postForm(
-  #   uri = redcap_uri
-  #   , token = token
-  #   , content = 'record'
-  #   , format = 'csv'
-  #   , type = 'flat'
-  #   , rawOrLabel = raw_or_label
-  #   , exportDataAccessGroups = export_data_access_groups_string
-  #   , records = records_collapsed
-  #   , fields = fields_collapsed
-  #   , .opts = curl_options
-  # )
   post_body <- list(
     token = token,
     content = 'record',
@@ -157,7 +145,8 @@ redcap_read_oneshot <- function( redcap_uri, token, records=NULL, records_collap
     rawOrLabel = raw_or_label,
     exportDataAccessGroups = export_data_access_groups_string,
     records = records_collapsed,
-    fields = fields_collapsed
+    fields = fields_collapsed,
+    events = events_collapsed
   )
   
   result <- httr::POST(
@@ -173,21 +162,37 @@ redcap_read_oneshot <- function( redcap_uri, token, records=NULL, records_collap
   raw_text <- httr::content(result, "text")  
   elapsed_seconds <- as.numeric(difftime(Sys.time(), start_time, units="secs"))
   
+  # raw_text <- "The hostname (redcap-db.hsc.net.ou.edu) / username (redcapsql) / password (XXXXXX) combination could not connect to the MySQL server. \r\n\t\tPlease check their values."
+  regex_cannot_connect <- "^The hostname \\((.+)\\) / username \\((.+)\\) / password \\((.+)\\) combination could not connect.+"
+  
+  if( any(grepl(regex_cannot_connect, raw_text)) ) 
+    success <- FALSE
+  
   if( success ) {
     try (
-      ds <- read.csv(text=raw_text, stringsAsFactors=FALSE), #Convert the raw text to a dataset.
+      {
+        ds <- utils::read.csv(text=raw_text, stringsAsFactors=FALSE)
+      }, #Convert the raw text to a dataset.
       silent = TRUE #Don't print the warning in the try block.  Print it below, where it's under the control of the caller.
     )
     
-    outcome_message <- paste0(format(nrow(ds), big.mark=",", scientific=FALSE, trim=TRUE), 
-                             " records and ",  
-                             format(length(ds), big.mark=",", scientific=FALSE, trim=TRUE), 
-                             " columns were read from REDCap in ", 
-                             round(elapsed_seconds, 1), " seconds.  The http status code was ",
-                             status_code, ".")
+    #TODO #80: catch variant of ' The.hostname..redcap.db.hsc.net.ou.edu....username..redcapsql....password..XXXXXX..combination.could.not.connect.to.the.MySQL.server. \t\tPlease check their values.'
     
-    #If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
-    raw_text <- "" 
+    if( exists("ds") & (class(ds)=="data.frame") ) {
+      outcome_message <- paste0(format(nrow(ds), big.mark=",", scientific=FALSE, trim=TRUE), 
+                         " records and ",  
+                         format(length(ds), big.mark=",", scientific=FALSE, trim=TRUE), 
+                         " columns were read from REDCap in ", 
+                         round(elapsed_seconds, 1), " seconds.  The http status code was ",
+                         status_code, ".")
+    
+      #If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
+      raw_text <- "" 
+    } else {
+      success <- FALSE #Override the 'success' determination from the http status code.
+      ds <- data.frame() #Return an empty data.frame
+      outcome_message <- paste0("The REDCap read failed.  The http status code was ", status_code, ".  The 'raw_text' returned was '", raw_text, "'.")
+    }
   }
   else {
     ds <- data.frame() #Return an empty data.frame
@@ -206,6 +211,7 @@ redcap_read_oneshot <- function( redcap_uri, token, records=NULL, records_collap
     outcome_message = outcome_message,
     records_collapsed = records_collapsed, 
     fields_collapsed = fields_collapsed,
+    events_collapsed = events_collapsed,
     elapsed_seconds = elapsed_seconds,
     raw_text = raw_text
   ) )
