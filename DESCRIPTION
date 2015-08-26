@@ -6,8 +6,8 @@ Description: Encapsulates functions to streamline calls from R to the REDCap
     University.  The Application Programming Interface (API) offers an avenue
     to access and modify data programmatically, improving the capacity for
     literate and reproducible programming.
-Version: 0.9.0
-Date: 2015-08-14
+Version: 0.9.3
+Date: 2015-08-25
 Authors@R: c(person("Will", "Beasley", role = c("aut", "cre"), email =
     "wibeasley@hotmail.com"), person("David", "Bard", role = "ctb"),
     person("Thomas", "Wilson", role = "ctb"), person(given="John J",
@@ -33,6 +33,6 @@ License: GPL-2
 LazyData: TRUE
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2015-08-15 05:33:56 UTC; wibeasley
+Packaged: 2015-08-25 21:43:07 UTC; Will
 Repository: CRAN
-Date/Publication: 2015-08-15 08:01:56
+Date/Publication: 2015-08-26 14:16:45

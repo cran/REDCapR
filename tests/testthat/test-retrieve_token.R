@@ -13,6 +13,7 @@ variable_name_project = "@RedcapProjectName"
 field_name_token      = "Token"
 
 test_that("Bad Project Name", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'project_name' parameter must contain only letters, numbers, and underscores."
   
   expect_error(
@@ -30,6 +31,7 @@ test_that("Bad Project Name", {
 })
 
 test_that("Bad Schema Name", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'schema_name' parameter must contain only letters, numbers, and underscores.  It may optionally be enclosed in square brackets."
   
   expect_error(
@@ -47,6 +49,7 @@ test_that("Bad Schema Name", {
 })
 
 test_that("Bad Procedure Name", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'procedure_name' parameter must contain only letters, numbers, and underscores.  It may optionally be enclosed in square brackets."
   
   expect_error(
@@ -64,6 +67,7 @@ test_that("Bad Procedure Name", {
 })
 
 test_that("Bad Variable Name Project", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'variable_name_project' parameter must contain only letters, numbers, and underscores.  It may optionally have a leading ampersand."
   
   expect_error(
@@ -81,6 +85,7 @@ test_that("Bad Variable Name Project", {
 })
 
 test_that("Field Name Token", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'field_name_token' parameter must contain only letters, numbers, and underscores."
   
   expect_error(
@@ -98,6 +103,7 @@ test_that("Field Name Token", {
 })
 
 test_that("Missing DSN & Channel", {
+  testthat::skip_if_not_installed(pkg = "RODBC")
   expected_message <- "The 'dsn' parameter can be missing only if a 'channel' has been passed to 'retrieve_token_mssql'."
   
   expect_error(
