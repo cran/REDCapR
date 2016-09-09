@@ -1,17 +1,18 @@
 ---
 title: Basic REDCapR Operations
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basic REDCapR Operations}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
-This vignette covers the the basic functions exposed by the [`REDCapR`](https://github.com/OuhscCcanMiechvEvaluation/REDCapR) package which allow you to interact with [REDCap](http://www.project-redcap.org/) through its API.
+This vignette covers the the basic functions exposed by the [`httr`](https://github.com/hadley/httr) and [`curl`](https://cran.r-project.org/package=curl) packages which allow you to interact with [REDCap](http://www.project-redcap.org/) through its API.
 
 ## Reading REDCap Data
-The function `redcap_read_oneshot` uses the [`RCurl`](http://cran.r-project.org/package=RCurl) package to call the REDCap API.
+The function `redcap_read_oneshot` uses the [`httr`](https://cran.r-project.org/package=httr) package to call the REDCap API.
 ```{r set_options, echo=FALSE, results='hide'}
 library(knitr)
 opts_chunk$set(
@@ -26,9 +27,7 @@ opts_chunk$set(
 ```
 
 ### Set project-wide values.
-There is some information that is specific to the REDCap project, as opposed to an individual operation.  This includes the (1) uri of the server, the (2) token for the user's project, and the (3) location of the SSL certification store, which is necessary to verify the identity of the REDCap webserver.  
-
-The `REDCapR` package includes a recent version of the [Bundle of CA Root Certificates](http://curl.haxx.se/ca/cacert.pem) from the official [cURL site](http://curl.haxx.se).  This version is used by default, unless the `cert_location` parameter is given another location.
+There is some information that is specific to the REDCap project, as opposed to an individual operation.  This includes the (1) uri of the server, and the (2) token for the user's project.
 
 ```{r project_values}
 library(REDCapR) #Load the package into the current R session.
@@ -113,7 +112,7 @@ ds_some_fields_v3 #Examine the these three variables.
 ## Step 2: identify desired records, based on age & weight
 before_1960 <- (ds_some_fields_v3$dob <= as.Date("1960-01-01"))
 heavier_than_70_kg <- (ds_some_fields_v3$weight > 70)
-desired_records_v3 <- ds_some_fields_v3[before_1960 & heavier_than_70_kg, "record_id"]
+desired_records_v3 <- ds_some_fields_v3[before_1960 & heavier_than_70_kg, ]$record_id
 
 desired_records_v3 #Peek at IDs of the identified records
 
