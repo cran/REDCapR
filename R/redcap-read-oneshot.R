@@ -10,37 +10,34 @@
 #' @param records_collapsed A single string, where the desired ID values are separated by commas.  Optional.
 #' @param fields An array, where each element corresponds a desired project field.  Optional.
 #' @param fields_collapsed A single string, where the desired field names are separated by commas.  Optional.
-#' @param filter_logic String of logic text (e.g., \code{[gender] = 'male'}) for filtering the data to be returned by this API method, in which the API will only return the records (or record-events, if a longitudinal project) where the logic evaluates as TRUE.   An blank/empty string returns all records.
+#' @param filter_logic String of logic text (e.g., `[gender] = 'male'`) for filtering the data to be returned by this API method, in which the API will only return the records (or record-events, if a longitudinal project) where the logic evaluates as TRUE.   An blank/empty string returns all records.
 #' @param events An array, where each element corresponds a desired project event  Optional.
 #' @param events_collapsed A single string, where the desired event names are separated by commas.  Optional.
-#' @param export_data_access_groups A boolean value that specifies whether or not to export the ``redcap_data_access_group'' field when data access groups are utilized in the project. Default is \code{FALSE}. See the details below.
-#' @param raw_or_label A string (either \code{'raw'} or \code{'label'} that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.  Default is \code{'raw'}.
-#' @param verbose A boolean value indicating if \code{message}s should be printed to the R console during the operation.  The verbose output might contain sensitive information (\emph{e.g.} PHI), so turn this off if the output might be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to \code{POST} method in the \code{httr} package.  See the details below. Optional.
+#' @param export_data_access_groups A boolean value that specifies whether or not to export the `redcap_data_access_group` field when data access groups are utilized in the project. Default is `FALSE`. See the details below.
+#' @param raw_or_label A string (either `'raw'` or `'label'` that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.  Default is `'raw'`.
+#' @param verbose A boolean value indicating if `message`s should be printed to the R console during the operation.  The verbose output might contain sensitive information (*e.g.* PHI), so turn this off if the output might be visible somewhere public. Optional.
+#' @param config_options  A list of options to pass to `POST` method in the `httr` package.  See the details below. Optional.
 #' @return Currently, a list is returned with the following elements,
-#' \enumerate{
-#'  \item \code{data}: An R \code{data.frame} of the desired records and columns.
-#'  \item \code{success}: A boolean value indicating if the operation was apparently successful.
-#'  \item \code{status_code}: The \href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code} of the operation.
-#'  \item \code{outcome_message}: A human readable string indicating the operation's outcome.
-#'  \item \code{records_collapsed}: The desired records IDs, collapsed into a single string, separated by commas.
-#'  \item \code{fields_collapsed}: The desired field names, collapsed into a single string, separated by commas.
-#'  \item \code{filter_logic}: The filter statement passed as an argument.
-#'  \item \code{elapsed_seconds}: The duration of the function.
-#'  \item \code{raw_text}: If an operation is NOT successful, the text returned by REDCap.  If an operation is successful, the `raw_text` is returned as an empty string to save RAM.
-#' }
+#' * `data`: An R [base::data.frame()] of the desired records and columns.
+#' * `success`: A boolean value indicating if the operation was apparently successful.
+#' * `status_code`: The [http status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) of the operation.
+#' * `outcome_message`: A human readable string indicating the operation's outcome.
+#' * `records_collapsed`: The desired records IDs, collapsed into a single string, separated by commas.
+#' * `fields_collapsed`: The desired field names, collapsed into a single string, separated by commas.
+#' * `filter_logic`: The filter statement passed as an argument.
+#' * `elapsed_seconds`: The duration of the function.
+#' * `raw_text`: If an operation is NOT successful, the text returned by REDCap.  If an operation is successful, the `raw_text` is returned as an empty string to save RAM.
+#'
 #' @details
-#' The full list of configuration options accepted by the \code{httr} package is viewable by executing \code{httr::httr_options()}.  The \code{httr}
-#' package and documentation is available at \url{https://cran.r-project.org/package=httr}.
+#' The full list of configuration options accepted by the `httr` package is viewable by executing [httr::httr_options()].  The `httr`
+#' package and documentation is available at https://cran.r-project.org/package=httr.
 #'
-#' If you do not pass in this export_data_access_groups value, it will default to \code{FALSE}. The following is from the API help page for version 5.2.3: This flag is only viable if the user whose token is being used to make the API request is *not* in a data access group. If the user is in a group, then this flag will revert to its default value.
+#' If you do not pass in this export_data_access_groups value, it will default to `FALSE`. The following is from the API help page for version 5.2.3: This flag is only viable if the user whose token is being used to make the API request is *not* in a data access group. If the user is in a group, then this flag will revert to its default value.
 #' @author Will Beasley
-#' @references The official documentation can be found on the `API Help Page` and `API Examples' pages
-#' on the REDCap wiki (ie, \url{https://community.projectredcap.org/articles/456/api-documentation.html} and
-#' \url{https://community.projectredcap.org/articles/462/api-examples.html}). If you do not have an account
+#' @references The official documentation can be found on the 'API Help Page' and 'API Examples' pages
+#' on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+#' https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 #' for the wiki, please ask your campus REDCap administrator to send you the static material.
-#'
-#' The official \href{http://curl.haxx.se}{cURL site} discusses the process of using SSL to verify the server being connected to.
 #'
 #' @examples
 #' \dontrun{
@@ -65,33 +62,6 @@
 #'    token      = token,
 #'    fields     = desired_fields_v1
 #' )$data
-#'
-#'
-#' #Use the SSL cert file that come with the openssl package.
-#' cert_location <- system.file("cacert.pem", package="openssl")
-#' if( file.exists(cert_location) ) {
-#'   config_options         <- list(cainfo=cert_location)
-#'   ds_different_cert_file <- redcap_read_oneshot(
-#'     redcap_uri     = uri,
-#'     token          = token,
-#'     config_options = config_options
-#'   )$data
-#' }
-#'
-#' #Force the connection to use SSL=3 (which is not preferred, and possibly insecure).
-#' config_options <- list(sslversion=3)
-#' ds_ssl_3 <- redcap_read_oneshot(
-#'   redcap_uri     = uri,
-#'   token          = token,
-#'   config_options = config_options
-#' )$data
-#'
-#' config_options <- list(ssl.verifypeer=FALSE)
-#' ds_no_ssl <- redcap_read_oneshot(
-#'    redcap_uri     = uri,
-#'    token          = token,
-#'    config_options = config_options
-#' )$data
 #' }
 
 redcap_read_oneshot <- function(
@@ -103,7 +73,6 @@ redcap_read_oneshot <- function(
   raw_or_label='raw', verbose=TRUE, config_options=NULL
 ) {
   #TODO: NULL verbose parameter pulls from getOption("verbose")
-  #TODO: warns if any requested fields aren't entirely lowercase.
 
   start_time <- Sys.time()
 
@@ -117,8 +86,9 @@ redcap_read_oneshot <- function(
     stop("The optional parameter `filter_logic` must be a character/string variable.")
   if( !(raw_or_label %in% c("raw", "label")) )
     stop("The optional parameter `raw_or_label` must be either 'raw' or 'label'.")
-  
-  token <- sub("\\n", "", token)
+
+  token <- sanitize_token(token)
+  validate_field_names(fields)
 
   if( all(nchar(records_collapsed)==0) )
     records_collapsed <- ifelse(is.null(records), "", paste0(records, collapse=",")) #This is an empty string if `records` is NULL.
@@ -131,7 +101,7 @@ redcap_read_oneshot <- function(
 
   if( any(grepl("[A-Z]", fields_collapsed)) )
     warning("The fields passed to REDCap appear to have at least uppercase letter.  REDCap variable names are snake case.")
-  
+
   export_data_access_groups_string <- ifelse(export_data_access_groups, "true", "false")
 
   post_body <- list(
@@ -141,11 +111,15 @@ redcap_read_oneshot <- function(
     type                    = 'flat',
     rawOrLabel              = raw_or_label,
     exportDataAccessGroups  = export_data_access_groups_string,
-    records                 = records_collapsed,
-    fields                  = fields_collapsed,
-    events                  = events_collapsed,
+    # records               = ifelse(nchar(records_collapsed)   > 0, records_collapsed  , NULL),
+    # fields                = ifelse(nchar(fields_collapsed)    > 0, fields_collapsed   , NULL),
+    # events                = ifelse(nchar(events_collapsed)    > 0, events_collapsed   , NULL),
     filterLogic             = filter_logic
   )
+
+  if( nchar(records_collapsed) > 0 ) post_body$records  <- records_collapsed
+  if( nchar(fields_collapsed ) > 0 ) post_body$fields   <- fields_collapsed
+  if( nchar(events_collapsed ) > 0 ) post_body$events   <- events_collapsed
 
   result <- httr::POST(
     url     = redcap_uri,
@@ -161,9 +135,14 @@ redcap_read_oneshot <- function(
 
   # raw_text <- "The hostname (redcap-db.hsc.net.ou.edu) / username (redcapsql) / password (XXXXXX) combination could not connect to the MySQL server. \r\n\t\tPlease check their values."
   regex_cannot_connect <- "^The hostname \\((.+)\\) / username \\((.+)\\) / password \\((.+)\\) combination could not connect.+"
+  regex_empty <- "^\\s+$"
 
-  if( any(grepl(regex_cannot_connect, raw_text)) )
+  if(
+    any(grepl(regex_cannot_connect, raw_text)) |
+    any(grepl(regex_empty, raw_text))
+  ) {
     success <- FALSE
+  }
 
   if( success ) {
     try (
@@ -173,8 +152,6 @@ redcap_read_oneshot <- function(
       }, #Convert the raw text to a dataset.
       silent = TRUE #Don't print the warning in the try block.  Print it below, where it's under the control of the caller.
     )
-
-    #TODO #80: catch variant of ' The.hostname..redcap.db.hsc.net.ou.edu....username..redcapsql....password..XXXXXX..combination.could.not.connect.to.the.MySQL.server. \t\tPlease check their values.'
 
     if( exists("ds") & inherits(ds, "data.frame") ) {
       outcome_message <- paste0(
@@ -216,7 +193,11 @@ redcap_read_oneshot <- function(
   }
   else {
     ds                 <- data.frame() #Return an empty data.frame
-    outcome_message    <- paste0("The REDCapR read/export operation was not successful.  The error message was:\n",  raw_text)
+    if( any(grepl(regex_empty, raw_text)) ) {
+      outcome_message    <- "The REDCapR read/export operation was not successful.  The returned dataset was empty."
+    } else {
+      outcome_message    <- paste0("The REDCapR read/export operation was not successful.  The error message was:\n",  raw_text)
+    }
   }
 
   if( verbose )
