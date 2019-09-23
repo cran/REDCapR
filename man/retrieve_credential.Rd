@@ -4,7 +4,7 @@
 \alias{retrieve_credential}
 \alias{retrieve_credential_local}
 \alias{retrieve_credential_mssql}
-\title{Read a token and other credentials from a (non-REDCap) database or file.}
+\title{Read a token and other credentials from a (non-REDCap) database or file}
 \usage{
 retrieve_credential_local(
   path_credential, project_id, check_url=TRUE,
@@ -29,10 +29,10 @@ retrieve_credential_mssql(
 
 \item{dsn}{A \href{http://en.wikipedia.org/wiki/Data_source_name}{DSN} on the local machine that points to the desired MSSQL database. Required.}
 
-\item{channel}{An \emph{optional} connection handle as returned by \code{\link[RODBC:odbcConnect]{RODBC::odbcConnect()}}.  See Details below. Optional.}
+\item{channel}{An \emph{optional} connection handle as returned by \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.  See Details below. Optional.}
 }
 \value{
-A list of the following elements
+A list of the following elements:
 \itemize{
 \item \code{redcap_uri}: The URI of the REDCap Server.
 \item \code{username}: Username.
@@ -55,11 +55,10 @@ if your institution is using something other than SQL Server, and
 would like help adapting this approach to your infrastructure.
 }
 \examples{
-library(REDCapR) #Load the package into the current R session.
 # ---- Local File Example ----------------------------
 path <- system.file("misc/example.credentials", package="REDCapR")
-(p1  <- retrieve_credential_local(path, 153L))
-(p2  <- retrieve_credential_local(path, 212L))
+(p1  <- REDCapR::retrieve_credential_local(path, 153L))
+(p2  <- REDCapR::retrieve_credential_local(path, 212L))
 }
 \author{
 Will Beasley

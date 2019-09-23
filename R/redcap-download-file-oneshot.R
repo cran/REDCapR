@@ -1,8 +1,6 @@
-#' @name redcap_download_file_oneshot
-#' @export redcap_download_file_oneshot
-#' @title Download a file from a REDCap project record.
+#' @title Download a file from a REDCap project record
 #'
-#' @description This function uses REDCap's API to download a file
+#' @description This function uses REDCap's API to download a file.
 #'
 #' @param file_name The name of the file where the downloaded file is saved.
 #'   If empty the original name of the file will be used and saved in the default directory.  Optional.
@@ -28,10 +26,11 @@
 #'
 #' @details
 #' Currently, the function doesn't modify any variable types to conform to REDCap's supported variables.  See [validate_for_write()] for a helper function that checks for some common important conflicts.
-#' @author Will Beasley
-#' @author John J. Aponte
+#'
+#' @author Will Beasley, John J. Aponte
+#'
 #' @references The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-#' on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+#' on the REDCap wiki (*i.e.*, https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 #' for the wiki, please ask your campus REDCap administrator to send you the static material.
 #'
@@ -43,7 +42,7 @@
 #' field   <- "mugshot"
 #' # event <- "" # only for longitudinal events
 #'
-#' result_1 <- redcap_download_file_oneshot(
+#' result_1 <- REDCapR::redcap_download_file_oneshot(
 #'   record        = record,
 #'   field         = field,
 #'   redcap_uri    = uri,
@@ -52,17 +51,17 @@
 #' base::unlink("mugshot-1.jpg")
 #'
 #' (full_name <- base::tempfile(pattern="mugshot", fileext=".jpg"))
-#' result_2 <- redcap_download_file_oneshot(
-#'   file_name    = full_name,
-#'   record       = record,
-#'   field        = field,
-#'   redcap_uri   = uri,
-#'   token        = token
+#' result_2   <- REDCapR::redcap_download_file_oneshot(
+#'   file_name     = full_name,
+#'   record        = record,
+#'   field         = field,
+#'   redcap_uri    = uri,
+#'   token         = token
 #' )
 #' base::unlink(full_name)
 #'
 #' (relative_name <- "ssss.jpg")
-#' result_3 <- redcap_download_file_oneshot(
+#' result_3 <- REDCapR::redcap_download_file_oneshot(
 #'   file_name    = relative_name,
 #'   record       = record,
 #'   field        = field,
@@ -72,16 +71,25 @@
 #' base::unlink(relative_name)
 #' }
 
-redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwrite=FALSE, redcap_uri, token, record, field, event="", verbose=TRUE, config_options=NULL ) {
-  start_time <- Sys.time()
+#' @export
+redcap_download_file_oneshot <- function(
+  file_name       = NULL,
+  directory       = NULL,
+  overwrite       = FALSE,
+  redcap_uri,
+  token,
+  record,
+  field,
+  event           = "",
+  verbose         = TRUE,
+  config_options  = NULL
+) {
 
-  if( missing(redcap_uri) )
-    stop("The required parameter `redcap_uri` was missing from the call to `redcap_download_file_oneshot()`.")
+  checkmate::assert_character(redcap_uri                , any.missing=F, len=1, pattern="^.{1,}$")
+  checkmate::assert_character(token                     , any.missing=F, len=1, pattern="^.{1,}$")
 
-  if( missing(token) )
-    stop("The required parameter `token` was missing from the call to `redcap_download_file_oneshot()`.")
-
-  token <- sanitize_token(token)
+  token   <- sanitize_token(token)
+  verbose <- verbose_prepare(verbose)
 
   post_body <- list(
     token         = token,
@@ -95,31 +103,23 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 
   if( nchar(event ) > 0 ) post_body$event   <- event
 
-  #This is the first of two important lines in the function.
-  #  It retrieves the information from the server and stores it in RAM.
-  result <- httr::POST(
-    url      = redcap_uri,
-    body     = post_body,
-    config   = config_options
-  )
+  # This is the first of two important lines in the function.
+  #   It retrieves the information from the server and stores it in RAM.
+  kernel <- kernel_api(redcap_uri, post_body, config_options)
 
-  status_code       <- result$status_code
-  elapsed_seconds   <- as.numeric(difftime(Sys.time(), start_time, units="secs"))
-  success           <- (status_code == 200L)
-
-  if( success ) {
-    result_header <- result$headers$`content-type`
+  if( kernel$success ) {
+    result_header <- kernel$result_headers$`content-type`
 
     if( missing(file_name) | is.null(file_name) ) {
       #process the content-type to get the file name
-      regex_matches <- regmatches(result_header, regexpr("name=.*", result_header))
-      file_name <- gsub(pattern='(name=.)|(")', replacement="", x=regex_matches)
+      regex_matches <- regmatches(kernel$result_headers, regexpr("name=.*", kernel$result_headers))
+      file_name     <- gsub(pattern='(name=.)|(")', replacement="", x=regex_matches)
     }
 
-    if( missing(directory) & is.null(directory) ) {
-      file_path <- file_name #Use relative path.
+    file_path <- if( missing(directory) & is.null(directory) ) {
+      file_name #Use relative path.
     } else {
-      file_path <- file.path(directory, file_name) #Qualify the file with its full path.
+      file.path(directory, file_name) #Qualify the file with its full path.
     }
 
     if( verbose )
@@ -130,34 +130,34 @@ redcap_download_file_oneshot <- function( file_name=NULL, directory=NULL, overwr
 
     #This is the second of two important lines in the function.
     #  It persists/converts the information in RAM to a file.
-    writeBin(httr::content(result, as="raw"), con=file_path)
+    writeBin(httr::content(kernel$result, as="raw"), con=file_path)
 
     outcome_message <- paste0(
       result_header, " successfully downloaded in " ,
-      round(elapsed_seconds, 1), " seconds, and saved as ", file_path
+      round(kernel$elapsed_seconds, 1), " seconds, and saved as ", file_path, "."
     )
-    recordsAffectedCount   <- length(record)
-    record_id              <- record
-    raw_text               <- ""
-  }
-  else { #If the operation was unsuccessful, then...
-    outcome_message         <- paste0("file NOT downloaded ")
-    recordsAffectedCount    <- 0L
-    record_id               <- numeric(0) #Return an empty vector.
-    raw_text                <- httr::content(result, type="text")
+    records_affected_count  <- length(record)
+    record_id               <- as.character(record)
+    kernel$raw_text         <- ""  # If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
+  } else { #If the operation was unsuccessful, then...
+    outcome_message         <- "file NOT downloaded."
+    records_affected_count  <- 0L
+    record_id               <- character(0) # Return an empty vector.
+    raw_text                <- kernel$raw_text
+    file_path               <- character(0)
   }
 
   if( verbose )
     message(outcome_message)
 
   return( list(
-    success                  = success,
-    status_code              = status_code,
+    success                  = kernel$success,
+    status_code              = kernel$status_code,
     outcome_message          = outcome_message,
-    records_affected_count   = recordsAffectedCount,
+    records_affected_count   = records_affected_count,
     affected_ids             = record_id,
-    elapsed_seconds          = elapsed_seconds,
-    raw_text                 = raw_text,
+    elapsed_seconds          = kernel$elapsed_seconds,
+    raw_text                 = kernel$raw_text,
     file_name                = file_name,
     file_path                = file_path
   ))

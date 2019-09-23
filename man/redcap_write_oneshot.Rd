@@ -2,7 +2,7 @@
 % Please edit documentation in R/redcap-write-oneshot.R
 \name{redcap_write_oneshot}
 \alias{redcap_write_oneshot}
-\title{Write/Import records to a REDCap project.}
+\title{Write/Import records to a REDCap project}
 \usage{
 redcap_write_oneshot(ds, redcap_uri, token, verbose = TRUE,
   config_options = NULL)
@@ -19,7 +19,7 @@ redcap_write_oneshot(ds, redcap_uri, token, verbose = TRUE,
 \item{config_options}{A list of options to pass to \code{\link[httr:POST]{httr::POST()}} method in the 'httr' package.  See the details in \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} Optional.}
 }
 \value{
-Currently, a list is returned with the following elements,
+Currently, a list is returned with the following elements:
 \itemize{
 \item \code{success}: A boolean value indicating if the operation was apparently successful.
 \item \code{status_code}: The \href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code} of the operation.
@@ -43,7 +43,7 @@ uri            <- "https://bbmc.ouhsc.edu/redcap/api/"
 token          <- "D70F9ACD1EDD6F151C6EA78683944E98"
 
 # Read the dataset for the first time.
-result_read1   <- redcap_read_oneshot(redcap_uri=uri, token=token)
+result_read1   <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)
 ds1            <- result_read1$data
 ds1$telephone
 # The line above returns something like this (depending on its previous state).
@@ -57,7 +57,7 @@ ds1$age        <- NULL; ds1$bmi <- NULL #Drop the calculated fields before writi
 result_write   <- REDCapR::redcap_write_oneshot(ds=ds1, redcap_uri=uri, token=token)
 
 # Read the dataset for the second time.
-result_read2   <- redcap_read_oneshot(redcap_uri=uri, token=token)
+result_read2   <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)
 ds2            <- result_read2$data
 ds2$telephone
 # The line above returns something like this.  Notice only the first three lines changed.
@@ -70,11 +70,10 @@ ds1$telephone  <- sprintf("(405) 111-\%1$i\%1$i\%1$i\%1$i", seq_len(nrow(ds1)))
 result_write   <- REDCapR::redcap_write_oneshot(ds=ds1, redcap_uri=uri, token=token)
 result_write$raw_text
 }
-
 }
 \references{
 The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+on the REDCap wiki (\emph{i.e.}, https://community.projectredcap.org/articles/456/api-documentation.html and
 https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 for the wiki, please ask your campus REDCap administrator to send you the static material.
 }

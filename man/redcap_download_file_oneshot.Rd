@@ -2,7 +2,7 @@
 % Please edit documentation in R/redcap-download-file-oneshot.R
 \name{redcap_download_file_oneshot}
 \alias{redcap_download_file_oneshot}
-\title{Download a file from a REDCap project record.}
+\title{Download a file from a REDCap project record}
 \usage{
 redcap_download_file_oneshot(file_name = NULL, directory = NULL,
   overwrite = FALSE, redcap_uri, token, record, field, event = "",
@@ -44,7 +44,7 @@ Currently, a list is returned with the following elements,
 }
 }
 \description{
-This function uses REDCap's API to download a file
+This function uses REDCap's API to download a file.
 }
 \details{
 Currently, the function doesn't modify any variable types to conform to REDCap's supported variables.  See \code{\link[=validate_for_write]{validate_for_write()}} for a helper function that checks for some common important conflicts.
@@ -57,7 +57,7 @@ record  <- 1
 field   <- "mugshot"
 # event <- "" # only for longitudinal events
 
-result_1 <- redcap_download_file_oneshot(
+result_1 <- REDCapR::redcap_download_file_oneshot(
   record        = record,
   field         = field,
   redcap_uri    = uri,
@@ -66,17 +66,17 @@ result_1 <- redcap_download_file_oneshot(
 base::unlink("mugshot-1.jpg")
 
 (full_name <- base::tempfile(pattern="mugshot", fileext=".jpg"))
-result_2 <- redcap_download_file_oneshot(
-  file_name    = full_name,
-  record       = record,
-  field        = field,
-  redcap_uri   = uri,
-  token        = token
+result_2   <- REDCapR::redcap_download_file_oneshot(
+  file_name     = full_name,
+  record        = record,
+  field         = field,
+  redcap_uri    = uri,
+  token         = token
 )
 base::unlink(full_name)
 
 (relative_name <- "ssss.jpg")
-result_3 <- redcap_download_file_oneshot(
+result_3 <- REDCapR::redcap_download_file_oneshot(
   file_name    = relative_name,
   record       = record,
   field        = field,
@@ -88,12 +88,10 @@ base::unlink(relative_name)
 }
 \references{
 The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+on the REDCap wiki (\emph{i.e.}, https://community.projectredcap.org/articles/456/api-documentation.html and
 https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 for the wiki, please ask your campus REDCap administrator to send you the static material.
 }
 \author{
-Will Beasley
-
-John J. Aponte
+Will Beasley, John J. Aponte
 }

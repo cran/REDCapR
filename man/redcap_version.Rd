@@ -4,7 +4,8 @@
 \alias{redcap_version}
 \title{Determine version of REDCap instance}
 \usage{
-redcap_version(redcap_uri, token, verbose = TRUE)
+redcap_version(redcap_uri, token, verbose = TRUE,
+  config_options = NULL)
 }
 \arguments{
 \item{redcap_uri}{The URI (uniform resource identifier) of the REDCap project.  Required.}
@@ -12,21 +13,22 @@ redcap_version(redcap_uri, token, verbose = TRUE)
 \item{token}{The user-specific string that serves as the password for a project.  Required.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed to the R console during the operation.  The verbose output might contain sensitive information (\emph{e.g.} PHI), so turn this off if the output might be visible somewhere public. Optional.}
+
+\item{config_options}{A list of options to pass to \code{POST} method in the \code{httr} package.  See the details below.  Optional.}
 }
 \value{
-A \link[utils:packageVersion]{utils::packageVersion}.
+a \code{\link[utils:packageDescription]{utils::packageVersion}}.
 }
 \description{
 This function uses REDCap's API to query its version.
 }
 \details{
 If the API call is unsuccessful, a value of \code{base::package_version("0.0.0")} will be returned.
-This ensures that a the function will always return an object of class \link[base:package_version]{base::package_version}.
+This ensures that a the function will always return an object of class \code{\link[base:numeric_version]{base::package_version}}.
 It guarantees the value can always be used in \code{\link[utils:compareVersion]{utils::compareVersion()}}.
 }
 \examples{
-library(REDCapR) #Load the package into the current R session.
 uri      <- "https://bbmc.ouhsc.edu/redcap/api/"
 token    <- "9A81268476645C4E5F03428B8AC3AA7B"
-redcap_version(redcap_uri=uri, token=token)
+REDCapR::redcap_version(redcap_uri=uri, token=token)
 }

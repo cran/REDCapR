@@ -2,14 +2,17 @@
 % Please edit documentation in R/redcap-read.R
 \name{redcap_read}
 \alias{redcap_read}
-\title{Read records from a REDCap project in subsets, and stacks them together before returning a \code{\link[base:data.frame]{base::data.frame()}}.}
+\title{Read records from a REDCap project in subsets, and stacks them together before returning a \code{\link[base:data.frame]{base::data.frame()}}}
 \usage{
 redcap_read(batch_size = 100L, interbatch_delay = 0.5,
   continue_on_error = FALSE, redcap_uri, token, records = NULL,
   records_collapsed = "", fields = NULL, fields_collapsed = "",
-  events = NULL, events_collapsed = "", export_data_access_groups = FALSE,
-  filter_logic = "", raw_or_label = "raw", verbose = TRUE,
-  config_options = NULL, id_position = 1L)
+  forms = NULL, forms_collapsed = "", events = NULL,
+  events_collapsed = "", raw_or_label = "raw",
+  raw_or_label_headers = "raw", export_checkbox_label = FALSE,
+  export_survey_fields = FALSE, export_data_access_groups = FALSE,
+  filter_logic = "", guess_type = TRUE, guess_max = 1000L,
+  verbose = TRUE, config_options = NULL, id_position = 1L)
 }
 \arguments{
 \item{batch_size}{The maximum number of subject records a single batch should contain.  The default is 100.}
@@ -26,19 +29,33 @@ redcap_read(batch_size = 100L, interbatch_delay = 0.5,
 
 \item{records_collapsed}{A single string, where the desired ID values are separated by commas.  Optional.}
 
-\item{fields}{An array, where each element corresponds a desired project field.  Optional.}
+\item{fields}{An array, where each element corresponds to a desired project field.  Optional.}
 
 \item{fields_collapsed}{A single string, where the desired field names are separated by commas.  Optional.}
 
-\item{events}{An array, where each element corresponds a desired project event  Optional.}
+\item{forms}{An array, where each element corresponds to a desired project form.  Optional.}
+
+\item{forms_collapsed}{A single string, where the desired form names are separated by commas.  Optional.}
+
+\item{events}{An array, where each element corresponds to a desired project event.  Optional.}
 
 \item{events_collapsed}{A single string, where the desired event names are separated by commas.  Optional.}
+
+\item{raw_or_label}{A string (either 'raw\code{or 'label' that specifies whether to export the raw coded values or the labels for the options of multiple choice fields.  Default is}'raw'`.}
+
+\item{raw_or_label_headers}{A string (either \code{'raw'} or \code{'label'} that specifies for the CSV headers whether to export the variable/field names (raw) or the field labels (label).  Default is \code{'raw'}.}
+
+\item{export_checkbox_label}{specifies the format of checkbox field values specifically when exporting the data as labels.  If \code{raw_or_label} is \code{'label'} and \code{export_checkbox_label} is TRUE, the values will be the text displayed to the users.  Otherwise, the values will be 0/1.}
+
+\item{export_survey_fields}{A boolean that specifies whether to export the survey identifier field (e.g., 'redcap_survey_identifier') or survey timestamp fields (e.g., instrument+'_timestamp') .}
 
 \item{export_data_access_groups}{A boolean value that specifies whether or not to export the \code{redcap_data_access_group} field when data access groups are utilized in the project. Default is \code{FALSE}. See the details below.}
 
 \item{filter_logic}{String of logic text (e.g., \code{[gender] = 'male'}) for filtering the data to be returned by this API method, in which the API will only return the records (or record-events, if a longitudinal project) where the logic evaluates as TRUE.   An blank/empty string returns all records.}
 
-\item{raw_or_label}{A string (either 'raw\code{or 'label' that specifies whether to export the raw coded values or the labels for the options of multiple choice fields. Default is}'raw'`.}
+\item{guess_type}{A boolean value indicating if all columns should be returned as character.  If true, \code{\link[readr:read_csv]{readr::read_csv()}} guesses the intended data type for each column.}
+
+\item{guess_max}{A positive integer passed to \code{\link[readr:read_csv]{readr::read_csv()}} \strong{per batch} that specifies the maximum number of records to use for guessing column types.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed to the R console during the operation.  The verbose output might contain sensitive information (\emph{e.g.} PHI), so turn this off if the output might be visible somewhere public. Optional.}
 
@@ -47,7 +64,7 @@ redcap_read(batch_size = 100L, interbatch_delay = 0.5,
 \item{id_position}{The column position of the variable that unique identifies the subject.  This defaults to the first variable in the dataset.}
 }
 \value{
-Currently, a list is returned with the following elements,
+Currently, a list is returned with the following elements:
 \itemize{
 \item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} of the desired records and columns.
 \item \code{success}: A boolean value indicating if the operation was apparently successful.
@@ -84,16 +101,14 @@ For \code{\link[=redcap_read]{redcap_read()}} to function properly, the user mus
 }
 \examples{
 \dontrun{
-library(REDCapR) #Load the package into the current R session.
 uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
 token   <- "9A81268476645C4E5F03428B8AC3AA7B"
-redcap_read(batch_size=2, redcap_uri=uri, token=token)
+REDCapR::redcap_read(batch_size=2, redcap_uri=uri, token=token)
 }
-
 }
 \references{
 The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+on the REDCap wiki (\emph{i.e.}, https://community.projectredcap.org/articles/456/api-documentation.html and
 https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 for the wiki, please ask your campus REDCap administrator to send you the static material.
 }

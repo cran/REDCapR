@@ -2,7 +2,7 @@ library(testthat)
 context("Russian Unencoded")
 
 credential <- REDCapR::retrieve_credential_local(
-  path_credential = base::file.path(devtools::inst(name="REDCapR"), "misc/example.credentials"),
+  path_credential = system.file("misc/example.credentials", package="REDCapR"),
   project_id      = 268
 )
 

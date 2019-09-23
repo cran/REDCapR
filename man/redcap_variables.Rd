@@ -2,9 +2,10 @@
 % Please edit documentation in R/redcap-variables.R
 \name{redcap_variables}
 \alias{redcap_variables}
-\title{Enumerate the exported variables.}
+\title{Enumerate the exported variables}
 \usage{
-redcap_variables(redcap_uri, token, verbose = TRUE, config_options = NULL)
+redcap_variables(redcap_uri, token, verbose = TRUE,
+  config_options = NULL)
 }
 \arguments{
 \item{redcap_uri}{The URI (uniform resource identifier) of the REDCap project.  Required.}
@@ -18,13 +19,10 @@ redcap_variables(redcap_uri, token, verbose = TRUE, config_options = NULL)
 \value{
 Currently, a list is returned with the following elements,
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} where each row represents one column in the readl dataset.
+\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} where each row represents one column in the REDCap dataset.
 \item \code{success}: A boolean value indicating if the operation was apparently successful.
 \item \code{status_code}: The \href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code} of the operation.
 \item \code{outcome_message}: A human readable string indicating the operation's outcome.
-\item \code{records_collapsed}: The desired records IDs, collapsed into a single string, separated by commas.
-\item \code{fields_collapsed}: The desired field names, collapsed into a single string, separated by commas.
-\item \code{filter_logic}: The filter statement passed as an argument.
 \item \code{elapsed_seconds}: The duration of the function.
 \item \code{raw_text}: If an operation is NOT successful, the text returned by REDCap.  If an operation is successful, the \code{raw_text} is returned as an empty string to save RAM.
 }
@@ -41,16 +39,14 @@ calculated, file, and descriptive.  All variables returned are writable/uploadab
 }
 \examples{
 \dontrun{
-library(REDCapR) #Load the package into the current R session.
-uri      <- "https://bbmc.ouhsc.edu/redcap/api/"
-token    <- "9A81268476645C4E5F03428B8AC3AA7B"
-ds_variable <- redcap_variables(redcap_uri=uri, token=token)$data
+uri         <- "https://bbmc.ouhsc.edu/redcap/api/"
+token       <- "9A81268476645C4E5F03428B8AC3AA7B"
+ds_variable <- REDCapR::redcap_variables(redcap_uri=uri, token=token)$data
 }
-
 }
 \references{
 The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+on the REDCap wiki (\emph{i.e.}, https://community.projectredcap.org/articles/456/api-documentation.html and
 https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 for the wiki, please ask your campus REDCap administrator to send you the static material.
 }

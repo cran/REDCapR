@@ -1,6 +1,4 @@
-#' @name redcap_write
-#' @export redcap_write
-#' @title Write/Import records to a REDCap project.
+#' @title Write/Import records to a REDCap project
 #'
 #' @description This function uses REDCap's APIs to select and return data.
 #'
@@ -13,7 +11,7 @@
 #' @param verbose A boolean value indicating if `message`s should be printed to the R console during the operation.  The verbose output might contain sensitive information (*e.g.* PHI), so turn this off if the output might be visible somewhere public. Optional.
 #' @param config_options  A list of options to pass to `POST` method in the `httr` package.  See the details in [redcap_read_oneshot()]. Optional.
 #'
-#' @return Currently, a list is returned with the following elements,
+#' @return Currently, a list is returned with the following elements:
 #' * `success`: A boolean value indicating if the operation was apparently successful.
 #' * `status_code`: The [http status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes) of the operation.
 #' * `outcome_message`: A human readable string indicating the operation's outcome.
@@ -33,8 +31,9 @@
 #' * in the 'Data Exports' radio buttons, select 'Full Data Set'.
 #'
 #' @author Will Beasley
+#'
 #' @references The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-#' on the REDCap wiki (ie, https://community.projectredcap.org/articles/456/api-documentation.html and
+#' on the REDCap wiki (*i.e.*, https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
 #' for the wiki, please ask your campus REDCap administrator to send you the static material.
 #'
@@ -45,7 +44,7 @@
 #' token         <- "D70F9ACD1EDD6F151C6EA78683944E98"
 #'
 #' # Read the dataset for the first time.
-#' result_read1  <- redcap_read_oneshot(redcap_uri=uri, token=token)
+#' result_read1  <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)
 #' ds1           <- result_read1$data
 #' ds1$telephone
 #' # The line above returns something like this (depending on its previous state).
@@ -59,7 +58,7 @@
 #' result_write  <- REDCapR::redcap_write(ds=ds1, redcap_uri=uri, token=token)
 #'
 #' # Read the dataset for the second time.
-#' result_read2  <- redcap_read_oneshot(redcap_uri=uri, token=token)
+#' result_read2  <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)
 #' ds2           <- result_read2$data
 #' ds2$telephone
 #' # The line above returns something like this.  Notice only the first three lines changed.
@@ -72,25 +71,25 @@
 #' result_write <- REDCapR::redcap_write(ds=ds1, redcap_uri=uri, token=token)
 #' result_write$raw_text
 #' }
+
+#' @export
 redcap_write <- function(
   ds_to_write,
-  batch_size = 100L,
-  interbatch_delay = 0.5,
-  continue_on_error = FALSE,
+  batch_size          = 100L,
+  interbatch_delay    = 0.5,
+  continue_on_error   = FALSE,
   redcap_uri,
   token,
-  verbose = TRUE, config_options = NULL
+  verbose             = TRUE,
+  config_options      = NULL
 ) {
 
   start_time <- base::Sys.time()
+  checkmate::assert_character(redcap_uri                , any.missing=F, len=1, pattern="^.{1,}$")
+  checkmate::assert_character(token                     , any.missing=F, len=1, pattern="^.{1,}$")
 
-  if( base::missing(redcap_uri) )
-    base::stop("The required parameter `redcap_uri` was missing from the call to `redcap_write()`.")
-
-  if( base::missing(token) )
-    base::stop("The required parameter `token` was missing from the call to `redcap_write()`.")
-
-  token <- sanitize_token(token)
+  token   <- sanitize_token(token)
+  verbose <- verbose_prepare(verbose)
 
   ds_glossary <- REDCapR::create_batch_glossary(row_count=base::nrow(ds_to_write), batch_size=batch_size)
 
@@ -101,7 +100,7 @@ redcap_write <- function(
 
   message("Starting to update ", format(nrow(ds_to_write), big.mark=",", scientific=F, trim=T), " records to be written at ", Sys.time())
   for( i in seq_along(ds_glossary$id) ) {
-    selected_indices <- seq(from=ds_glossary[i, "start_index"], to=ds_glossary[i, "stop_index"])
+    selected_indices <- seq(from=ds_glossary$start_index[i], to=ds_glossary$stop_index[i])
 
     if( i > 0 ) Sys.sleep(time = interbatch_delay)
     #     selected_ids <- ids[selected_index]
@@ -125,14 +124,14 @@ redcap_write <- function(
       else stop(error_message)
     }
 
-    affected_ids <- c(affected_ids, write_result$affected_ids)
+    affected_ids     <- c(affected_ids, write_result$affected_ids)
     success_combined <- success_combined | write_result$success
 
     rm(write_result) #Admittedly overkill defensiveness.
   }
 
   elapsed_seconds          <- as.numeric(difftime( Sys.time(), start_time, units="secs"))
-  status_code_combined     <- paste(lst_status_code, collapse="; ")
+  status_code_combined     <- paste(lst_status_code    , collapse="; ")
   outcome_message_combined <- paste(lst_outcome_message, collapse="; ")
 
   return( list(

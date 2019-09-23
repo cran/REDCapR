@@ -2,7 +2,7 @@
 % Please edit documentation in R/sanitize-token.R
 \name{sanitize_token}
 \alias{sanitize_token}
-\title{Validate and sanitize the user's REDCap token.}
+\title{Validate and sanitize the user's REDCap token}
 \usage{
 sanitize_token(token)
 }
@@ -17,14 +17,13 @@ Verifies the token is nonmissing and conforms to the legal pattern of a 32-chara
 Trailing line endings are removed.
 }
 \note{
-Contact your institution's REDCap administrator for more informationa about your project-specific token.
+Contact your institution's REDCap administrator for more information about your project-specific token.
 }
 \examples{
-library(REDCapR) #Load the package into the current R session.
 secret_token_1 <- "12345678901234567890123456ABCDEF"
 secret_token_2 <- "12345678901234567890123456ABCDEF\\n"
-sanitize_token(secret_token_1)
-sanitize_token(secret_token_2)
+REDCapR::sanitize_token(secret_token_1)
+REDCapR::sanitize_token(secret_token_2)
 }
 \author{
 Hao Zhu, Benjamin Nutter, Will Beasley
