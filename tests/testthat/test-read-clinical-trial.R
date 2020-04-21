@@ -1,15 +1,11 @@
 library(testthat)
-context("Read Oneshot")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 977
-)
+credential  <- retrieve_credential_testing(977L)
 
 test_that("smoke test", {
   testthat::skip_on_cran()
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token)
   )
 })
 test_that("default", {
@@ -1020,7 +1016,7 @@ test_that("default", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, guess_type=F)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, guess_type=FALSE)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -1035,3 +1031,5 @@ test_that("default", {
   # expect_equal_to_reference(returned_object$data, file=system.file("test-data/project-simple/variations/default.rds", package="REDCapR"))
   # expect_equal_to_reference(returned_object$data, file="./test-data/project-simple/variations/default.rds")
 })
+
+rm(credential)

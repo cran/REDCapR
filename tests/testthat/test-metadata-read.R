@@ -1,16 +1,10 @@
 library(testthat)
-context("Metadata Read")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 153
-)
-credential_super_wide <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 753
-)
+credential            <- retrieve_credential_testing()
+credential_super_wide <- retrieve_credential_testing(753L)
+credential_problem    <- retrieve_credential_testing(1425L)
 
-test_that("Metadata Smoke Test", {
+test_that("Metadata Read Smoke Test", {
   testthat::skip_on_cran()
   expect_message(
     returned_object <- redcap_metadata_read(redcap_uri=credential$redcap_uri, token=credential$token)
@@ -28,6 +22,23 @@ test_that("Super-wide", {
   expect_message(
     regexp           = expected_outcome_message,
     returned_object <- redcap_metadata_read(redcap_uri=credential_super_wide$redcap_uri, token=credential_super_wide$token)
+  )
+
+  expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
+  expect_equal(ncol(returned_object$data), expected=expected_column_count)
+  expect_equal(sum(is.na(returned_object$data)), expected=expected_na_cells)
+})
+
+test_that("Problematic Dictionary", {
+  testthat::skip_on_cran()
+  expected_outcome_message <- "The data dictionary describing 6 fields was read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\.  The http status code was 200\\."
+  expected_row_count    <- 6L
+  expected_column_count <- 18L
+  expected_na_cells     <- 76L
+
+  expect_message(
+    regexp           = expected_outcome_message,
+    returned_object <- redcap_metadata_read(redcap_uri=credential_problem$redcap_uri, token=credential_problem$token)
   )
 
   expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
@@ -141,3 +152,7 @@ test_that("Metadata Normal", {
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 })
+
+rm(credential           )
+rm(credential_super_wide)
+rm(credential_problem   )

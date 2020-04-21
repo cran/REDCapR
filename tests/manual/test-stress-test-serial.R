@@ -1,13 +1,11 @@
 library(testthat)
 
-###########
 context("Stress Test - Serial")
-###########
-uri <- "https://bbmc.ouhsc.edu/redcap/api/"
-token <- "9A81268476645C4E5F03428B8AC3AA7B" #For `UnitTestPhiFree` account on pid=153.
+
+credential <- retrieve_credential_testing()
 
 read_count <- 2000L
-file_count <- 200L
+file_count <-  200L
 
 # Read ---------------------------------------------------
 message("\n========\nRead")
@@ -43,7 +41,11 @@ expected_outcome_message <- "5 records and 24 columns were read from REDCap in \
 
 for( i in seq_len(read_count) ) {
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=uri, token=token, raw_or_label="raw", verbose=T),
+    returned_object <- redcap_read_oneshot(
+      redcap_uri    = credential$redcap_uri,
+      token         = credential$token,
+      raw_or_label  = "raw"
+    ),
     regexp = expected_outcome_message
   )
 
@@ -67,7 +69,11 @@ for( i in seq_len(file_count) ) {
 
   expected_outcome_message <- "5 records and 24 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=project$redcap_uri, token=project$token, raw_or_label="raw"),
+    returned_object <- redcap_read_oneshot(
+      redcap_uri      = project$redcap_uri,
+      token           = project$token,
+      raw_or_label    = "raw"
+    ),
     regexp = expected_outcome_message
   )
 
@@ -84,7 +90,12 @@ for( i in seq_len(file_count) ) {
 
   tryCatch({
     expect_message(
-      returned_object <- redcap_download_file_oneshot(record=record, field=field, redcap_uri=start_clean_result$redcap_project$redcap_uri, token=start_clean_result$redcap_project$token),
+      returned_object <- redcap_download_file_oneshot(
+        record        = record,
+        field         = field,
+        redcap_uri    = start_clean_result$redcap_project$redcap_uri,
+        token         = start_clean_result$redcap_project$token
+      ),
       regexp = expected_outcome_message
     )
     info_actual <- file.info(returned_object$file_name)
@@ -111,3 +122,5 @@ for( i in seq_len(file_count) ) {
   expect_more_than(info_actual$atime, expected=start_time, label="The downloaded file's last access time should not precede this function's start time.")
   message(i, ": ", returned_object$elapsed_seconds)
 }
+
+rm(credential)

@@ -1,12 +1,9 @@
 library(testthat)
-context("Read Batch - Survey")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 817
-)
-project <- redcap_project$new(redcap_uri=credential$redcap_uri, token=credential$token)
-directory_relative <- "test-data/project-survey/expected"
+
+credential          <- retrieve_credential_testing(817L)
+project             <- redcap_project$new(redcap_uri=credential$redcap_uri, token=credential$token)
+directory_relative  <- "test-data/project-survey/expected"
 
 test_that("Smoke Test", {
   testthat::skip_on_cran()
@@ -14,17 +11,17 @@ test_that("Smoke Test", {
   #Static method w/ default batch size
   expect_message(
     returned_object <- redcap_read(
-      redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=T
+      redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE
     )
   )
   #Instance method w/ default batch size
   expect_message(
-    returned_object <- project$read(export_survey_fields=T)
+    returned_object <- project$read(export_survey_fields=TRUE)
   )
 
   #Instance method w/ tiny batch size
   expect_message(
-    returned_object <- project$read(batch_size=2, export_survey_fields=T)
+    returned_object <- project$read(batch_size=2, export_survey_fields=TRUE)
   )
 })
 
@@ -54,7 +51,7 @@ test_that("All Records -Default", {
   ## Default Batch size
   expect_message(
     regexp            = expected_outcome_message,
-    returned_object1 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=T)
+    returned_object1 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE)
   )
   expect_equivalent(returned_object1$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object1$data)
   expect_true(all(!is.na(returned_object1$data$prescreening_survey_timestamp)))
@@ -69,7 +66,7 @@ test_that("All Records -Default", {
   ## Tiny Batch size
   expect_message(
     regexp            = expected_outcome_message,
-    returned_object2 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=T, batch_size=8)
+    returned_object2 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE, batch_size=8)
   )
 
   expect_equal(returned_object2$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object2$data)
@@ -81,3 +78,5 @@ test_that("All Records -Default", {
   expect_true(nchar(returned_object2$filter_logic)==0L, "A filter was not specified.")
   expect_match(returned_object2$outcome_messages, regexp=expected_outcome_message, perl=TRUE)
 })
+
+rm(credential)

@@ -2,7 +2,40 @@ Upcoming Versions
 ==========================================================
 
 In the future:
-* `redcap_read()` and `redcap_read_oneshot()` allows caller to specify data types for columns.
+...
+
+Version 0.11 (Released 2020-04-20)
+==========================================================
+
+### Breaking Changes (possible, but unlikely)
+
+* [`kernel_api()`](https://ouhscbbmc.github.io/REDCapR/reference/kernel_api.html) defaults to "text/csv" and UTF-8 encoding.  Formerly, the function would decide on the content-type and encoding.  More details are below in the 'Stability Features' subsection.
+
+* [`constant()`](https://ouhscbbmc.github.io/REDCapR/reference/constant.html) no longer accepts `simplify` as an options.  An integer vector is always returned.  (#280)
+
+### New Features
+
+* It's now possible to specify the exact `col_types` (a [`readr::cols`](https://readr.tidyverse.org/reference/cols.html) object) that is passed to `readr::read_csv()` inside [`redcap_read_oneshot()`](https://github.com/OuhscBbmc/REDCapR/blob/master/R/redcap-read-oneshot.R). (#258)
+
+* [`reader::type_convert()`](https://readr.tidyverse.org/reference/type_convert.html) is used *after* all the batches are stacked on top of each other.  This way, batches cannot have incompatible data types as they're combined. (#257; thanks @isaactpetersen #245)  Consequently, the `guess_max` parameter in `redcap_read()` no longer serves a purpose, and has been soft-deprecated. (#267)
+
+* [`redcap_metadata_write()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_write.html) writes to the project's metadata. (#274, @felixetorres) 
+
+* [`redcap_survey_link_export_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_survey_link_export_oneshot.html) retrieves the URL to a specific record's suvey (*e.g.*, "https://bbmc.ouhsc.edu/redcap/surveys/?s=8KuzSLMHf6") (#293)
+
+### Stability Features
+
+* `httr::content()` (which is inside `kernel_api()`) now processes the returned value as "text/csv", by default.  This should prevent strange characters from tricking the process as the internal variable `raw_text` is being formed. See the [httr::content()`](https://httr.r-lib.org/reference/content.html) documentation for a list of possible values for the `content_type` parameter.  (Thanks to great debugging by @vortexing #269, @sybandrew #272, & @begavett, #290)
+
+* Similarly, `kernel_api()` now has an `encoding` parameter, which defaults to "UTF-8".  (#270)
+
+### Minor Enhancements
+
+* check for bad field names passed to the read records functions (#288)
+
+### Corrections
+
+* 'checkmate' package is now imported, not suggested (Thanks @dtenenba, #255)
 
 
 Version 0.10 (Released 2019-09-22)

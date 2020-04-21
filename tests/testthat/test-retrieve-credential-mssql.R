@@ -1,5 +1,4 @@
 library(testthat)
-context("Retrieve Credentials MS-SQL")
 
 pid_read           <- 153L #This project is for testing only reading from the server.
 
@@ -141,7 +140,7 @@ test_that("bad type: DSN name", {
 
 test_that("bad type: channel ", {
   testthat::skip_if_not_installed(pkg="odbc")
-  expected_message <- "The `channel` parameter be a `DBIConnection` connection type, or NULL."
+  expected_message <- "The `channel` parameter be a `DBIConnection` type, or NULL."
 
   #integer
   expect_error(

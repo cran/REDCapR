@@ -58,11 +58,11 @@ We'd like to thank the following developers for their [advice](https://github.co
 
 ### Funders
 
-Much of this package has been developed to support the needs of the following projects.  We appreciate the support.  (So far) the primary developers of REDCapR are the external evaluators for [Oklahoma's MIECHV](https://www.ok.gov/health/Community_&_Family_Health/Family_Support_and_Prevention_Service/MIECHV_Program_-_Federal_Home_Visiting_Grant/MIECHV_Program_Resources/index.html) program.  See the preliminary CQI reports (many of which use REDCapR) at http://ouhscbbmc.github.io/MReportingPublic/.
+Much of this package has been developed to support the needs of the following projects.  We appreciate the support.  (So far) the primary developers of REDCapR are the external evaluators for [Oklahoma's MIECHV](https://www.ok.gov/health/Family_Health/Family_Support_and_Prevention_Service/index.html) program.  See the preliminary CQI reports (many of which use REDCapR) at http://ouhscbbmc.github.io/MReportingPublic/.
 
-* *OUHSC CCAN Independent Evaluation of the State of Oklahoma Competitive Maternal, Infant, and Early Childhood Home Visiting ([MIECHV](http://mchb.hrsa.gov/programs/homevisiting/)) Project*. [HRSA/ACF D89MC23154](https://perf-data.hrsa.gov/mchb/DGISReports/Abstract/AbstractDetails.aspx?Source=TVIS&GrantNo=D89MC23154&FY=2012).  David Bard, PI, OUHSC; 2011-2015.
-* *Independent Evaluation of the State of OK MIECHV Evidence Based Home Visitation Project*, [NIH](https://www.nih.gov/)-sponsored collaboration with [OSDH](https://www.ok.gov/health/). David Bard, PI, OUHSC; 2015-2017.
-* *OSDH ParentPRO Pilot Evaluation*, federally-sponsored collaboration with [OSDH](https://www.ok.gov/health/).  David Bard, PI, OUHSC; 2015-2017.
+* *OUHSC CCAN Independent Evaluation of the State of Oklahoma Competitive Maternal, Infant, and Early Childhood Home Visiting ([MIECHV](http://mchb.hrsa.gov/programs/homevisiting/)) Project*. [HRSA/ACF D89MC23154](https://grants6.hrsa.gov/MCHB/DGISReports/Abstract/AbstractDetails.aspx?cbAbstractSummary=D89MC23154_2012_NonResearch_4).  David Bard, PI, OUHSC; 2011-2015.
+* *Independent Evaluation of the State of OK MIECHV Evidence Based Home Visitation Project*, [NIH](https://www.nih.gov/)-sponsored collaboration with [OSDH](https://ok.gov/health/). David Bard, PI, OUHSC; 2015-2017.
+* *OSDH ParentPRO Pilot Evaluation*, federally-sponsored collaboration with [OSDH](https://ok.gov/health/).  David Bard, PI, OUHSC; 2015-2017.
 * *Title IV-E Waiver Project*, [HRSA/MCHB](http://mchb.hrsa.gov/)-sponsored collaboration with [OKDHS](http://www.okdhs.org/); David Bard, PI, OUHSC; 2014-2017.
 * *Integrative Analysis of Longitudinal Studies of Aging (IALSA)*, sponsored by [NIH 5P01AG043362](http://grantome.com/grant/NIH/P01-AG043362).  Scott Hofer, PI, University of Victoria; Will Beasley, PI of site-award, OUHSC; 2013-2018.
 * *Oklahoma Shared Clinical and Translational Resources*, sponsored by [NIH NIGMS; U54 GM104938](http://grantome.com/grant/NIH/U54-GM104938). Judith A. James, PI, OUHSC; 2013-2018.
@@ -76,17 +76,17 @@ Thanks,
 
 ### Build Status and Package Characteristics
 
-| [GitHub](https://github.com/OuhscBbmc/REDCapR) | [Travis-CI](https://travis-ci.org/OuhscBbmc/REDCapR/builds) | [AppVeyor](https://ci.appveyor.com/project/wibeasley/redcapr/history) | [Coveralls](https://coveralls.io/r/OuhscBbmc/REDCapR) |
-| :----- | :---------------------------: | :-----------------------------: | :-------: |
-| [Master](https://github.com/OuhscBbmc/REDCapR/tree/master) | [![Build Status](https://travis-ci.org/OuhscBbmc/REDCapR.svg?branch=master)](https://travis-ci.org/OuhscBbmc/REDCapR) | [![Build status](https://ci.appveyor.com/api/projects/status/0i41tn0n2jo4pd2k/branch/master?svg=true)](https://ci.appveyor.com/project/wibeasley/redcapr/branch/master) | [![Coverage Status](https://coveralls.io/repos/github/OuhscBbmc/REDCapR/badge.svg?branch=master)](https://coveralls.io/github/OuhscBbmc/REDCapR?branch=master) |
-| [Dev](https://github.com/OuhscBbmc/REDCapR/tree/dev) | [![Build Status](https://travis-ci.org/OuhscBbmc/REDCapR.svg?branch=dev)](https://travis-ci.org/OuhscBbmc/REDCapR) | [![Build status](https://ci.appveyor.com/api/projects/status/0i41tn0n2jo4pd2k/branch/dev?svg=true)](https://ci.appveyor.com/project/wibeasley/redcapr/branch/dev) | [![Coverage Status](https://coveralls.io/repos/github/OuhscBbmc/REDCapR/badge.svg?branch=dev)](https://coveralls.io/github/OuhscBbmc/REDCapR?branch=dev) |
-| | *Ubuntu LTS* | *Windows Server* | *Test Coverage* |
+| [GitHub](https://github.com/OuhscBbmc/REDCapR) | [Travis-CI](https://travis-ci.org/OuhscBbmc/REDCapR/builds) | [AppVeyor](https://ci.appveyor.com/project/wibeasley/redcapr/history) | [Coveralls](https://coveralls.io/r/OuhscBbmc/REDCapR) | [Codecov](https://codecov.io/gh/OuhscBbmc/REDCapR) |
+| :----- | :---------------------------: | :-----------------------------: | :-------: | :-------: |
+| [Master](https://github.com/OuhscBbmc/REDCapR/tree/master) | [![Build Status](https://travis-ci.org/OuhscBbmc/REDCapR.svg?branch=master)](https://travis-ci.org/OuhscBbmc/REDCapR) | [![Build status](https://ci.appveyor.com/api/projects/status/0i41tn0n2jo4pd2k/branch/master?svg=true)](https://ci.appveyor.com/project/wibeasley/redcapr/branch/master) | [![Coverage Status](https://coveralls.io/repos/github/OuhscBbmc/REDCapR/badge.svg?branch=master)](https://coveralls.io/github/OuhscBbmc/REDCapR?branch=master) | [![codecov](https://codecov.io/gh/OuhscBbmc/REDCapR/branch/master/graph/badge.svg)](https://codecov.io/gh/OuhscBbmc/REDCapR) |
+| [Dev](https://github.com/OuhscBbmc/REDCapR/tree/dev) | [![Build Status](https://travis-ci.org/OuhscBbmc/REDCapR.svg?branch=dev)](https://travis-ci.org/OuhscBbmc/REDCapR) | [![Build status](https://ci.appveyor.com/api/projects/status/0i41tn0n2jo4pd2k/branch/dev?svg=true)](https://ci.appveyor.com/project/wibeasley/redcapr/branch/dev) | [![Coverage Status](https://coveralls.io/repos/github/OuhscBbmc/REDCapR/badge.svg?branch=dev)](https://coveralls.io/github/OuhscBbmc/REDCapR?branch=dev) | [![codecov](https://codecov.io/gh/OuhscBbmc/REDCapR/branch/dev/graph/badge.svg)](https://codecov.io/gh/OuhscBbmc/REDCapR/branch/dev) |
+| | *Ubuntu LTS* | *Windows Server* | *Test Coverage* | *Test Coverage* |
 
 | Key | Value |
 | :--- | :----- |
 | [License](https://choosealicense.com/) | [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) |
 | [CRAN Version](https://cran.r-project.org/package=REDCapR) | [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/REDCapR)](https://cran.r-project.org/package=REDCapR) |
-| [CRAN Rate](http://cranlogs.r-pkg.org/) | ![CRANPace](http://cranlogs.r-pkg.org/badges/REDCapR) |
+| [CRAN Rate](http://cranlogs.r-pkg.org/) | ![CRAN Pace](http://cranlogs.r-pkg.org/badges/REDCapR) |
 | [Zenodo Archive](https://zenodo.org/search?ln=en&p=redcapr) | [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.61990.svg)](https://doi.org/10.5281/zenodo.61990) |
 | [Production Doc](https://www.rdocumentation.org/) | [![Rdoc](http://www.rdocumentation.org/badges/version/REDCapR)](http://www.rdocumentation.org/packages/REDCapR) |
-| [Development Doc](https://www.rdocumentation.org/) | [![Rdoc](https://img.shields.io/badge/pkgodwn-GitHub.io-orange.svg?longCache=true&style=style=for-the-badge)](https://ouhscbbmc.github.io/REDCapR/) |
+| [Development Doc](https://www.rdocumentation.org/) | [![Rdoc](https://img.shields.io/badge/pkgdown-GitHub.io-orange.svg?longCache=true&style=style=for-the-badge)](https://ouhscbbmc.github.io/REDCapR/) |

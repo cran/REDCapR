@@ -1,10 +1,6 @@
 library(testthat)
-context("Variables")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 153
-)
+credential  <- retrieve_credential_testing()
 
 test_that("Smoke Test", {
   testthat::skip_on_cran()
@@ -35,7 +31,6 @@ test_that("All Records -Default", {
     "collector"))), .Names = c("cols", "default"), class = "col_spec")
   )
 
-
   expected_outcome_message <- "23 variable metadata records were read from REDCap in \\d\\.\\d seconds\\.  The http status code was 200\\.(\\n)?"
 
   expect_message(
@@ -62,7 +57,10 @@ test_that("Bad URI", {
    # expected_outcome_message <- "(?s)The REDCapR variable retrieval was not successful\\..+?.+"
 
   expect_error(
-    returned_object <- redcap_variables(redcap_uri=bad_uri, token=credential$token)#,
+    returned_object <- redcap_variables(
+      redcap_uri  = bad_uri,
+      token       = credential$token
+      )#,
     # regexp = expected_outcome_message
   )
 
@@ -75,3 +73,22 @@ test_that("Bad URI", {
   # expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   # expect_false(returned_object$success)
 })
+test_that("bad token -Error", {
+  testthat::skip_on_cran()
+  expected_outcome_message <- "ERROR: You do not have permissions to use the API"
+
+  testthat::expect_message(
+    returned_object <-
+      redcap_variables(
+        redcap_uri  = credential$redcap_uri,
+        token       = "BAD00000000000000000000000000000"
+      ),
+    expected_outcome_message
+  )
+
+  testthat::expect_false(returned_object$success)
+  testthat::expect_equal(returned_object$status_code, 403L)
+  testthat::expect_equal(returned_object$raw_text, expected_outcome_message)
+})
+
+rm(credential)

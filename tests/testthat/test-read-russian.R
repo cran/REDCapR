@@ -1,15 +1,11 @@
 library(testthat)
-context("Russian Unencoded")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 268
-)
+credential  <- retrieve_credential_testing(268L)
 
 test_that("Russian Recruit", {
   testthat::skip_on_cran()
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token)
   )
 
   d <- returned_object$data
@@ -30,7 +26,7 @@ test_that("Russian Recruit", {
 # test_that("Russian Encoded", {
 #   testthat::skip_on_cran()
 #   expect_message(
-#     returned_object <- redcap_read_oneshot(redcap_uri=uri, token=token, verbose=T)
+#     returned_object <- redcap_read_oneshot(redcap_uri=uri, token=token)
 #   )
 #
 #   d <- returned_object$data
@@ -44,3 +40,5 @@ test_that("Russian Recruit", {
 #   iconv(d$recruitment_other, "latin1", "ASCII", sub = "byte")
 #   expect_equal(d$recruitment_other, expected)
 # })
+
+rm(credential)

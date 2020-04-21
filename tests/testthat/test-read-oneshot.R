@@ -1,15 +1,15 @@
 library(testthat)
-context("Read Oneshot")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 153
-)
+credential  <- retrieve_credential_testing()
 
 test_that("smoke test", {
   testthat::skip_on_cran()
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <-
+      redcap_read_oneshot(
+        redcap_uri    = credential$redcap_uri,
+        token         = credential$token
+      )
   )
 })
 test_that("default", {
@@ -79,7 +79,10 @@ test_that("default", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read_oneshot(
+      redcap_uri    = credential$redcap_uri,
+      token         = credential$token
+    )
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -90,7 +93,89 @@ test_that("default", {
   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
-  system.file("misc/example.credentials", package="REDCapR")
+
+  # expect_equal_to_reference(returned_object$data, file=system.file("test-data/project-simple/variations/default.rds", package="REDCapR"))
+  # expect_equal_to_reference(returned_object$data, file="./test-data/project-simple/variations/default.rds")
+})
+
+test_that("col_types", {
+  testthat::skip_on_cran()
+  col_types <- readr::cols(
+    record_id  = readr::col_integer(),
+    race___1   = readr::col_logical(),
+    race___2   = readr::col_logical(),
+    race___3   = readr::col_logical(),
+    race___4   = readr::col_logical(),
+    race___5   = readr::col_logical(),
+    race___6   = readr::col_logical()
+  )
+
+  expected_data_frame <- structure(list(record_id = 1:5, name_first = c("Nutmeg", "Tumtum",
+    "Marcus", "Trudy", "John Lee"), name_last = c("Nutmouse", "Nutmouse",
+    "Wood", "DAG", "Walker"), address = c("14 Rose Cottage St.\nKenning UK, 323232",
+    "14 Rose Cottage Blvd.\nKenning UK 34243", "243 Hill St.\nGuthrie OK 73402",
+    "342 Elm\nDuncanville TX, 75116", "Hotel Suite\nNew Orleans LA, 70115"
+    ), telephone = c("(405) 321-1111", "(405) 321-2222", "(405) 321-3333",
+    "(405) 321-4444", "(405) 321-5555"), email = c("nutty@mouse.com",
+    "tummy@mouse.comm", "mw@mwood.net", "peroxide@blonde.com", "left@hippocket.com"
+    ), dob = structure(c(12294, 12121, -13051, -6269, -5375), class = "Date"),
+    age = c(11, 11, 80, 61, 59), sex = c(0, 1, 1, 0, 1), demographics_complete = c(2,
+    2, 2, 2, 2), height = c(7, 6, 180, 165, 193.04), weight = c(1,
+    1, 80, 54, 104), bmi = c(204.1, 277.8, 24.7, 19.8, 27.9),
+    comments = c("Character in a book, with some guessing", "A mouse character from a good book",
+    "completely made up", "This record doesn't have a DAG assigned\n\nSo call up Trudy on the telephone\nSend her a letter in the mail",
+    "Had a hand for trouble and a eye for cash\n\nHe had a gold watch chain and a black mustache"
+    ), mugshot = c("[document]", "[document]", "[document]",
+    "[document]", "[document]"), health_complete = c(1, 0, 2,
+    2, 0), race___1 = c(FALSE, FALSE, FALSE, FALSE, TRUE), race___2 = c(FALSE,
+    FALSE, FALSE, TRUE, FALSE), race___3 = c(FALSE, TRUE, FALSE,
+    FALSE, FALSE), race___4 = c(FALSE, FALSE, TRUE, FALSE, FALSE
+    ), race___5 = c(TRUE, TRUE, TRUE, TRUE, FALSE), race___6 = c(FALSE,
+    FALSE, FALSE, FALSE, TRUE), ethnicity = c(1, 1, 0, 1, 2),
+    race_and_ethnicity_complete = c(2, 0, 2, 2, 2)), class = "data.frame", row.names = c(NA,
+    -5L), spec = structure(list(cols = list(record_id = structure(list(), class = c("collector_integer",
+    "collector")), name_first = structure(list(), class = c("collector_character",
+    "collector")), name_last = structure(list(), class = c("collector_character",
+    "collector")), address = structure(list(), class = c("collector_character",
+    "collector")), telephone = structure(list(), class = c("collector_character",
+    "collector")), email = structure(list(), class = c("collector_character",
+    "collector")), dob = structure(list(format = ""), class = c("collector_date",
+    "collector")), age = structure(list(), class = c("collector_double",
+    "collector")), sex = structure(list(), class = c("collector_double",
+    "collector")), demographics_complete = structure(list(), class = c("collector_double",
+    "collector")), height = structure(list(), class = c("collector_double",
+    "collector")), weight = structure(list(), class = c("collector_double",
+    "collector")), bmi = structure(list(), class = c("collector_double",
+    "collector")), comments = structure(list(), class = c("collector_character",
+    "collector")), mugshot = structure(list(), class = c("collector_character",
+    "collector")), health_complete = structure(list(), class = c("collector_double",
+    "collector")), race___1 = structure(list(), class = c("collector_logical",
+    "collector")), race___2 = structure(list(), class = c("collector_logical",
+    "collector")), race___3 = structure(list(), class = c("collector_logical",
+    "collector")), race___4 = structure(list(), class = c("collector_logical",
+    "collector")), race___5 = structure(list(), class = c("collector_logical",
+    "collector")), race___6 = structure(list(), class = c("collector_logical",
+    "collector")), ethnicity = structure(list(), class = c("collector_double",
+    "collector")), race_and_ethnicity_complete = structure(list(), class = c("collector_double",
+    "collector"))), default = structure(list(), class = c("collector_guess",
+    "collector")), skip = 1), class = "col_spec")
+  )
+
+  expected_outcome_message <- "5 records and 24 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
+
+  expect_message(
+    regexp           = expected_outcome_message,
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, col_types=col_types)
+  )
+
+  expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
+  expect_equal(returned_object$status_code, expected=200L)
+  expect_equivalent(returned_object$raw_text, expected="") # dput(returned_object$raw_text)
+  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
+  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
+  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
+  expect_true(returned_object$success)
 
   # expect_equal_to_reference(returned_object$data, file=system.file("test-data/project-simple/variations/default.rds", package="REDCapR"))
   # expect_equal_to_reference(returned_object$data, file="./test-data/project-simple/variations/default.rds")
@@ -311,7 +396,7 @@ test_that("raw", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="raw", verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="raw")
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -392,7 +477,7 @@ test_that("raw and DAG", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="raw", export_data_access_groups=TRUE, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="raw", export_data_access_groups=TRUE)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -480,7 +565,7 @@ test_that("label and DAG", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="label", export_data_access_groups=TRUE, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="label", export_data_access_groups=TRUE)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -565,7 +650,7 @@ test_that("label", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="label", export_data_access_groups=FALSE, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label="label", export_data_access_groups=FALSE)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -739,7 +824,7 @@ test_that("export_checkbox_label", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, export_checkbox_label=T, raw_or_label="label")
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, export_checkbox_label=TRUE, raw_or_label="label")
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -808,7 +893,7 @@ test_that("filter - numeric", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T, filter_logic=filter)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, filter_logic=filter)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -872,7 +957,7 @@ test_that("filter - character", {
   filter <- "[name_first] = 'John Lee'"
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T, filter_logic=filter)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, filter_logic=filter)
   )
 
   expect_equivalent(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object$data)
@@ -884,3 +969,21 @@ test_that("filter - character", {
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 })
+
+test_that("bad token -Error", {
+  testthat::skip_on_cran()
+  expected_outcome_message <- "The REDCapR read/export operation was not successful\\."
+
+  expect_message(
+    returned_object <-
+      redcap_read_oneshot(
+        redcap_uri    = credential$redcap_uri,
+        token         = "BAD00000000000000000000000000000"
+      ),
+    expected_outcome_message
+  )
+  testthat::expect_false(returned_object$success)
+  testthat::expect_equal(returned_object$status_code, 403L)
+  testthat::expect_equal(returned_object$raw_text, "ERROR: You do not have permissions to use the API")
+})
+rm(credential)

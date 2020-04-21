@@ -1,16 +1,11 @@
 library(testthat)
-context("Read Superwide")
 
-credential <- REDCapR::retrieve_credential_local(
-  path_credential = system.file("misc/example.credentials", package="REDCapR"),
-  project_id      = 753
-)
-
+credential  <- retrieve_credential_testing(753L)
 
 test_that("smoke test", {
   testthat::skip_on_cran()
   expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token)
   )
 })
 
@@ -23,7 +18,7 @@ test_that("correct dimensions -oneshot", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token)
   )
 
   expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
@@ -48,7 +43,7 @@ test_that("correct dimensions -batch", {
 
   expect_message(
     regexp           = expected_outcome_message,
-    returned_object <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, verbose=T)
+    returned_object <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token)
   )
 
   expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
@@ -62,3 +57,5 @@ test_that("correct dimensions -batch", {
   expect_true(  returned_object$filter_logic=="", "A filter was not specified.")
   expect_match( returned_object$outcome_messages, regexp=expected_outcome_message, perl=TRUE)
 })
+
+rm(credential)

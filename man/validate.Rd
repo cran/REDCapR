@@ -5,39 +5,72 @@
 \alias{validate_no_logical}
 \alias{validate_for_write}
 \alias{validate_field_names}
-\title{Inspect a \code{\link[base:data.frame]{base::data.frame()}} to anticipate problems before writing to a REDCap project}
+\alias{validate_field_names_collapsed}
+\title{Inspect a dataset to anticipate problems before
+writing to a REDCap project}
 \usage{
 validate_for_write( d )
 
 validate_no_logical( data_types, stop_on_error )
 
-validate_field_names( field_names, stop_on_error )
+validate_field_names( field_names, stop_on_error = FALSE )
+
+validate_field_names_collapsed( field_names_collapsed, stop_on_error = FALSE )
 }
 \arguments{
-\item{data_types}{The data types of the \code{\link[base:data.frame]{base::data.frame()}} corresponding to the REDCap project.}
+\item{data_types}{The data types of the \code{\link[base:data.frame]{base::data.frame()}} corresponding
+to the REDCap project.}
 
-\item{stop_on_error}{If \code{TRUE}, an error is thrown for violations.  Otherwise, a dataset summarizing the problems is returned.}
+\item{stop_on_error}{If \code{TRUE}, an error is thrown for violations.
+Otherwise, a dataset summarizing the problems is returned.}
 
-\item{d}{The \code{\link[base:data.frame]{base::data.frame()}} containing the dataset used to update the REDCap project.}
+\item{d}{The \code{\link[base:data.frame]{base::data.frame()}} containing the dataset used to update
+the REDCap project.}
 
-\item{field_names}{The names of the fields/variables in the REDCap project.}
+\item{field_names}{The names of the fields/variables in the REDCap project.
+Each field is an individual element in the character vector.}
+
+\item{field_names_collapsed}{The names of the fields/variables in the
+REDCap project.  All fields are combined in a single vector element,
+separated by commas.}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble::tibble()}}, where each potential violation is a row.  The two columns are:
+A \code{\link[tibble:tibble]{tibble::tibble()}}, where each potential violation is a row.
+The two columns are:
 \itemize{
-\item \code{field_name}: The name of the \code{\link[base:data.frame]{base::data.frame()}} that might cause problems during the upload.
-\item \code{field_index}: The position of the field.  (For example, a value of '1' indicates the first column, while a '3' indicates the third column.)
+\item \code{field_name}: The name of the \code{\link[base:data.frame]{base::data.frame()}} that might cause
+problems during the upload.
+\item \code{field_index}: The position of the field.  (For example, a value of
+'1' indicates the first column, while a '3' indicates the third column.)
 \item \code{concern}: A description of the problem potentially caused by the \code{field}.
 \item \code{suggestion}: A \emph{potential} solution to the concern.
 }
 }
 \description{
-This set of functions inspect a \code{\link[base:data.frame]{base::data.frame()}} to anticipate problems before writing with REDCap's API.
+This set of functions inspect a \code{\link[base:data.frame]{base::data.frame()}} to
+anticipate problems before writing with REDCap's API.
 }
 \details{
-All functions listed in the Usage section above inspect a specific aspect of the dataset.
-The \code{\link[=validate_for_write]{validate_for_write()}} function executes all
-these individual validation checks.  It allows the client to check everything with one call.
+All functions listed in the Usage section above inspect a specific aspect
+of the dataset.  The \code{\link[=validate_for_write]{validate_for_write()}} function executes all these
+individual validation checks.  It allows the client to check everything
+with one call.
+
+Currently it verifies that the dataset
+\itemize{
+\item does not contain
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/logical.html}{logical}
+values (because REDCap typically wants \code{0}/\code{1} values instead of
+\code{FALSE}/\code{TRUE}).
+\item starts with a lowercase letter, and subsequent optional characters are a
+sequence of (a) lowercase letters, (b) digits 0-9, and/or (c) underscores.
+(The exact regex is \verb{^[a-z][0-9a-z_]*$}.)
+}
+
+If you encounter additional types of problems when attempting to write to
+REDCap, please tell us by creating a
+\href{https://github.com/OuhscBbmc/REDCapR/issues}{new issue}, and we'll
+incorporate a new validation check into this function.
 }
 \examples{
 d <- data.frame(
@@ -48,10 +81,12 @@ d <- data.frame(
 REDCapR::validate_for_write(d = d)
 }
 \references{
-The official documentation can be found on the 'API Help Page' and 'API Examples' pages
-on the REDCap wiki (\emph{i.e.}, https://community.projectredcap.org/articles/456/api-documentation.html and
-https://community.projectredcap.org/articles/462/api-examples.html). If you do not have an account
-for the wiki, please ask your campus REDCap administrator to send you the static material.
+The official documentation can be found on the 'API Help Page'
+and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
+https://community.projectredcap.org/articles/456/api-documentation.html and
+https://community.projectredcap.org/articles/462/api-examples.html).
+If you do not have an account for the wiki, please ask your campus REDCap
+administrator to send you the static material.
 }
 \author{
 Will Beasley
