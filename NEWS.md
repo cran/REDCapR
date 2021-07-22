@@ -4,6 +4,34 @@ Upcoming Versions
 In the future:
 ...
 
+Version 1.0 (released 2021-07-21)
+==========================================================
+
+The package has been stable for years and should be reflected in the major version number.
+
+### Minor Enhancements
+
+* When writing records to the server, the functions `redcap_write()` and `redcap_write_oneshot()` have a new parameter that converts R's `logical`/boolean columns to integers.  This meshes well with T/F and Y/N items that are coded as 1/0 underneath. The default will be FALSE (ie, the integers are not converted by default), so it doesn't break existing code. (#305)
+* When writing records to the server, the functions `redcap_write()` and `redcap_write_oneshot()` can toggle the ability to overwrite with blank/NA cells (suggested by @auricap, #315)
+* The functions `redcap_read_oneshot()`, `redcap_read()`, & `redcap_read_oneshot_eav()` now support the parameters `datetime_range_begin` and `datetime_range_end`.  The are passed to the REDCap parameters `dateRangeBegin` and `dateRangeEnd`, which restricts records returned, based on their last modified date in the server.  (Thanks @pbchase, #321 & #323.)
+* Better documentation about the `export_survey_fields` parameter in the functions `redcap_read()` & `redcap_read_oneshot()`.  (Thanks @isaactpetersen, #333)
+* New function [`redcap_report()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_report.html) export records that populate a REDCap report. (#326.)
+* New vignette [Typical REDCap Workflow for a Data Analyst](https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html) developed to support a workshop for the 2021 [R/Medicine Conference](https://r-medicine.org/) (#332, with  @higgi13425, @kamclean, & Amanda Miller)
+* New function [`create_credential_local()`](https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html) starts a well-formed csv file that can contain tokens. (#340, after conversations with @higgi13425 & @kamclean.)
+
+### Stability Features
+
+* update for newer version of testthat -v3.0.0 (#312)
+* update for newer version of readr 2.0.0 (#343)
+* update for newer version of readr 1.4.0 (#313)
+* update for newer version of REDCap on test server (#310)
+* save expected datasets as files -instead of included in the actual test code (#308)
+
+### Corrections & Bug Fixes
+
+* Accepts more than one `config_option` element.  (Proposed by @BastienRance, #307)
+* Fixed calculation of `success` value returned by `redcap_read()` and `redcap_write()` when the parameter `continue_on_error` is true.  (Bug found by @llrs, #317)
+
 Version 0.11 (Released 2020-04-20)
 ==========================================================
 
@@ -21,7 +49,9 @@ Version 0.11 (Released 2020-04-20)
 
 * [`redcap_metadata_write()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_metadata_write.html) writes to the project's metadata. (#274, @felixetorres) 
 
-* [`redcap_survey_link_export_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_survey_link_export_oneshot.html) retrieves the URL to a specific record's suvey (*e.g.*, "https://bbmc.ouhsc.edu/redcap/surveys/?s=8KuzSLMHf6") (#293)
+* [`redcap_survey_link_export_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_survey_link_export_oneshot.html) retrieves the URL to a specific record's survey (*e.g.*, "https://bbmc.ouhsc.edu/redcap/surveys/?s=8KuzSLMHf6") (#293)
+
+* `convert_logical_to_integer` is a new parameter for [`redcap_write()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_write.html) and [`redcap_write_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_write_oneshot.html). If `TRUE`, all [base::logical] columns in `ds` are cast to an integer before uploading to REDCap.  Boolean values are typically represented as 0/1 in REDCap radio buttons.  Defaults to `FALSE` to maintain backwards compatibility. (#305)
 
 ### Stability Features
 
@@ -35,8 +65,9 @@ Version 0.11 (Released 2020-04-20)
 
 ### Corrections
 
-* 'checkmate' package is now imported, not suggested (Thanks @dtenenba, #255)
+* 'checkmate' package is now imported, not suggested (Thanks @dtenenba, #255).
 
+* Allow more than one `httr::config()` parameter to be passed (Thanks @BastienRance, #307).
 
 Version 0.10 (Released 2019-09-22)
 ==========================================================
@@ -99,7 +130,7 @@ Versions 0.9.7 (Released 2017-09-09)
 * Remove line breaks from token (Thanks @haozhu233 in issues #103 & #104)
 
 ### Minor Updates
-* When combining batches into a single data.frame, `data.table::rbindlist()` is used.  This should prevent errors with the first batch's data type (for a column) isn't compatible with a later batch.  For instance, this occurs when the first batch has only integers for `record_id`, but a subsequent batch has values like `aa-test-aa`.  The variable for the combined dataset should be a character. (Issue #128 & http://stackoverflow.com/questions/39377370/bind-rows-of-different-data-types; Thanks @arunsrinivasan)
+* When combining batches into a single data.frame, `data.table::rbindlist()` is used.  This should prevent errors with the first batch's data type (for a column) isn't compatible with a later batch.  For instance, this occurs when the first batch has only integers for `record_id`, but a subsequent batch has values like `aa-test-aa`.  The variable for the combined dataset should be a character. (Issue #128 & https://stackoverflow.com/questions/39377370/bind-rows-of-different-data-types; Thanks @arunsrinivasan)
 * Uses the `dplyr` package instead of `plyr`.  This shouldn't affect callers, because immediately before returning the data, `REDCapR::redcap_read()` coerces the `tibble::tibble` (which was formerly called `dplyr::tbl_df`) back to a vanilla `data.frame` with `as.data.frame()`.
 * A few more instances of validating input parameters to read functions. (Issue #8).
 
@@ -165,7 +196,7 @@ Version 0.4-28 (Released 2014-09-20)
 
 ### Updates
 * By default, the SSL certs come from the httr package.  However, REDCapR will continue to maintain a copy in case httr's version on CRAN gets out of date.
-* The tests are split into two collections: one that's run by the CRAN checks, and the other run manually.  [Thanks, Gabor Csardi](http://stackoverflow.com/questions/25595487/testthat-pattern-for-long-running-tests).  Any test with a dependency outside the package code (especially the REDCap test projects) is run manually so changes to the test databases won't affect the success of building the previous version on CRAN.
+* The tests are split into two collections: one that's run by the CRAN checks, and the other run manually.  [Thanks, Gabor Csardi](https://stackoverflow.com/questions/25595487/testthat-pattern-for-long-running-tests).  Any test with a dependency outside the package code (especially the REDCap test projects) is run manually so changes to the test databases won't affect the success of building the previous version on CRAN.
 * Corrected typo in `redcap_download_file_oneshot()` documentation, thanks to Andrew Peters (@ARPeters #45).
 
 
@@ -192,7 +223,7 @@ Version 0.2 (Released 2014-07-02)
 * The `redcap_project()` object reduces repeatedly passing parameters like the server URL, the user token, and the SSL cert location.
 
 ### Updates
-* New Mozilla SSL Certification Bundles released on cURL (released 2013-12-05; http://curl.haxx.se/ca/cacert.pem)
+* New Mozilla SSL Certification Bundles released on cURL (released 2013-12-05)
 * Renamed `redcap_read_batch()`  to `redcap_read()`. These changes reflect our suggestion that reads should typically be batched.
 * Renamed `redcap_read()` to `redcap_read_oneshot()`
 * Renamed `redcap_write()` to `redcap_write_oneshot()` (which is an internal function).

@@ -11,7 +11,7 @@ vignette: >
 #   - images/EmailVerified.png
 ---
 
-There are many links in the pipeline between your institution's [REDCap](http://www.project-redcap.org/) server and the API user.  When the end result is unsuccessful, this document should help narrow the location of the possible problem.  The first two sections will be relevant to almost any language interacting with the API.  The remaining sections are possibly relevant only to your language (*e.g.*, Python, R, PHP, SAS, bash), or your software library such as ([redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://ouhscbbmc.github.io/REDCapR) in R, [phpcap](https://github.com/iuredcap/phpcap) in PHP, and [PyCap](http://pycap.readthedocs.org/en/latest/) in Python).
+There are many links in the pipeline between your institution's [REDCap](https://www.project-redcap.org/) server and the API user.  When the end result is unsuccessful, this document should help narrow the location of the possible problem.  The first two sections will be relevant to almost any language interacting with the API.  The remaining sections are possibly relevant only to your language (*e.g.*, Python, R, PHP, SAS, bash), or your software library such as [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://ouhscbbmc.github.io/REDCapR/) in R, [phpcap](https://github.com/iuredcap/phpcap) in PHP, and [PyCap](https://pycap.readthedocs.io/en/latest/) in Python).
 
 Language Agnostic
 ==================================================================
@@ -57,10 +57,10 @@ This first group of checks primarily focuses on the server and the logins accoun
 
 If all these checks pass, proceed to the next section.  If not, start by consulting with your REDCap administrator.
 
-API
+Reading
 ------------------------------------------------------------------
 
-This section examines potential problems that occur after data leaves a working server, but before it is handled by their programming language (*e.g.*, Python and R).  [Postman](http://www.getpostman.com/) is a Chrome plugin recommended by [several](https://groups.google.com/forum/#!searchin/project-redcap/postman/project-redcap/eYK_SLzW2k4/0hmf8vWLpdAJ) [people](https://groups.google.com/forum/#!searchin/project-redcap/postman/project-redcap/RdLeRFGqzbg/WgdjTBLph1kJ) that makes troubleshooting much more efficient.
+This section examines potential problems that occur after data leaves a working server, but before it is handled by their programming language (*e.g.*, Python and R).  [Postman](https://www.postman.com/) is a Chrome plugin recommended by [several](https://groups.google.com/forum/#!searchin/project-redcap/postman/project-redcap/eYK_SLzW2k4/0hmf8vWLpdAJ) [people](https://groups.google.com/forum/#!searchin/project-redcap/postman/project-redcap/RdLeRFGqzbg/WgdjTBLph1kJ) that makes troubleshooting much more efficient.
 
 ```{r PostmanScreenshot, echo=FALSE, out.extra='style="fig.width=800px"'}
 knitr::include_graphics("images/PostmanScreenshot.png")
@@ -72,7 +72,7 @@ knitr::include_graphics("images/PostmanScreenshot.png")
 
     At the bottom of the playground page, the interface attempts to translate your specific API call to different languages, like Python and R.  These suggestions are usually correct, but  inspect it critically, as you would for any auto-generated script.
 
-1. **Is Postman installed and operating correctly?**  If it helps to start with a different REDCap server, you can use this dummy project containing fake data hosted by the [OUHSC BBMC](http://ouhsc.edu/bbmc/).  The url is `https://bbmc.ouhsc.edu/redcap/api/`.  There are three key-value pairs: (1) the 'token' is `9A81268476645C4E5F03428B8AC3AA7B`, (2) the 'content' is `record`, and (3) the 'format' should be `CSV`.  When checking your own server, the token value should change, but the content and format should not.  It should return five records in a CSV format.  The 'status' should be `200 OK`.  The result should look roughly like this.  Notice the line breaks were included in the text values themselves.
+1. **Is Postman installed and operating correctly?**  If it helps to start with a different REDCap server, you can use this dummy project containing fake data hosted by the [OUHSC BBMC](https://www.ouhsc.edu/bbmc/).  The url is `https://bbmc.ouhsc.edu/redcap/api/`.  There are three key-value pairs: (1) the 'token' is `9A81268476645C4E5F03428B8AC3AA7B`, (2) the 'content' is `record`, and (3) the 'format' should be `CSV`.  When checking your own server, the token value should change, but the content and format should not.  It should return five records in a CSV format.  The 'status' should be `200 OK`.  The result should look roughly like this.  Notice the line breaks were included in the text values themselves.
 
     ```csv
     record_id,name_first,name_last,address,telephone,email,dob,age,ethnicity,race,sex,height,weight,bmi,comments,demographics_complete
@@ -95,17 +95,55 @@ knitr::include_graphics("images/PostmanScreenshot.png")
 
 1. **Can an administrator query the API successfully with Postman with the admin token?** As an administrator, create an account for yourself, and verify that your token works on your server and project.
 
-1. **Can an administrator query the API successfully with Postman with the user's token?** Use [Postman](http://www.getpostman.com/) as before, but replace your token with the user's token.  Once the whole problem is solved, reissue new API tokens to both you and the user.
+1. **Can an administrator query the API successfully with Postman with the user's token?** Use [Postman](https://www.postman.com/) as before, but replace your token with the user's token.  Once the whole problem is solved, reissue new API tokens to both you and the user.
 
 1. **Can a user query the API successfully with Postman with the their own token?** The values you enter should be exactly the same as those entered in the previous step.  A failure here (assuming the previous step was successful) suggests a network or firewall issue.  If the server is behind your institution's firewall, verify the you are connecting successfully through the VPN.
 
-1. **Can a user query the API with cURL?**  [cURL](http://curl.haxx.se/docs/manpage.html) is a command line tool that's underneath a lot of libraries.  If it's installed correctly on your location machine, it can be executed from the terminal or command line.
+1. **Can a user query the API with cURL?**  [cURL](https://curl.se/) is a command line tool that's underneath a lot of libraries.  If it's installed correctly on your location machine, it can be executed from the terminal or command line.
 
     ```shell
     curl -X POST -H "Cache-Control: no-cache" -F "token=9A81268476645C4E5F03428B8AC3AA7B" -F "content=record" -F "format=csv" "https://bbmc.ouhsc.edu/redcap/api/"
     ```
 
-If all these checks pass, proceed to the next section.  If not, start by consulting with your REDCap administrator.
+If all these checks pass, proceed to the next section.  If not, start by consulting with your REDCap administrator.  If that fails, consider creating a GitHub issue for your package (*e.g.*, [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://ouhscbbmc.github.io/REDCapR/) in R, [phpcap](https://github.com/iuredcap/phpcap) in PHP, and [PyCap](https://pycap.readthedocs.io/en/latest/) in Python).
+
+Writing
+------------------------------------------------------------------
+
+Troubleshooting import operations is trickier than export operations for two major reasons.  First, the database potentially persists your *import* mistakes.  In contrast, repeatedly *exporting* data won't affect subsequent reads.  Considering cloning the REDCap project for testing until the problem is resolved.  Remember to create a new token (because they're not automatically created when projects are cloned, even when users are copied), and to modify your code's token to point to the new testing clone.
+
+The second reason why importing can be trickier is because the schema (*e.g.*, the names and data types) of your local dataset must match the project's schema.  Current recommendations include checking if you can write to simpler projects (perhaps with 1 ID field and 1 string field), and progressively moving to mimic the problematic project's schema and dataset.  Also, consider exporting the dataset to your machine, and look for differences.  Note that you cannot import calculated fields into REDCap.
+
+1. **Does the dataset pass [`REDCapR::validate_for_write()`](https://ouhscbbmc.github.io/REDCapR/reference/validate.html)?**  The `REDCapR::validate_for_write()` inspects a data.frame to anticipate problems before writing with REDCap's API.  The reference manual contains specifics of the validation checks.
+
+1. **Can you import a *small subset* of the project?**  For instance, just the `record_id` column.
+
+1. **Can you export the dataset and then import it *without any modifications***?  
+
+    For instance, using REDCapR: First, manually complete ~10 example record in the web browser, and then export/download the records with [`REDCapR::redcap_read_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html) to a [`data.frame`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html).  (If you have longitudinal or repeating instruments, make sure your examples cover those dimensions adequately) Second, can you successfully upload that same `data.frame` (without modification) with [`REDCapR::redcap_write_oneshot()`](https://ouhscbbmc.github.io/REDCapR/reference/redcap_write_oneshot.html)?  
+    
+    If so, that dataset will provide a template for how you structure the real dataset and assign values.  If not, that is a helpful piece of troubleshooting.  
+
+1. **Is the longitudinal and/or repeating structure correct?**  Three variables  are frequently misspecified: `redcap_event_name` (for longitudinal projects) and  `redcap_repeat_instrument` & `redcap_repeat_instance` (for repeating instruments).  The values for these variables are clearer to understand once you complete the step above and inspect the layout.  
+
+    For longitudinal projects: Example values for `redcap_event_name` are "admission_1_arm_1",  "admission_2_arm_1", and  "admission_3_arm_1".  (Notice the "_arm_1" suffix is used even if arms are not specified in your project.)
+
+    For projects with repeating instruments: Examples values for `redcap_repeat_instrument` are "lab", "vitals", and "medication"; these instrument names are specified in the REDCap Designer. Example values for `redcap_repeat_instance` are "1", "2", "3", "4", and "5"; this is a consecutive sequence within a participant's longitudinal event.
+    
+    If participant 101 has two lab results, one vitals record, and three medications, the dataset structure might be:
+    
+    | record_id | redcap_repeat_instrument | redcap_repeat_instance | lab_result | pulse | o2    | admin_date |
+    |:---------:|:------------------------:|:----------------------:|:----------:|:-----:|:-----:|:----------:|
+    | 101       | lab                      | 1                      | positive   |       |       |            |
+    | 101       | lab                      | 2                      | negative   |       |       |            |
+    | 101       | vitals                   | 1                      |            | 72    | 98    |            |
+    | 101       | medication               | 1                      |            |       |       | 2021-02-01 |
+    | 101       | medication               | 2                      |            |       |       | 2021-02-02 |
+    | 101       | medication               | 3                      |            |       |       | 2021-02-03 |
+
+1. **Can you import the *entire* project?**  Can all columns be written for all rows?
+
+If one of these checks fail, please start by consulting your REDCap administrator.
 
 Common Gotchas  {#gotchas-agnostic}
 ------------------------------------------------------------------
@@ -128,7 +166,7 @@ R
 Reading without a Package
 ------------------------------------------------------------------
 
-There are several ways to call REDCap's API from [R](https://cran.r-project.org/).  The packages [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) both rely on the [httr](https://cran.r-project.org/package=httr) package, which calls the [curl](https://cran.r-project.org/package=curl) package, which calls [cURL](http://curl.haxx.se/docs/manpage.html).
+There are several ways to call REDCap's API from [R](https://cran.r-project.org/).  The packages [redcapAPI](https://github.com/nutterb/redcapAPI) and [REDCapR](https://github.com/OuhscBbmc/REDCapR) both rely on the [httr](https://cran.r-project.org/package=httr) package, which calls the [curl](https://cran.r-project.org/package=curl) package, which calls [cURL](https://curl.se/).
 
 1. **Is httr installed on the user's local machine?** If so, running `library(httr)` should not produce any error messages if you're starting with a fresh session of R:
 
@@ -237,7 +275,7 @@ If all these checks pass, proceed to the next section.  If not, start by consult
 Reading with the REDCapR Package
 ------------------------------------------------------------------
 
-[REDCapR](https://ouhscbbmc.github.io/REDCapR/) wraps convenience functions around [httr](https://httr.r-lib.org/) to reduce the size and complexity of the user's code.  The package's basic functions are [demonstrated in a vignette](https://ouhscbbmc.github.io/REDCapR/articles/BasicREDCapROperations.html) and are documented in its [reference manual](https://ouhscbbmc.github.io/REDCapR/reference).
+[REDCapR](https://ouhscbbmc.github.io/REDCapR/) wraps convenience functions around [httr](https://httr.r-lib.org/) to reduce the size and complexity of the user's code.  The package's basic functions are [demonstrated in a vignette](https://ouhscbbmc.github.io/REDCapR/articles/BasicREDCapROperations.html) and are documented in its [reference manual](https://ouhscbbmc.github.io/REDCapR/reference/.
 
 If you're not using REDCapR, you can skip this section and proceed to "Exporting from REDCap to R, using redcapAPI" or "Importing into REDCap from R" below.
 
@@ -268,7 +306,7 @@ If you're not using REDCapR, you can skip this section and proceed to "Exporting
 
    If this fails, see "Problems in the project's metadata/dictionary" under [Common Gotchas](#gotchas-agnostic) above.  A problematic data dictionary may produce the error `Error in inherits(ds, "data.frame") : object 'ds' not found` when calling `REDCapR::redcap_metadata_read()`.
 
-1. **Can you export from an example project?** This is the same fake data hosted by the [OUHSC BBMC](http://ouhsc.edu/bbmc/) as in the previous section.
+1. **Can you export from an example project?** This is the same fake data hosted by the [OUHSC BBMC](https://www.ouhsc.edu/bbmc/) as in the previous section.
 
     ```r
     library(REDCapR) # Load the package into the current R session.
@@ -363,7 +401,7 @@ If you're not using redcapAPI, you can skip this section and proceed to 'Importi
     Developmental versions may be available on GitHub.
 
     ```r
-    install.packages("remotes", repos = "http://cran.rstudio.com")
+    install.packages("remotes", repos = "https://cran.rstudio.com")
     remotes::install_github(repo = "nutterb/redcapAPI")
     ```
 
@@ -385,7 +423,7 @@ If you're not using redcapAPI, you can skip this section and proceed to 'Importi
 
    If this fails, see "Problems in the project's metadata/dictionary." under [Gotchas](#gotchas-agnostic) above
 
-1. **Can you export from an example project?** This is the same fake data hosted by the [OUHSC BBMC](http://ouhsc.edu/bbmc/) as in the previous section.
+1. **Can you export from an example project?** This is the same fake data hosted by the [OUHSC BBMC](https://www.ouhsc.edu/bbmc/) as in the previous section.
 
     ```r
     library(redcapAPI) # Load the package into the current R session.
@@ -443,21 +481,6 @@ If you're not using redcapAPI, you can skip this section and proceed to 'Importi
 
 If one of these checks fail, please start by consulting your REDCap administrator.
 
-Writing
-------------------------------------------------------------------
-
-Troubleshooting import operations is trickier than export operations for two major reasons.  First, the database potentially persists your *import* mistakes.  In contrast, repeatedly *exporting* data won't affect subsequent reads.  Considering cloning the REDCap project for testing until the problem is resolved.  Remember to create a new token (because they're not automatically created when projects are cloned, even when users are copied), and to modify your code's token to point to the new testing clone.
-
-The second reason why importing can be trickier is because the schema (*e.g.*, the names and data types) of your local dataset must match the project's schema.  Current recommendations include checking if you can write to simpler projects (perhaps with 1 ID field and 1 string field), and progressively moving to mimic the problematic project's schema and dataset.  Also, consider exporting the dataset to your machine, and look for differences.  Note that you cannot import calculated fields into REDCap.
-
-1. **Does the dataset pass [`REDCapR::validate_for_write()`](https://ouhscbbmc.github.io/REDCapR/reference/validate.html)?**  The `REDCapR::validate_for_write()` inspects a data.frame to anticipate problems before writing with REDCap's API.  The reference manual contains specifics of the validation checks.
-
-1. **Can you import the *entire* project?**
-
-1. **Can you import a *subset* of the project?**
-
-If one of these checks fail, please start by consulting your REDCap administrator.
-
 General Information
 ==================================================================
 
@@ -471,18 +494,18 @@ Troubleshooting Strategies
 Resources
 ------------------------------------------------------------------
 
-* REDCap is used in many environments, and it's not surprising that a lot of libraries have been developed to cater to different scenarios and languages.   An active list is maintained at [REDCap-Tools](http://redcap-tools.github.io/projects/).  In an entry needs to be added, please notify us; instructions are found at the bottom of the page.
+* REDCap is used in many environments, and it's not surprising that a lot of libraries have been developed to cater to different scenarios and languages.   An active list is maintained at [REDCap-Tools](https://redcap-tools.github.io/projects/).  In an entry needs to be added, please notify us; instructions are found at the bottom of the page.
 
 * The basic API documentation is available on your REDCap server, typically at
 
     ```
-    http://<*your server name*>/redcap/api/help
+    https://<*your server name*>/redcap/api/help
     ```
 
 * If you have access to the REDCap wiki, some newer examples might exist at <https://community.projectredcap.org/articles/462/api-examples.html>.  The official documentation can be found on the `API Help Page` and `API Examples' pages on the REDCap wiki (*i.e.*, <https://community.projectredcap.org/articles/456/api-documentation.html> and <https://community.projectredcap.org/articles/462/api-examples.html>). If you do not have an account for the wiki, please ask your campus REDCap administrator to send you the static material.
 * Scott Burns, the primary developer of [PyCap](https://github.com/redcap-tools/PyCap) has a good intro at http://sburns.org/2013/07/22/intro-to-redcap-api.html
 * Benjamin Nutter, the primary developer of [redcapAPI](https://github.com/nutterb/redcapAPI/wiki) has a good wiki at https://github.com/nutterb/redcapAPI/wiki
-* In addition to this troubleshooting document, REDCapR has vignettes that covers its  [basic](https://ouhscbbmc.github.io/REDCapR/articles/BasicREDCapROperations.html) and [advanced](https://ouhscbbmc.github.io/REDCapR/articles/advanced-redcapr-operations.html) operations.
+* In addition to this troubleshooting document, REDCapR has vignettes that covers its [basic](https://ouhscbbmc.github.io/REDCapR/articles/BasicREDCapROperations.html) and [advanced](https://ouhscbbmc.github.io/REDCapR/articles/advanced-redcapr-operations.html) operations.
 
 Document Info
 ------------------------------------------------------------------

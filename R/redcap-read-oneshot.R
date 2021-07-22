@@ -35,7 +35,9 @@
 # placeholder: returnFormat
 #' @param export_survey_fields A boolean that specifies whether to export the
 #' survey identifier field (e.g., 'redcap_survey_identifier') or survey
-#' timestamp fields (e.g., instrument+'_timestamp') .
+#' timestamp fields (e.g., instrument+'_timestamp').
+#' The timestamp outputs reflect the survey's *completion* time
+#' (according to the time and timezone of the REDCap server.)
 #' @param export_data_access_groups A boolean value that specifies whether or
 #' not to export the `redcap_data_access_group` field when data access groups
 #' are utilized in the project. Default is `FALSE`. See the details below.
@@ -43,6 +45,16 @@
 #' filtering the data to be returned by this API method, in which the API will
 #' only return the records (or record-events, if a longitudinal project) where
 #' the logic evaluates as TRUE.   An blank/empty string returns all records.
+#' @param datetime_range_begin To return only records that have been created or
+#' modified *after* a given datetime, provide a
+#' [POSIXct](https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+#' value.
+#' If not specified, REDCap will assume no begin time.
+#' @param datetime_range_end To return only records that have been created or
+#' modified *before* a given datetime, provide a
+#' [POSIXct](https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+#' value.
+#' If not specified, REDCap will assume no end time.
 #' @param col_types A [readr::cols()] object passed internally to
 #' [readr::read_csv()].  Optional.
 #' @param guess_type A boolean value indicating if all columns should be
@@ -62,7 +74,7 @@
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
-#' [http status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+#' [http status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 #' of the operation.
 #' * `outcome_message`: A human readable string indicating the operation's
 #' outcome.
@@ -81,11 +93,11 @@
 #' viewable by executing [httr::httr_options()].  The `httr` package and
 #' documentation is available at https://cran.r-project.org/package=httr.
 #'
-#' If you do not pass in this export_data_access_groups value, it will default
-#' to `FALSE`. The following is from the API help page for version 5.2.3:
-#' This flag is only viable if the user whose token is being used to make the
+#' If you do not pass in this `export_data_access_groups` value, it will default
+#' to `FALSE`. The following is from the API help page for version 10.5.1:
+#' *This flag is only viable if the user whose token is being used to make the
 #' API request is *not* in a data access group. If the user is in a group,
-#' then this flag will revert to its default value.
+#' then this flag will revert to its default value*.
 #'
 #' @author Will Beasley
 #'
@@ -159,6 +171,8 @@ redcap_read_oneshot <- function(
   export_survey_fields          = FALSE,
   export_data_access_groups     = FALSE,
   filter_logic                  = "",
+  datetime_range_begin          = as.POSIXct(NA),
+  datetime_range_end            = as.POSIXct(NA),
 
   col_types                     = NULL,
   guess_type                    = TRUE,
@@ -186,11 +200,13 @@ redcap_read_oneshot <- function(
   checkmate::assert_logical(  export_survey_fields      , any.missing=FALSE, len=1)
   checkmate::assert_logical(  export_data_access_groups , any.missing=FALSE, len=1)
   checkmate::assert_character(filter_logic              , any.missing=FALSE, len=1, pattern="^.{0,}$")
-  #
+  checkmate::assert_posixct(  datetime_range_begin      , any.missing=TRUE , len=1, null.ok=TRUE)
+  checkmate::assert_posixct(  datetime_range_end        , any.missing=TRUE , len=1, null.ok=TRUE)
+
   checkmate::assert_logical(  guess_type                , any.missing=FALSE, len=1)
   checkmate::assert_integerish(guess_max                , any.missing=FALSE, len=1, lower=1)
   checkmate::assert_logical(  verbose                   , any.missing=FALSE, len=1, null.ok=TRUE)
-  checkmate::assert_list(     config_options            , any.missing=TRUE , len=1, null.ok=TRUE)
+  checkmate::assert_list(     config_options            , any.missing=TRUE ,        null.ok=TRUE)
 
   validate_field_names(fields, stop_on_error = TRUE)
 
@@ -200,6 +216,8 @@ redcap_read_oneshot <- function(
   forms_collapsed     <- collapse_vector(forms    , forms_collapsed)
   events_collapsed    <- collapse_vector(events   , events_collapsed)
   filter_logic        <- filter_logic_prepare(filter_logic)
+  datetime_range_begin<- dplyr::coalesce(strftime(datetime_range_begin, "%Y-%m-%d %H:%M:%S"), "")
+  datetime_range_end  <- dplyr::coalesce(strftime(datetime_range_end  , "%Y-%m-%d %H:%M:%S"), "")
   verbose             <- verbose_prepare(verbose)
 
   if (1L <= nchar(fields_collapsed) )
@@ -216,7 +234,9 @@ redcap_read_oneshot <- function(
     # placeholder: returnFormat
     exportSurveyFields      = tolower(as.character(export_survey_fields)),
     exportDataAccessGroups  = tolower(as.character(export_data_access_groups)),
-    filterLogic             = filter_logic
+    filterLogic             = filter_logic,
+    dateRangeBegin          = datetime_range_begin,
+    dateRangeEnd            = datetime_range_end
     # record, fields, forms & events are specified below
   )
 
@@ -237,8 +257,12 @@ redcap_read_oneshot <- function(
     try(
       # Convert the raw text to a dataset.
       ds <-
-        kernel$raw_text %>%
-        readr::read_csv(col_types = col_types, guess_max = guess_max) %>%
+        readr::read_csv(
+          file            = I(kernel$raw_text),
+          col_types       = col_types,
+          guess_max       = guess_max,
+          show_col_types  = FALSE
+        ) %>%
         as.data.frame(),
 
       # Don't print the warning in the try block.  Print it below,
@@ -316,6 +340,8 @@ redcap_read_oneshot <- function(
     forms_collapsed    = forms_collapsed,
     events_collapsed   = events_collapsed,
     filter_logic       = filter_logic,
+    datetime_range_begin   = datetime_range_begin,
+    datetime_range_end     = datetime_range_end,
     elapsed_seconds    = kernel$elapsed_seconds,
     raw_text           = kernel$raw_text
   )

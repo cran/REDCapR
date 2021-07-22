@@ -29,7 +29,7 @@
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_codes`: A collection of
-#' [http status codes](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes),
+#' [http status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes),
 #' separated by semicolons.  There is one code for each batch attempted.
 #' * `outcome_messages`: A collection of human readable strings indicating the
 #' operations' semicolons.  There is one code for each batch attempted.  In an
@@ -114,8 +114,9 @@ redcap_metadata_read <- function(
       # Convert the raw text to a dataset.
       ds <-
         readr::read_csv(
-          kernel$raw_text,
-          col_types = col_types
+          file            = I(kernel$raw_text),
+          col_types       = col_types,
+          show_col_types  = FALSE
         ),
       # Don't print the warning in the try block.  Print it below,
       #   where it's under the control of the caller.

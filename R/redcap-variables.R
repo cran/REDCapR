@@ -20,7 +20,7 @@
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
-#' [http status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+#' [http status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 #' of the operation.
 #' * `outcome_message`: A human readable string indicating the operation's
 #' outcome.
@@ -80,7 +80,11 @@ redcap_variables <- function(
   if (kernel$success) {
     try(
       {
-        ds <- readr::read_csv(file = kernel$raw_text)
+        ds <-
+          readr::read_csv(
+            file            = I(kernel$raw_text),
+            show_col_types  = FALSE
+          )
       }, #Convert the raw text to a dataset.
       silent = TRUE
       # Don't print the warning in the try block.  Print it below, where

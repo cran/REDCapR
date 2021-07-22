@@ -21,6 +21,8 @@ redcap_read_oneshot(
   export_survey_fields = FALSE,
   export_data_access_groups = FALSE,
   filter_logic = "",
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   col_types = NULL,
   guess_type = TRUE,
   guess_max = 1000L,
@@ -74,7 +76,9 @@ displayed to the users.  Otherwise, the values will be 0/1.}
 
 \item{export_survey_fields}{A boolean that specifies whether to export the
 survey identifier field (e.g., 'redcap_survey_identifier') or survey
-timestamp fields (e.g., instrument+'_timestamp') .}
+timestamp fields (e.g., instrument+'_timestamp').
+The timestamp outputs reflect the survey's \emph{completion} time
+(according to the time and timezone of the REDCap server.)}
 
 \item{export_data_access_groups}{A boolean value that specifies whether or
 not to export the \code{redcap_data_access_group} field when data access groups
@@ -85,14 +89,26 @@ filtering the data to be returned by this API method, in which the API will
 only return the records (or record-events, if a longitudinal project) where
 the logic evaluates as TRUE.   An blank/empty string returns all records.}
 
+\item{datetime_range_begin}{To return only records that have been created or
+modified \emph{after} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no begin time.}
+
+\item{datetime_range_end}{To return only records that have been created or
+modified \emph{before} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no end time.}
+
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
-\code{\link[readr:read_csv]{readr::read_csv()}}.  Optional.}
+\code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
 
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If false, \code{\link[readr:read_csv]{readr::read_csv()}} guesses the intended
+returned as character.  If false, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
 data type for each column.  Ignored if \code{col_types} is not null.}
 
-\item{guess_max}{A positive integer passed to \code{\link[readr:read_csv]{readr::read_csv()}} that
+\item{guess_max}{A positive integer passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
 specifies the maximum number of records to use for guessing column types.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
@@ -110,7 +126,7 @@ Currently, a list is returned with the following elements:
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
-\href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
+\href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
 of the operation.
 \item \code{outcome_message}: A human readable string indicating the operation's
 outcome.
@@ -133,11 +149,11 @@ The full list of configuration options accepted by the \code{httr} package is
 viewable by executing \code{\link[httr:httr_options]{httr::httr_options()}}.  The \code{httr} package and
 documentation is available at https://cran.r-project.org/package=httr.
 
-If you do not pass in this export_data_access_groups value, it will default
-to \code{FALSE}. The following is from the API help page for version 5.2.3:
-This flag is only viable if the user whose token is being used to make the
+If you do not pass in this \code{export_data_access_groups} value, it will default
+to \code{FALSE}. The following is from the API help page for version 10.5.1:
+\emph{This flag is only viable if the user whose token is being used to make the
 API request is \emph{not} in a data access group. If the user is in a group,
-then this flag will revert to its default value.
+then this flag will revert to its default value}.
 }
 \examples{
 \dontrun{

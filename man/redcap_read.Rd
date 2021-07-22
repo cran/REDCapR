@@ -25,6 +25,8 @@ redcap_read(
   export_survey_fields = FALSE,
   export_data_access_groups = FALSE,
   filter_logic = "",
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   col_types = NULL,
   guess_type = TRUE,
   guess_max = NULL,
@@ -89,7 +91,9 @@ displayed to the users.  Otherwise, the values will be 0/1.}
 
 \item{export_survey_fields}{A boolean that specifies whether to export the
 survey identifier field (e.g., 'redcap_survey_identifier') or survey
-timestamp fields (e.g., instrument+'_timestamp') .}
+timestamp fields (e.g., instrument+'_timestamp').
+The timestamp outputs reflect the survey's \emph{completion} time
+(according to the time and timezone of the REDCap server.)}
 
 \item{export_data_access_groups}{A boolean value that specifies whether or
 not to export the \code{redcap_data_access_group} field when data access groups
@@ -100,11 +104,23 @@ filtering the data to be returned by this API method, in which the API
 will only return the records (or record-events, if a longitudinal project)
 where the logic evaluates as TRUE.   An blank/empty string returns all records.}
 
+\item{datetime_range_begin}{To return only records that have been created or
+modified \emph{after} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no begin time.}
+
+\item{datetime_range_end}{To return only records that have been created or
+modified \emph{before} a given datetime, provide a
+\href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html}{POSIXct}
+value.
+If not specified, REDCap will assume no end time.}
+
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
-\code{\link[readr:read_csv]{readr::read_csv()}}.  Optional.}
+\code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
 
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If true, \code{\link[readr:read_csv]{readr::read_csv()}} guesses the intended
+returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
 data type for each column.}
 
 \item{guess_max}{Deprecated.}
@@ -128,7 +144,7 @@ Currently, a list is returned with the following elements:
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_codes}: A collection of
-\href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status codes},
+\href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status codes},
 separated by semicolons.  There is one code for each batch attempted.
 \item \code{outcome_messages}: A collection of human readable strings indicating the
 operations' semicolons.  There is one code for each batch attempted.  In an
@@ -150,7 +166,7 @@ be more appropriate than \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()
 datasets that could tie up the server.
 }
 \details{
-Specifically, it internally uses multiple calls to \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
+\code{\link[=redcap_read]{redcap_read()}} internally uses multiple calls to \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
 to select and return data.  Initially, only the primary key is queried
 through the REDCap API.  The long list is then subsetted into batches,
 whose sizes are determined by the \code{batch_size} parameter.  REDCap is then
@@ -165,7 +181,7 @@ the webserver when exporting/importing a large dataset.
 A second benefit is less RAM is required on the webserver.  Because
 each batch is smaller than the entire dataset, the webserver
 tackles more manageably sized objects in memory.  Consider batching
-if you encounter the error\preformatted{ERROR: REDCap ran out of server memory. The request cannot be processed.
+if you encounter the error:\preformatted{ERROR: REDCap ran out of server memory. The request cannot be processed.
 Please try importing/exporting a smaller amount of data.
 }
 

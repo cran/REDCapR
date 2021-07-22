@@ -8,6 +8,17 @@
 #' project.  Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
+#' @param overwrite_with_blanks A boolean value indicating if
+#' blank/`NA` values in the R [base::data.frame]
+#' will overwrite data on the server.
+#' This is the default behavior for REDCapR,
+#' which essentially deletes the cell's value
+#' If `FALSE`, blank/`NA` values in the [base::data.frame]
+#' will be ignored.  Optional.
+#' @param convert_logical_to_integer If `TRUE`, all [base::logical] columns
+#' in `ds` are cast to an integer before uploading to REDCap.
+#' Boolean values are typically represented as 0/1 in REDCap radio buttons.
+#' Optional.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
@@ -19,7 +30,7 @@
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
-#' [http status code](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+#' [http status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 #' of the operation.
 #' * `outcome_message`: A human readable string indicating the operation's
 #' outcome.
@@ -80,18 +91,26 @@ redcap_write_oneshot <- function(
   ds,
   redcap_uri,
   token,
+  overwrite_with_blanks         = TRUE,
+  convert_logical_to_integer    = FALSE,
   verbose         = TRUE,
   config_options  = NULL
 ) {
 
-  # TODO: automatically convert boolean/logical class to integer/bit class
-  csv_elements <- NULL #This prevents the R CHECK NOTE: 'No visible binding for global variable Note in R CMD check';  Also see  if( getRversion() >= "2.15.1" )    utils::globalVariables(names=c("csv_elements")) #http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check; http://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+  csv_elements <- NULL #This prevents the R CHECK NOTE: 'No visible binding for global variable Note in R CMD check';  Also see  if( getRversion() >= "2.15.1" )    utils::globalVariables(names=c("csv_elements")) #https://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check; https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
 
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token     , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
   token   <- sanitize_token(token)
   verbose <- verbose_prepare(verbose)
+  overwrite_with_blanks <- dplyr::if_else(overwrite_with_blanks, "overwrite", "normal")
+
+  if (convert_logical_to_integer) {
+    ds <-
+      ds %>%
+      dplyr::mutate_if(is.logical, as.integer)
+  }
 
   con     <-  base::textConnection(
     object  = "csv_elements",
@@ -116,7 +135,7 @@ redcap_write_oneshot <- function(
     #  *overwrite* - blank/empty values are valid and will overwrite data
 
     data                = csv,
-    overwriteBehavior   = "overwrite",
+    overwriteBehavior   = overwrite_with_blanks,
     returnContent       = "ids",
     returnFormat        = "csv"
   )

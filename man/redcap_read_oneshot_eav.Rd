@@ -19,6 +19,8 @@ redcap_read_oneshot_eav(
   raw_or_label_headers = "raw",
   export_data_access_groups = FALSE,
   filter_logic = "",
+  datetime_range_begin = as.POSIXct(NA),
+  datetime_range_end = as.POSIXct(NA),
   verbose = TRUE,
   config_options = NULL
 )
@@ -72,6 +74,20 @@ will only return the records (or record-events, if a longitudinal project)
 where the logic evaluates as TRUE.   An blank/empty string returns all
 records.}
 
+\item{datetime_range_begin}{To return only records that have been created or
+modified \emph{after} a given datetime, provide a
+\link{POSIXct}
+(https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+value.
+If not specified, REDCap will assume no begin time.}
+
+\item{datetime_range_end}{To return only records that have been created or
+modified \emph{before} a given datetime, provide a
+\link{POSIXct}
+(https://stat.ethz.ch/R-manual/R-devel/library/base/html/as.POSIXlt.html)
+value.
+If not specified, REDCap will assume no end time.}
+
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
@@ -87,7 +103,7 @@ Currently, a list is returned with the following elements:
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
-\href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
+\href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
 of the operation.
 \item \code{outcome_message}: A human readable string indicating the operation's
 outcome.

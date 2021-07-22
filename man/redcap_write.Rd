@@ -11,6 +11,8 @@ redcap_write(
   continue_on_error = FALSE,
   redcap_uri,
   token,
+  overwrite_with_blanks = TRUE,
+  convert_logical_to_integer = FALSE,
   verbose = TRUE,
   config_options = NULL
 )
@@ -35,6 +37,19 @@ project.  Required.}
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
 
+\item{overwrite_with_blanks}{A boolean value indicating if
+blank/\code{NA} values in the R \link[base:data.frame]{base::data.frame}
+will overwrite data on the server.
+This is the default behavior for REDCapR,
+which essentially deletes the cell's value
+If \code{FALSE}, blank/\code{NA} values in the \link[base:data.frame]{base::data.frame}
+will be ignored.  Optional.}
+
+\item{convert_logical_to_integer}{If \code{TRUE}, all \link[base:logical]{base::logical} columns
+in \code{ds} are cast to an integer before uploading to REDCap.
+Boolean values are typically represented as 0/1 in REDCap radio buttons.
+Optional.}
+
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
@@ -49,7 +64,7 @@ Currently, a list is returned with the following elements:
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
-\href{http://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
+\href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status code}
 of the operation.
 \item \code{outcome_message}: A human readable string indicating the operation's
 outcome.
@@ -93,7 +108,7 @@ ds1$telephone <- paste0("(405) 321-000", seq_len(nrow(ds1)))
 
 ds1 <- ds1[1:3, ]
 ds1$age       <- NULL; ds1$bmi <- NULL #Drop the calculated fields before writing.
-result_write  <- REDCapR::redcap_write(ds=ds1, redcap_uri=uri, token=token)
+result_write  <- REDCapR::redcap_write(ds1, redcap_uri=uri, token=token)
 
 # Read the dataset for the second time.
 result_read2  <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)
@@ -104,7 +119,7 @@ ds2$telephone
 ds1$telephone <- paste0("(405) 321-000", seq_len(nrow(ds1)))
 
 # This next line will throw an error.
-result_write <- REDCapR::redcap_write(ds=ds1, redcap_uri=uri, token=token)
+result_write <- REDCapR::redcap_write(ds1, redcap_uri=uri, token=token)
 result_write$raw_text
 }
 }
