@@ -30,6 +30,8 @@ redcap_read(
   col_types = NULL,
   guess_type = TRUE,
   guess_max = NULL,
+  http_response_encoding = "UTF-8",
+  locale = readr::default_locale(),
   verbose = TRUE,
   config_options = NULL,
   id_position = 1L
@@ -125,6 +127,13 @@ data type for each column.}
 
 \item{guess_max}{Deprecated.}
 
+\item{http_response_encoding}{The encoding value passed to
+\code{\link[httr:content]{httr::content()}}.  Defaults to 'UTF-8'.}
+
+\item{locale}{a \code{\link[readr:locale]{readr::locale()}} object to specify preferences like
+number, date, and time formats.  This object is passed to
+\code{\link[readr:read_delim]{readr::read_csv()}}.  Defaults to \code{\link[readr:locale]{readr::default_locale()}}.}
+
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
@@ -181,9 +190,11 @@ the webserver when exporting/importing a large dataset.
 A second benefit is less RAM is required on the webserver.  Because
 each batch is smaller than the entire dataset, the webserver
 tackles more manageably sized objects in memory.  Consider batching
-if you encounter the error:\preformatted{ERROR: REDCap ran out of server memory. The request cannot be processed.
+if you encounter the error:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ERROR: REDCap ran out of server memory. The request cannot be processed.
 Please try importing/exporting a smaller amount of data.
-}
+}\if{html}{\out{</div>}}
 
 For \code{\link[=redcap_read]{redcap_read()}} to function properly, the user must have Export
 permissions for the 'Full Data Set'.  Users with only 'De-Identified'

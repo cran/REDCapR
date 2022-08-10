@@ -11,7 +11,7 @@ opts_chunk$set(
 )
 
 # knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
-knit_print.data.frame = function(x, ...) {
+knit_print.data.frame <- function(x, ...) {
   # See https://cran.r-project.org/package=knitr/vignettes/knit_print.html
 
   x %>%
@@ -36,7 +36,7 @@ token_simple          <- "9A81268476645C4E5F03428B8AC3AA7B"
 token_longitudinal    <- "0434F0E9CF53ED0587847AB6E51DE762"
 
 ## ----retrieve-longitudinal, results='hold'------------------------------------
-library(magrittr);
+library(magrittr)
 suppressPackageStartupMessages(requireNamespace("dplyr"))
 suppressPackageStartupMessages(requireNamespace("tidyr"))
 events_to_retain  <- c("dose_1_arm_1", "visit_1_arm_1", "dose_2_arm_1", "visit_2_arm_1")

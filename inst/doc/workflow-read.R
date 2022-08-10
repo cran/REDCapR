@@ -8,6 +8,8 @@ knitr::opts_chunk$set(
 ## ----pre-req------------------------------------------------------------------
 requireNamespace("REDCapR")
 
+# If this fails, run `install.packages("REDCapR")` or `remotes::install_github(repo="OuhscBbmc/REDCapR")`
+
 ## ----retrieve-credential------------------------------------------------------
 path_credential <- system.file("misc/example.credentials", package = "REDCapR")
 credential  <- REDCapR::retrieve_credential_local(
@@ -30,6 +32,8 @@ ds_1
 hist(ds_1$weight)
 
 summary(ds_1)
+
+summary(lm(age ~ 1 + sex + bmi, data = ds_1))
 
 ## ----choose-records-----------------------------------------------------------
 # Return only records with IDs of 1 and 4

@@ -15,7 +15,19 @@
 
 <title>Typical REDCap Workflow for a Data Analyst</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -25,6 +37,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -126,7 +139,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -138,58 +331,127 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<h1 class="title toc-ignore">Typical REDCap Workflow for a Data Analyst</h1>
-<h4 class="author">Will Beasley, Geneva Marshall, &amp; Thomas Wilson, <a href="https://www.ouhsc.edu/bbmc/team/">Biomedical &amp; Behavior Methodology Core</a>, OUHSC Pediatrics</h4>
+<h1 class="title toc-ignore">Typical REDCap Workflow for a Data
+Analyst</h1>
+<h4 class="author">Will Beasley, Geneva Marshall, &amp; Thomas Wilson,
+<a href="https://www.ouhsc.edu/bbmc/team/">Biomedical &amp; Behavior
+Methodology Core</a>, OUHSC Pediatrics</h4>
 
 
 
+<p>The REDCap API facilitates repetitive tasks. If you’re sure you’ll
+download and analyze a project only once, then it may make sense to
+avoid the API and instead download a CSV through the browser.</p>
+<p>But that single-shot scenario almost never happens in my life:</p>
+<ol style="list-style-type: decimal">
+<li>the patient dataset is updated with relevant &amp; fresh information
+daily, or</li>
+<li>you run it on a different computer a few months later, or <em>and
+this is the heart of reproducibility:</em></li>
+<li>you want someone else to be able to unambiguously &amp; effortlessly
+produce the same analysis.</li>
+</ol>
+<p>Instead of telling your students or colleagues “first go to REDCap,
+then go to project 55, then click”Data Exports”, then click “Export
+Data”, then download these files, then move the files to this
+subdirectory, and finally convert them to this format before you run
+these models” …say it with a few lines of R code.</p>
+<p>For people running your code on their machines …the API is so
+integrated and responsive that they may not even realize their computer
+is connecting to the outside world. If they’re not looking closely, they
+may think it’s a dataset that’s included locally in a package they’ve
+already installed.</p>
+<p>For beginners, most of the work is related to passing security
+credentials …which is something that is a reality of working with
+PHI.</p>
 <div id="part-1---pre-requisites" class="section level1">
 <h1>Part 1 - Pre-requisites</h1>
 <div id="verify-redcapr-is-installed" class="section level2">
 <h2>Verify REDCapR is installed</h2>
-<p>First confirm that the REDCapR package is installed on your local machine. If not, the following line will throw the error <code>Loading required namespace: REDCapR.  Failed with error: ‘there is no package called ‘REDCapR’’</code>. If this call fails, follow the installation instructions on the [REDCapR](<a href="https://ouhscbbmc.github.io/REDCapR/" class="uri">https://ouhscbbmc.github.io/REDCapR/</a> webpage.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">requireNamespace</span>(<span class="st">&quot;REDCapR&quot;</span>)</span></code></pre></div>
+<p>First confirm that the REDCapR package is installed on your local
+machine. If not, the following line will throw the error
+<code>Loading required namespace: REDCapR.  Failed with error: ‘there is no package called ‘REDCapR’’</code>.
+If this call fails, follow the installation instructions on the <a href="https://ouhscbbmc.github.io/REDCapR/">REDCapR</a> webpage.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">requireNamespace</span>(<span class="st">&quot;REDCapR&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If this fails, run `install.packages(&quot;REDCapR&quot;)` or `remotes::install_github(repo=&quot;OuhscBbmc/REDCapR&quot;)`</span></span></code></pre></div>
+<p>If you’re a workshop attendee, you can use this vignette to copy
+snippets of code to your local machine to follow along with the
+examples: <a href="https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html" class="uri">https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html</a>.</p>
 </div>
 <div id="verify-redcap-access" class="section level2">
 <h2>Verify REDCap Access</h2>
-<p>Check with your institution’s REDCap administrator to ensure you have</p>
+<p>Check with your institution’s REDCap administrator to ensure you
+have</p>
 <ol style="list-style-type: decimal">
 <li>access to the REDCap server,</li>
 <li>access to the specific REDCap project, and</li>
-<li>an API token with appropriate privileges to the specific REDCap project.</li>
+<li>an API token with appropriate privileges to the specific REDCap
+project.</li>
 </ol>
-<p>This might be the first time you’ve ever needed to request a token, and your institution may have a formal process for API approval. Your REDCap admin can help.</p>
-<p>For this vignette, we’ll use a fake dataset hosted at <code>https://bbmc.ouhsc.edu/redcap/api/</code> and accessible with the token “9A81268476645C4E5F03428B8AC3AA7B”.</p>
+<p>This might be the first time you’ve ever needed to request a token,
+and your institution may have a formal process for API approval. Your
+REDCap admin can help.</p>
+<p>For this vignette, we’ll use a fake dataset hosted at
+<code>https://bbmc.ouhsc.edu/redcap/api/</code> and accessible with the
+token “9A81268476645C4E5F03428B8AC3AA7B”.</p>
 <p>Note to REDCap Admins:</p>
 <blockquote>
-<p>For <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a> to function properly, the user must have Export permissions for the ‘Full Data Set’. Users with only ‘De-Identified’ export privileges can still use <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html"><code>REDCapR::redcap_read_oneshot()</code></a>. To grant the appropriate permissions:</p>
+<p>For <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>
+to function properly, the user must have Export permissions for the
+‘Full Data Set’. Users with only ‘De-Identified’ export privileges can
+still use <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read_oneshot.html"><code>REDCapR::redcap_read_oneshot()</code></a>.
+To grant the appropriate permissions:</p>
 <ul>
 <li>go to ‘User Rights’ in the REDCap project site,</li>
-<li>select the desired user, and then select ‘Edit User Privileges’,</li>
+<li>select the desired user, and then select ‘Edit User
+Privileges’,</li>
 <li>in the ‘Data Exports’ radio buttons, select ‘Full Data Set’.</li>
 </ul>
 </blockquote>
 </div>
 <div id="review-codebook" class="section level2">
 <h2>Review Codebook</h2>
-<p>Before developing any REDCap or analysis code, spend at least 10 minutes to review the codebook, whose link is near the top left corner of the REDCap project page, under the “Project Home and Design” heading. Learning the details will save you time later and improve the quality of the research.</p>
-<p>If you’re new to the project, meet with the investigator for at least 30 minutes to learn the context, collection process, and idiosyncrasies of the dataset. During that conversation, develop a plan for grooming the dataset to be ready for analysis. This is part of the standard advice that the analyst’s involvement should start early in the investigation’s life span.</p>
+<p>Before developing any REDCap or analysis code, spend at least 10
+minutes to review the codebook, whose link is near the top left corner
+of the REDCap project page, under the “Project Home and Design” heading.
+Learning the details will save you time later and improve the quality of
+the research.</p>
+<p>If you’re new to the project, meet with the investigator for at least
+30 minutes to learn the context, collection process, and idiosyncrasies
+of the dataset. During that conversation, develop a plan for grooming
+the dataset to be ready for analysis. This is part of the standard
+advice that the analyst’s involvement should start early in the
+investigation’s life span.</p>
 </div>
 </div>
 <div id="part-2---retrieve-protected-token" class="section level1">
 <h1>Part 2 - Retrieve Protected Token</h1>
-<p>The REDCap API token is essentially a combination of a personal password and the ID of the specific project you’re requesting data from. Protect it like any other password to PHI (<a href="https://www.hhs.gov/answers/hipaa/what-is-phi/index.html">protected health information</a>). For a project with PHI, <strong>never hard-code the password directly in an R file</strong>. In other words, no PHI project should be accessed with an R file that includes the line</p>
+<p>The REDCap API token is essentially a combination of a personal
+password and the ID of the specific project you’re requesting data from.
+Protect it like any other password to PHI (<a href="https://www.hhs.gov/answers/hipaa/what-is-phi/index.html">protected
+health information</a>). For a project with PHI, <strong>never hard-code
+the password directly in an R file</strong>. In other words, no PHI
+project should be accessed with an R file that includes the line</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_secret_token <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span></code></pre></div>
-<p>Instead, we suggest storing the token in a location that can be accessed by only you. We have two recommendations.</p>
+<p>Instead, we suggest storing the token in a location that can be
+accessed by only you. We have two recommendations.</p>
 <div id="security-method-1-token-file" class="section level2">
 <h2>Security Method 1: Token File</h2>
-<p>The basic goals are (a) separate the secret values from the R file into a dedicated file and (b) secure the dedicated file. If using a git repository, prevent the file from being committed with an entry in <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files"><code>.gitignore</code></a>. Ask your institution’s IT security team for their recommendation.</p>
-<p>The <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>retrieve_credential_local()</code></a> function in the [REDCapR](<a href="https://ouhscbbmc.github.io/REDCapR/" class="uri">https://ouhscbbmc.github.io/REDCapR/</a> package loads relevant information from a csv into R. The plain-text file might look like this:</p>
+<p>The basic goals are (a) separate the secret values from the R file
+into a dedicated file and (b) secure the dedicated file. If using a git
+repository, prevent the file from being committed with an entry in <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files"><code>.gitignore</code></a>.
+Ask your institution’s IT security team for their recommendation.</p>
+<p>The <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>retrieve_credential_local()</code></a>
+function in the <a href="https://ouhscbbmc.github.io/REDCapR/">REDCapR</a> package loads
+relevant information from a csv into R. The plain-text file might look
+like this:</p>
 <pre class="csv"><code>redcap_uri,username,project_id,token,comment
 &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,153,9A81268476645C4E5F03428B8AC3AA7B,&quot;simple&quot;
 &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,212,0434F0E9CF53ED0587847AB6E51DE762,&quot;longitudinal&quot;
 &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,213,D70F9ACD1EDD6F151C6EA78683944E98,&quot;write data&quot;</code></pre>
-<p>To retrieve the credentials for the first project listed above, pass the value of “153” to <code>project_id</code>.</p>
+<p>To retrieve the credentials for the first project listed above, pass
+the value of “153” to <code>project_id</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential, </span>
@@ -211,28 +473,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;simple static (read-only) test project&quot;</span></span></code></pre></div>
-<p>A credential file is already created for this vignette. In your next real project, call <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>create_credential_local()</code></a> to start a well-formed csv file that can contain tokens.</p>
-<p>Compared to the method below, this one is less secure but easier to establish.</p>
+<p>A credential file is already created for this vignette. In your next
+real project, call <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>create_credential_local()</code></a>
+to start a well-formed csv file that can contain tokens.</p>
+<p>Compared to the method below, this one is less secure but easier to
+establish.</p>
 </div>
 <div id="security-method-2-token-server" class="section level2">
 <h2>Security Method 2: Token Server</h2>
-<p>Our preferred method involves saving the tokens in a separate database that uses something like Active Directory to authenticate requests. This method is described in detail in the <a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">Security Database</a> vignette.</p>
-<p>This approach realistically requires someone in your institution to have at least basic database administration experience.</p>
+<p>Our preferred method involves saving the tokens in a separate
+database that uses something like Active Directory to authenticate
+requests. This method is described in detail in the <a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">Security
+Database</a> vignette.</p>
+<p>This approach realistically requires someone in your institution to
+have at least basic database administration experience.</p>
 </div>
 </div>
 <div id="part-3---read-data-unstructured-approach" class="section level1">
 <h1>Part 3 - Read Data: Unstructured Approach</h1>
-<p>The <code>redcap_uri</code> and <code>token</code> fields are the only required arguments of <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>; both are in the credential object created in the previous section.</p>
+<p>The <code>redcap_uri</code> and <code>token</code> fields are the
+only required arguments of <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>;
+both are in the credential object created in the previous section.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ds_1 <span class="ot">&lt;-</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri, </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2021-07-21 22:20:37.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:06.</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
@@ -247,7 +518,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mugshot = col_character()</span></span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span></code></pre></div>
-<p>At this point, the data.frame <code>ds_1</code> has everything you need to start analyzing the project.</p>
+<p>At this point, the data.frame <code>ds_1</code> has everything you
+need to start analyzing the project.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ds_1</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id name_first name_last                                 address</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232</span></span>
@@ -287,7 +559,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5        1         2                  0                           2</span></span>
 <span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ds_1<span class="sc">$</span>weight)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAADAFBMVEUAAAABAQECAgIDAwMEBAQFBQUGBgYHBwcICAgJCQkKCgoLCwsMDAwNDQ0ODg4PDw8QEBARERESEhITExMUFBQVFRUWFhYXFxcYGBgZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJycoKCgpKSkqKiorKyssLCwtLS0uLi4vLy8wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0+Pj4/Pz9AQEBBQUFCQkJDQ0NERERFRUVGRkZHR0dISEhJSUlKSkpLS0tMTExNTU1OTk5PT09QUFBRUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhZWVlaWlpbW1tcXFxdXV1eXl5fX19gYGBhYWFiYmJjY2NkZGRlZWVmZmZnZ2doaGhpaWlqampra2tsbGxtbW1ubm5vb29wcHBxcXFycnJzc3N0dHR1dXV2dnZ3d3d4eHh5eXl6enp7e3t8fHx9fX1+fn5/f3+AgICBgYGCgoKDg4OEhISFhYWGhoaHh4eIiIiJiYmKioqLi4uMjIyNjY2Ojo6Pj4+QkJCRkZGSkpKTk5OUlJSVlZWWlpaXl5eYmJiZmZmampqbm5ucnJydnZ2enp6fn5+goKChoaGioqKjo6OkpKSlpaWmpqanp6eoqKipqamqqqqrq6usrKytra2urq6vr6+wsLCxsbGysrKzs7O0tLS1tbW2tra3t7e4uLi5ubm6urq7u7u8vLy9vb2+vr6/v7/AwMDBwcHCwsLDw8PExMTFxcXGxsbHx8fIyMjJycnKysrLy8vMzMzNzc3Ozs7Pz8/Q0NDR0dHS0tLT09PU1NTV1dXW1tbX19fY2NjZ2dna2trb29vc3Nzd3d3e3t7f39/g4ODh4eHi4uLj4+Pk5OTl5eXm5ubn5+fo6Ojp6enq6urr6+vs7Ozt7e3u7u7v7+/w8PDx8fHy8vLz8/P09PT19fX29vb39/f4+Pj5+fn6+vr7+/v8/Pz9/f3+/v7////isF19AAAACXBIWXMAAA7DAAAOwwHHb6hkAAARZElEQVR4nO2deUAUV5rAP6C5byVAAEEJGkfRGA/E6HpO4hGI0U0ck6CjxnjE6GDUEFGTeEzGROPBGMWNjo6aiPFYUUBXkWBI3BDdeO7GOxPdVaPijRwNvH1V3Q1FD6+/Lro7kPL7/fGqq977vvf6R13dVVQDIywCDT2Axg4JQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEzQo6NMI+eVQJSgA4Jk33AoxlbAB41Kr9Njn5R/sMqoa/t9BFK+e/AVhoqf3KsWfk6cMtL7jMPWg5t/n4ay2ofjN2FJQOsFdNNiu46goQqlyACDrqAfnS9Hg0SLxaaSm5RUHVb8YGQdnpn9WqdYCgrwAm3VUusCToXPZUH5AFVbaBiJdcXwNYYSm5+fjtLsiQL7tvqE9syg3GJrcAaP06Y+Xzu/s3T/xKDihObhbz4VaAbxjrDBGlI/2usarN3YM9W068xGtjoMPuGK9O6eyLbj6tV1b3okjAO0o3Lb7yWlj05DyDoOpOzUYHBkFnAbIyPNgz0Jt1A089K3WFcL5aAfyJ1w2P8Xl6hb7ah2KIfMHd0ZGPvXq55s3YLmidPCpoeYf9XprGsztPyQucFvB2FV2llx1MgiYBXGMfGQJi7kmCvJyl14OdpPILYyeKBHJK4wgvRMj9yIJqOlWSNnZsvEHQYYA8Lihv2Vo2B+AH9j1vfJWtBdjNDvjIoQl64/iVQxwArnHSXGe96c3UQ5AJk6BICN1bOBlgkWmtTAYYmrcpBHT/zdhyPpLtw8AoSAedE27pvSB639cvS2PlgqDvRr4h8PJVgERjJ4oEb3IfkZ0Ni4cDjNoxAmRBik5rs8wg6IEnPDnRsLkcBFjFVvKwLDYBdPf0raF14U+T5I1PHr9yiAMAmq1MDwL43oZNzExQCUD7s6ws9d0vjTn52tyW7xrzAcYxFgXh5ayqq1EQSJv8lbFjd8mrwHJZ0M+sPADgH6zUD9oZ+qiVoGYTu+wMA/ikjyRI2Wmdgtgn0io4Oo+/KvOGUWwMRMFcPoIebA/Adr7aPA4djIKUQ+SCCplk83MbBM1K5/ypZg3if2NoOyOvghlzngSYJzUNhZ7sgRNM4C/TjILcq+QkRRkpgzwBlkmCWjKpjOFlc4g19KFMoBDEX23gk8/kNUjRad2C2OfyYSyxiLGB8DvWHv4MiWVu8AFbyt3Gx8f7gnOlPP5aQ+SbGB/iLoA1tu6kc2sEHesur1DRR405s+X0jHWCSHYC+N+NsX83CgqXc6S5ATi3NAqKZaayWpAygUIQ/7vm8sk+WZCiU4Egxpa4RPHjvLQyOV3VBVyEsMPSMKZXbwK35fHXGqJhr51lX0GMXVzaywWgqzEn73G+tDQMurErAJP5y9WmnbS0/IQzdNnzoFAsSJlAIWgzwCY+yTAe5qs7FQrK8HjYBdwrpGPXPHiWBcEc8NVLDc6aGkvjrzVERwg6vngxP2BfjoYAOeceVqKD9lXyvnEMYz7wRKV8LKoRtApgh9xUJKhWghpB/ECUwCdDJUHKTusUNM/D8zo/ir0HTvdZVTCEwyzWH8Kkw0CO3D1bs3iN0YdyiGaC9thD0LcAzx/5MaMJ9JL3D3Pvs7cAhhVkhIILb8kPNMN2jwaloA0A/Qs2BwMsFQiqlaBGUAXfYMZlTZCPYspO6xTE3+NfNnsUd4E2fOYVHpPJUkE+LuhjICr/Ap+ZZfShHKJSkOHN2C6o0nhgc+X5C+RTh1uxhtMYaU97RT53iVAKuhYoLXoSYKJIkDKB4kTxU3lplCRI2Wmdgkr46UyEcxhAGp/hpz9whe3g5f/wuRxPObRPsdGHcohKQQX1PQ8y3weVrIgPdYsaekRaPDvEaxg/sM7t5hf1fJ4ccPWVsKi3P1cKYoXdfdrNv6YD5/sCQcoEyjPp3ITg5uNz5X2QstO6BLFrPaW37T5bev0zP7th7BJAmNzk5JAo345ppczkQzFEpSDjm3Hw1x3HjkmfrRcBXHZkL3Vycopu1w28GT5EhwpqDc4Z9/JD+JnIr0+GB96GWTFEhwr6tom8wYeeclQHy2pO7fnHvFqcXWVVBnSIjv1G8e4noxPGr3rosPznttVQWr8U2BA1+5WrvSBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhqBRUcbFEnpZcQxpqBlWC9HM8wfMd6fbk9Y/MmqfqjX6sm7Ztqm40I0ECWs3kxSbIJEECvLOlMqlFiZmg4y+biJPv1Nr7sohhOfYb+q+DKkFd3pbKX4InmQkq+tJEq6+l+dRBnwh4YZr9hv7roEpQGkzZV8pYtsvIFEFc/H9KZeqUkwKma1sQm+8H5/lkdxiQoLopuyDfK6k/kF53/SMvCIMEIZAgBBKEQIIQSBACCUIgQQgkCIEEIWhY0EeX7JFOw4L8nXquLrI5nYYFle4c7u2amFFsWzoNC+IUbxni7jNij96GdNoWxM581A58nULX1z+dlgUdntUGQifs1//0hnP9L3ppWFAERCYXyE+Nu1/9BBX1aFjQzMOmVxXn678X0rAgdml5CTvzyf/alk7Dgk75uN1jR5sGfG9TOg0Leq7HFV6WJPa2KZ2GBQUanmP4H342pdOwoFaGR2Gmx9iUTsOC5gRs1bPKXU1m2JROw4IqXnfWhbrBy2U2pdOwIMbObliw5riN6TQtyB5oWFDRpO7xMjal07Cgl3SJ02VsSqdhQX4f2yOddgWVA/KIfOvQriDWL8ke6TQs6NPAp2cuWsyxKZ2GBUWYsCmdhgXZB20LunTS5nRaFrQ3FID1S7MtnYYFbdSN2whsjtNqm9JpWFCbqewmn5kRa6k1ioYFeeXIgnK8bUqnYUEd35cFzWtvUzoNC1rnOv8QXF/rtsSmdBoWxNKaSo+Bf7fKpnRaFsQeFG7Js+Yx8JbQtCB7oGFBCSZsSqdhQaMkXgx2fstC48zpNSiXV/50wUjHeguquiXkqrCmRDjUO8KYB9bLkTDbxB4818VC4/1x4BFjRLk8P9qEx05pvj6CNrv6CXDXiWq8+4qy/eQsivFV+XWF+T4oH65baF3xLz0sp6v/JrZusChmfG9RzcZnRNlONxfFfB1k+R2YYy5ovafF4/yKR1fQJpkPHrd8d8dl5N+6NSzIQ8Yr3rYf29WwIPtAghA0LCiohoj6fx7TsKD1zi1mLE15wn95enp6/X+tSMOChj8r3fyr7z9RXbwZGhYUsl2e7AxXF2+GhgVFLpUnaY+rizdDw4Im++3iZZb/H9XFm6FhQSUJ0CS2CcTdVhdvhoYFMfbdkuQP96iL/ic0LahhLz03fkENfOm50Qtq6EvPjV5QQ196bvSCGvrSc6MX1NCXnhu9oIa+9NzoBTX0pefGLqj8HyUNe+m5sQsqDdyuLrButCuITRts28ZlQMOCtnR+KmXJMo66eDM0LCjUhLp4M7QqKPcXdVFCtCoItvFigW3XDGU0LUgubIQEIZAgBBKEQIIQNCvINygoSC6CVMaboVVByQrUxZuhVUF2gwQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCBWduOWhdpHXdCl1BZOAO4x714UNHjEBf3g1Wzi8o0b0t6KDjxWd4tHXFDvgcZ78PWv/L7uFo+4IL/qr9QKApTLz6WYCN8vzad2GiOgXVyKgEEtRTEdIkU1/SNE2d7wF8W85khBnd80vfqgq3L55YUmXpcfh398oYjpU0Q1MyeKauaME9XMHS2qWfBH4RA2OFDQNqeBaw/9ePq7DUNd7PD17G8DdUexrD4g4dT3N/eDu/VG7XnQrVP795/AfuIme8FqAR++L6r5eJaoZuk7opq0aaKalcmimvTZjhVkFSPixgmIby+q6d1KVDMgSlQzOERUMyxAVDNS5V2qDhGU+mdRzWLxYX6UqGZXoqjmW/Fh/klRzY2G/SxmgAQhkCAEEoRAghBIEAIJQiBBCO8JH/++PEVUs2msqGbPEFFNYU9Rzfm2oprbKm/jdYigYuGjG0qED8gqvyuqqRD+n3GV+DPPzXrU1IlDBGkJEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEIIDBG3r4t/nqLqQ7B3qAvULW3p33KoqZn+mPPlrV58nF+lVBNpfUJbTxK0DvC+pCTntlaQucLb7X7ImQLaKmMo4+RHh8+HtrHd1c1QE2l9QnwGMPWyWqiKivBMkqQsMk/7lpstLVsdc/rQnSILK/KbwcppnhfWd2V3QLVjLywktVISkxHVKUhf42FxeDEqwOianRw8PSdAF2MfLbXDR+s7sLugUHOLlcifrf/E33+dMfJK6wAnhhTdXu65TExMjCSo9X8rLqZ4l1gfaXVAuSP9dvhGsfkzK7chVTBKkJrC8MwC8qSompvpnCjbpZqgItLug/XCalxvA0r2wtfjDQCYLUhP4Rti6bz70/Tc1MSZB10fAKL2KQLsLOgHf8TLN3dr2m5teNQhSEXha3pXMb1qpIsYoKDu4xU5Vo7S7oCIn6R63yU9Y2z4ZDOxUEbgBpG/e98A5FTEGQdkub5aoG6X9D/N9h/ITuWjh5R1zzuRyftcv97qKwEKQzvpme5SriJEF6cNGqB2l/QXluMz95tVA0Z3mdSNtYmoCBzVN2zvLdb6aGFnQAXhnvUSJ9YEO+KixNc6/n8qPGrIgFYHFM1t5d/isSk2MLCjduD1fsz6QPqwikCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhkCAEEoRAghBIEAIJQiBBCCQIgQQhNG5B2Q09gAYWlC74B1vjHal3dnhsvyMI9VmjmIkw/d7O0cP2Glo1jVGQ8Y7UA0HhrrEh39cdOny/YqZaUNKLdhydgcYnyHRHKms2pjyganCcFXm0KOjB+IiIicu4oOP9A5oOUd6vbLoj9f+ggAWwgy9WdRvC2NcwhrFMOMbWd/Jq+zdeG8A3scrUqMiZydxJxJLZ0f4vFbF4ABBtk/WloQT18VuytZdPEHsY8szm1WHP1q6Ub1Upc5vN5Gftvde0ii2EVozNCK5Kc30vJ9lppUHQlMDVW592lwSFJB1c5jGFFf3rgGv2+JU0JQ0kKA92MVYaHsSOQC5jO6fXrjXcLjcTnvM6xacFcIq90A9+Yd2SHjSdzxe8ESwLuuL2BV/PdJKgDnzpyF5a2sQWBkplchC76dtu3RXzWoOgqo09AdofZXrfT9ljmZ7bH7ptKIRDN2/e3AiXJEGZcJ+3ipMESXfMJ/fQkqBk+QeBl/B90H8lesDTO2rXVt/T7Lc/PrCIJf7hrNPtvlPz4eoW4x1iJyRBKzylJgmSoKVMa4IWNZHKWfJR7OG+/i6na9XKgn7ezTckdttlN0sLXRfL3u+y4Cm+ZV43NuGCtoH0nIv4F41HMW0JOghZjFW0DmJftuLv8iLU/p17WVCOSykXVOaaz36EXuPYAV33Gey6u/QvFnP6yYIuumQwdtVNm4JYH/+/Zg5sFsTOuj2ftfm5oNpPKZEF3fCVjmKzA4u5APg7K3YFfm6Y4rYgZ4bTcsNRbHzTv2V2DR+qEDS67ZEKOw+0oQTdH9fs8XFZfBPb3ck7aJDZw5cN+6Dt/s10T/gV8Fej4Rxj3TxL+I57caxXm3RmEFQ+NaT15/1HKgR91cJX+BCZetKYP6ze3eeVc09cfT/9Z26sufBhTvahMQtiLMBSZVXk8+dvzXP7p5ME+9JIBGV3MHFEubjUYtAPHcGp1V6HjqvRCKond+87vIvftqBfARKEQIIQSBACCUIgQQgkCIEEIZAgBBKEQIIQSBACCUIgQQgkCIEEIZAgBBKEQIIQSBACCUL4f1ExK/o+AUPYAAAAAElFTkSuQmCC" /><!-- --></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ds_1)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    record_id  name_first         name_last           address         </span></span>
@@ -337,25 +609,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.2   Mean   :1   Mean   :0.25       Mean   :1.6                </span></span>
 <span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:0.0   3rd Qu.:1   3rd Qu.:0.25       3rd Qu.:2.0                </span></span>
 <span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :2   Max.   :1.00       Max.   :2.0                </span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            NA&#39;s   :1</span></span></code></pre></div>
-<p><em>Pause here in the workshop for a few minutes. Raise hand if you’re having trouble.</em></p>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            NA&#39;s   :1</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> bmi, <span class="at">data =</span> ds_1))</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = age ~ 1 + sex + bmi, data = ds_1)</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1       2       3       4       5 </span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -2.491   1.954   9.132   2.491 -11.086 </span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 63.34496    8.89980   7.118   0.0192 *</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sex         13.55626    9.62958   1.408   0.2945  </span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bmi         -0.24426    0.04337  -5.632   0.0301 *</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 10.55 on 2 degrees of freedom</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9442, Adjusted R-squared:  0.8884 </span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 16.92 on 2 and 2 DF,  p-value: 0.05581</span></span></code></pre></div>
+<p><em>Pause here in the workshop for a few minutes. Raise hand if
+you’re having trouble.</em></p>
 </div>
 <div id="part-4---read-data-choosing-columns-and-rows" class="section level1">
 <h1>Part 4 - Read Data: Choosing Columns and Rows</h1>
-<p>When you read a dataset for the first time, you probably haven’t decided which columns are needed so it makes sense to retrieve everything. As you gain familiarity with the data and with the analytic objectives, consider being more selective with the variables and rows transported from the remote server to your local machine.</p>
+<p>When you read a dataset for the first time, you probably haven’t
+decided which columns are needed so it makes sense to retrieve
+everything. As you gain familiarity with the data and with the analytic
+objectives, consider being more selective with the variables and rows
+transported from the remote server to your local machine.</p>
 <p>Advantages include:</p>
 <ol style="list-style-type: decimal">
-<li>A server is almost always more efficient filtering than a language like R or Python.</li>
-<li>REDCap’s PHP code retrieves less data from REDCap’s database and translates less to a text format (like csv or json).</li>
+<li>A server is almost always more efficient filtering than a language
+like R or Python.</li>
+<li>REDCap’s PHP code retrieves less data from REDCap’s database and
+translates less to a text format (like csv or json).</li>
 <li>Fewer bytes are transmitted across your network.</li>
-<li>Your local machine will have better performance, because R has a smaller dataset to manage.</li>
+<li>Your local machine will have better performance, because R has a
+smaller dataset to manage.</li>
 <li>Your brain doesn’t have to look past unnecessary columns.</li>
-<li>Your R code doesn’t have filter what the server already removed.</li>
-<li>Highly-sensitive PHI columns that are unnecessary for an analysis remain on the server.</li>
+<li>Your R code doesn’t have filter what the server already
+removed.</li>
+<li>Highly-sensitive PHI columns that are unnecessary for an analysis
+remain on the server.</li>
 </ol>
 <div id="specify-record-ids" class="section level2">
 <h2>Specify Record IDs</h2>
-<p>The most basic operation to limit rows is passing the exact record identifiers.</p>
+<p>The most basic operation to limit rows is passing the exact record
+identifiers.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only records with IDs of 1 and 4</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>desired_records <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -364,7 +668,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">records     =</span> desired_records,</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2021-07-21 22:20:38.</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2022-08-10 09:25:08.</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
@@ -400,7 +704,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="specify-row-filter" class="section level2">
 <h2>Specify Row Filter</h2>
-<p>A more useful operation to limit rows is passing an expression to filter the records before returning. See your server’s documentation for the syntax rules of the filter statements. Remember to enclose your variable names in square brackets.</p>
+<p>A more useful operation to limit rows is passing an expression to
+filter the records before returning. See your server’s documentation for
+the syntax rules of the filter statements. Remember to enclose your
+variable names in square brackets. Also be aware of differences between
+strings and numbers.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only records with a birth date after January 2003</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri    =</span> credential<span class="sc">$</span>redcap_uri,</span>
@@ -408,7 +716,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">filter_logic  =</span> <span class="st">&quot;&#39;2003-01-01&#39; &lt; [dob]&quot;</span>,</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose       =</span> <span class="cn">FALSE</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2021-07-21 22:20:40.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2022-08-10 09:25:09.</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
@@ -441,7 +749,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="specify-column-names" class="section level2">
 <h2>Specify Column Names</h2>
-<p>Limit the returned fields by passing a vector of the desired names.</p>
+<p>Limit the returned fields by passing a vector of the desired
+names.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only the fields record_id, name_first, and age</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;name_first&quot;</span>, <span class="st">&quot;age&quot;</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
@@ -450,7 +759,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2021-07-21 22:20:42.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:11.</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
@@ -468,9 +777,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="part-5---read-data-structured-approach" class="section level1">
 <h1>Part 5 - Read Data: Structured Approach</h1>
-<p>As the automation of your scripts matures and institutional resources depend on its output, its output should be stable. One way to make it more predictable is to specify the column names <em>and</em> the column data types. In the previous example, notice that R (specifically <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>) made its best guess and reported it in the “Column specification” section.</p>
-<p>In the following example, REDCapR passes <code>col_types</code> to <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>) as it converts the plain-text output returned from REDCap into an R <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html"><code>data.frame</code></a>.</p>
-<p>When readr sees a column with values like 1, 2, 3, and 4, it will make the reasonable guess that the column should be a double precision floating-point data type. However we <a href="https://ouhscbbmc.github.io/data-science-practices-1/coding.html#coding-simplify-types">recommend using the simplest data type reasonable</a> because a simpler data type is less likely contain unintended values and it’s typically faster, consumes less memory, and translates more cleanly across platforms. As specifically for identifiers like <code>record_id</code> specify either an integer or character.</p>
+<p>As the automation of your scripts matures and institutional resources
+depend on its output, its output should be stable. One way to make it
+more predictable is to specify the column names <em>and</em> the column
+data types. In the previous example, notice that R (specifically <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>)
+made its best guess and reported it in the “Column specification”
+section.</p>
+<p>In the following example, REDCapR passes <code>col_types</code> to <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>)
+as it converts the plain-text output returned from REDCap into an R <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html"><code>data.frame</code></a>.</p>
+<p>When readr sees a column with values like 1, 2, 3, and 4, it will
+make the reasonable guess that the column should be a double precision
+floating-point data type. However we <a href="https://ouhscbbmc.github.io/data-science-practices-1/coding.html#coding-simplify-types">recommend
+using the simplest data type reasonable</a> because a simpler data type
+is less likely contain unintended values and it’s typically faster,
+consumes less memory, and translates more cleanly across platforms. As
+specifically for identifiers like <code>record_id</code> specify either
+an integer or character.</p>
 <div id="specify-column-names-types" class="section level2">
 <h2>Specify Column Names &amp; Types</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
@@ -491,7 +813,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2021-07-21 22:20:43.</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:12.</span></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id race___1 race___2 race___3 race___4 race___5 race___6</span></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1    FALSE    FALSE    FALSE    FALSE     TRUE    FALSE</span></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2    FALSE    FALSE     TRUE    FALSE     TRUE    FALSE</span></span>
@@ -501,7 +823,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="specify-everything-is-a-character" class="section level2">
 <h2>Specify Everything is a Character</h2>
-<p>REDCap internally stores every value as a string. To accept full responsibility of the data types, tell <a href="https://readr.tidyverse.org/reference/cols.html"><code>readr::cols()</code></a> to keep them as strings.</p>
+<p>REDCap internally stores every value as a string. To accept full
+responsibility of the data types, tell <a href="https://readr.tidyverse.org/reference/cols.html"><code>readr::cols()</code></a>
+to keep them as strings.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;race&quot;</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>col_types <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols</span>(<span class="at">.default =</span> readr<span class="sc">::</span><span class="fu">col_character</span>())</span>
@@ -512,7 +836,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2021-07-21 22:20:45.</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:13.</span></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id race___1 race___2 race___3 race___4 race___5 race___6</span></span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1        0        0        0        0        1        0</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2        0        0        1        0        1        0</span></span>
@@ -525,29 +849,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Part 6 - Next Steps</h1>
 <div id="other-redcapr-resources" class="section level2">
 <h2>Other REDCapR Resources</h2>
-<p>In addition to documentation [for each function](<a href="https://ouhscbbmc.github.io/REDCapR/reference/" class="uri">https://ouhscbbmc.github.io/REDCapR/reference/</a> the REDCapR package contains a handful of [vignettes](<a href="https://ouhscbbmc.github.io/REDCapR/articles/" class="uri">https://ouhscbbmc.github.io/REDCapR/articles/</a> including a <a href="https://ouhscbbmc.github.io/REDCapR/articles/TroubleshootingApiCalls.html">troubleshooting guide</a>.</p>
+<p>In addition to documentation <a href="https://ouhscbbmc.github.io/REDCapR/reference/">for each
+function</a> the REDCapR package contains a handful of <a href="https://ouhscbbmc.github.io/REDCapR/articles/">vignettes</a>
+including a <a href="https://ouhscbbmc.github.io/REDCapR/articles/TroubleshootingApiCalls.html">troubleshooting
+guide</a>.</p>
 </div>
 <div id="create-an-arch-for-reuse" class="section level2">
 <h2>Create an Arch for Reuse</h2>
-<p>When multiple R files use REDCapR call the same REDCap dataset, consider refactoring your scripts so that extraction code is written once, and called by the multiple analysis files. This “arch” pattern is described in slides 9-16 of the 2014 <a href="https://projectredcap.org/about/redcapcon/">REDCapCon</a> presentation, <a href="https://github.com/OuhscBbmc/RedcapExamplesAndPatterns/blob/master/Publications/Presentation-2014-09-REDCapCon/LiterateProgrammingPatternsAndPracticesWithREDCap.pptx">Literate Programming Patterns and Practices for Continuous Quality Improvement (CQI)</a>.</p>
+<p>When multiple R files use REDCapR call the same REDCap dataset,
+consider refactoring your scripts so that extraction code is written
+once, and called by the multiple analysis files. This “arch” pattern is
+described in slides 9-16 of the 2014 <a href="https://projectredcap.org/about/redcapcon/">REDCapCon</a>
+presentation, <a href="https://github.com/OuhscBbmc/RedcapExamplesAndPatterns/blob/master/Publications/Presentation-2014-09-REDCapCon/LiterateProgrammingPatternsAndPracticesWithREDCap.pptx">Literate
+Programming Patterns and Practices for Continuous Quality Improvement
+(CQI)</a>.</p>
 </div>
 <div id="downstream-reproducible-reports" class="section level2">
 <h2>Downstream Reproducible Reports</h2>
-<p>Once the dataset is in R, take advantage of all the reproducible research tools available. Tomorrow, <a href="https://r-medicine.org/">R/Medicine</a> has a workshop on this topic using the exciting new <a href="https://quarto.org/">Quarto</a> program that’s similar to R Markdown. Also see the relevant <a href="https://www.youtube.com/playlist?list=PL4IzsxWztPdljYo7uE5G_R2PtYw3fUReo">R/Medicine 2020 presentation videos</a>. And of course, <a href="https://www.amazon.com/Yihui-Xie/e/B00E9CQJGY?ref=sr_ntt_srch_lnk_1&amp;qid=1625895927&amp;sr=1-1">any book by Yihui Xie and colleagues</a>.</p>
+<p>Once the dataset is in R, take advantage of all the reproducible
+research tools available. Tomorrow, <a href="https://events.linuxfoundation.org/r-medicine/">R/Medicine</a> has
+a workshop on this topic using the exciting new <a href="https://quarto.org/">Quarto</a> program that’s similar to R
+Markdown. Also see the relevant <a href="https://www.youtube.com/playlist?list=PL4IzsxWztPdljYo7uE5G_R2PtYw3fUReo">R/Medicine
+2020 presentation videos</a>. And of course, <a href="https://www.amazon.com/Yihui-Xie/e/B00E9CQJGY?ref=sr_ntt_srch_lnk_1&amp;qid=1625895927&amp;sr=1-1">any
+book by Yihui Xie and colleagues</a>.</p>
 </div>
 <div id="batching" class="section level2">
 <h2>Batching</h2>
-<p>By default, <code>REDCapR::redcap_read()</code> requests datasets of 100 patients as a time, and stacks the resulting subsets together before returning a data.frame. This can be adjusted to improve performance; the ‘Details’ section of <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html#details"><code>REDCapR::redcap_read()</code></a> discusses the trade offs.</p>
+<p>By default, <code>REDCapR::redcap_read()</code> requests datasets of
+100 patients as a time, and stacks the resulting subsets together before
+returning a data.frame. This can be adjusted to improve performance; the
+‘Details’ section of <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html#details"><code>REDCapR::redcap_read()</code></a>
+discusses the trade offs.</p>
 </div>
 <div id="writing-to-the-server" class="section level2">
 <h2>Writing to the Server</h2>
-<p>Reading record data is only one API capability. REDCapR <a href="https://ouhscbbmc.github.io/REDCapR/reference/">exposes 20+ API functions</a>, such as reading metadata, retrieving survey links, and writing records back to REDCap. This last operation is relevant in <a href="https://twitter.com/kennethmclean92">Kenneth McLean</a>’s presentation following a five-minute break.</p>
+<p>Reading record data is only one API capability. REDCapR <a href="https://ouhscbbmc.github.io/REDCapR/reference/">exposes 20+ API
+functions</a>, such as reading metadata, retrieving survey links, and
+writing records back to REDCap. This last operation is relevant in <a href="https://twitter.com/kennethmclean92">Kenneth McLean</a>’s
+presentation following a five-minute break.</p>
 </div>
 </div>
 <div id="notes" class="section level1">
 <h1>Notes</h1>
-<p>This vignette was originally designed for a 2021 R/Medicine REDCap workshop with <a href="https://www.med.umich.edu/higginslab/">Peter Higgins</a>, <a href="https://coloradosph.cuanschutz.edu/resources/directory/directory-profile/Miller-Amanda-UCD6000053152">Amanda Miller</a>, and <a href="https://twitter.com/kennethmclean92">Kenneth McLean</a>.</p>
-<p>This work was made possible in part by the NIH grant <a href="https://hsrproject.nlm.nih.gov/view_hsrproj_record/20204379">U54GM104938</a> to the <a href="http://osctr.ouhsc.edu">Oklahoma Shared Clinical and Translational Resource)</a>.</p>
+<p>This vignette was originally designed for a 2021 R/Medicine REDCap
+workshop with <a href="https://www.med.umich.edu/higginslab/">Peter
+Higgins</a>, <a href="https://coloradosph.cuanschutz.edu/resources/directory/directory-profile/Miller-Amanda-UCD6000053152">Amanda
+Miller</a>, and <a href="https://twitter.com/kennethmclean92">Kenneth
+McLean</a>.</p>
+<p>This work was made possible in part by the NIH grant <a href="https://taggs.hhs.gov/Detail/AwardDetail?arg_AwardNum=U54GM104938&amp;arg_ProgOfficeCode=127">U54GM104938</a>
+to the <a href="http://osctr.ouhsc.edu">Oklahoma Shared Clinical and
+Translational Resource)</a>.</p>
 </div>
 
 

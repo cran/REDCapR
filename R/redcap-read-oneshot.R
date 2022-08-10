@@ -62,6 +62,11 @@
 #' data type for each column.  Ignored if `col_types` is not null.
 #' @param guess_max A positive integer passed to [readr::read_csv()] that
 #' specifies the maximum number of records to use for guessing column types.
+#' @param http_response_encoding  The encoding value passed to
+#' [httr::content()].  Defaults to 'UTF-8'.
+#' @param locale a [readr::locale()] object to specify preferences like
+#' number, date, and time formats.  This object is passed to
+#' [`readr::read_csv()`].  Defaults to [readr::default_locale()].
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
@@ -96,7 +101,7 @@
 #' If you do not pass in this `export_data_access_groups` value, it will default
 #' to `FALSE`. The following is from the API help page for version 10.5.1:
 #' *This flag is only viable if the user whose token is being used to make the
-#' API request is *not* in a data access group. If the user is in a group,
+#' API request is **not** in a data access group. If the user is in a group,
 #' then this flag will revert to its default value*.
 #'
 #' @author Will Beasley
@@ -177,6 +182,8 @@ redcap_read_oneshot <- function(
   col_types                     = NULL,
   guess_type                    = TRUE,
   guess_max                     = 1000L,
+  http_response_encoding        = "UTF-8",
+  locale                        = readr::default_locale(),
   verbose                       = TRUE,
   config_options                = NULL
 ) {
@@ -205,6 +212,9 @@ redcap_read_oneshot <- function(
 
   checkmate::assert_logical(  guess_type                , any.missing=FALSE, len=1)
   checkmate::assert_integerish(guess_max                , any.missing=FALSE, len=1, lower=1)
+  checkmate::assert_character(http_response_encoding    , any.missing=FALSE,     len=1)
+
+  checkmate::assert_class(    locale, "locale"          , null.ok = FALSE)
   checkmate::assert_logical(  verbose                   , any.missing=FALSE, len=1, null.ok=TRUE)
   checkmate::assert_list(     config_options            , any.missing=TRUE ,        null.ok=TRUE)
 
@@ -246,7 +256,12 @@ redcap_read_oneshot <- function(
   if (0L < nchar(events_collapsed )) post_body$events   <- events_collapsed
 
   # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  kernel <- kernel_api(
+    redcap_uri      = redcap_uri,
+    post_body       = post_body,
+    config_options  = config_options,
+    encoding        = http_response_encoding
+  )
 
   if (kernel$success) {
     col_types <-
@@ -261,6 +276,7 @@ redcap_read_oneshot <- function(
           file            = I(kernel$raw_text),
           col_types       = col_types,
           guess_max       = guess_max,
+          locale          = locale,
           show_col_types  = FALSE
         ) %>%
         as.data.frame(),

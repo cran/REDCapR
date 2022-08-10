@@ -35,7 +35,7 @@ populate_project_simple <- function(batch = FALSE) {
       path_in_simple,
       show_col_types = FALSE
     )
-  # ds_to_write <- utils::read.csv(file="./inst/test-data/project-simple/simple-data.csv", stringsAsFactors=FALSE)
+  # ds_to_write <- utils::read.csv(file="./inst/test-data/project-simple/simple-data.csv")
 
   # Remove the calculated variables.
   ds_to_write$age <- NULL
@@ -126,7 +126,7 @@ clean_start_simple <- function(batch = FALSE, delay_in_seconds = 1) {
     populate_result <- populate_project_simple(batch = batch),
     regexp = "populate_project_simple success: TRUE."
   )
-  testthat::expect_true(populate_result$is_success, "Population the the simple project should be successful.")
+  testthat::expect_true(populate_result$is_success, "Population of the simple project should be successful.")
   base::Sys.sleep(delay_in_seconds) #Pause after writing records.
 
   populate_result
