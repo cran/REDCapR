@@ -1,9 +1,11 @@
-#' @title Write/Import records to a REDCap project
+#' @title
+#' Write/Import records to a REDCap project
 #'
-#' @description This function uses REDCap's APIs to select and return data.
+#' @description
+#' This function uses REDCap's APIs to select and return data.
 #'
-#' @param ds_to_write The [base::data.frame()] to be imported into the REDCap
-#' project.  Required.
+#' @param ds_to_write The [base::data.frame()] or [tibble::tibble()]
+#' to be imported into the REDCap project.  Required.
 #' @param batch_size The maximum number of subject records a single batch
 #' should contain.  The default is 100.
 #' @param interbatch_delay The number of seconds the function will wait before
@@ -11,16 +13,19 @@
 #' @param continue_on_error If an error occurs while writing, should records
 #' in subsequent batches be attempted.  The default is `FALSE`, which prevents
 #' subsequent batches from running.  Required.
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param overwrite_with_blanks A boolean value indicating if
-#' blank/`NA` values in the R [base::data.frame]
+#' blank/`NA` values in the R data frame
 #' will overwrite data on the server.
 #' This is the default behavior for REDCapR,
 #' which essentially deletes the cell's value
-#' If `FALSE`, blank/`NA` values in the [base::data.frame]
+#' If `FALSE`, blank/`NA` values in the data.frame
 #' will be ignored.  Optional.
 #' @param convert_logical_to_integer If `TRUE`, all [base::logical] columns
 #' in `ds` are cast to an integer before uploading to REDCap.
@@ -30,10 +35,15 @@
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details in [redcap_read_oneshot()]. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements:
+#' @return
+#' Currently, a list is returned with the following elements:
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
@@ -59,9 +69,11 @@
 #' * select the desired user, and then select 'Edit User Privileges',
 #' * in the 'Data Exports' radio buttons, select 'Full Data Set'.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
-#' @references The official documentation can be found on the 'API Help
+#' @references
+#' The official documentation can be found on the 'API Help
 #' Page' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -69,8 +81,8 @@
 #' administrator to send you the static material.
 #'
 #' @examples
-#' \dontrun{
-#' #Define some constants
+#' if (FALSE) {
+#' # Define some constants
 #' uri           <- "https://bbmc.ouhsc.edu/redcap/api/"
 #' token         <- "D70F9ACD1EDD6F151C6EA78683944E98"
 #'
@@ -83,7 +95,7 @@
 #' ds1$telephone <- paste0("(405) 321-000", seq_len(nrow(ds1)))
 #'
 #' ds1 <- ds1[1:3, ]
-#' ds1$age       <- NULL; ds1$bmi <- NULL #Drop the calculated fields before writing.
+#' ds1$age       <- NULL; ds1$bmi <- NULL # Drop the calculated fields before writing.
 #' result_write  <- REDCapR::redcap_write(ds1, redcap_uri=uri, token=token)
 #'
 #' # Read the dataset for the second time.
@@ -102,15 +114,16 @@
 #' @export
 redcap_write <- function(
   ds_to_write,
-  batch_size          = 100L,
-  interbatch_delay    = 0.5,
-  continue_on_error   = FALSE,
+  batch_size                  = 100L,
+  interbatch_delay            = 0.5,
+  continue_on_error           = FALSE,
   redcap_uri,
   token,
-  overwrite_with_blanks      = TRUE,
-  convert_logical_to_integer = FALSE,
-  verbose             = TRUE,
-  config_options      = NULL
+  overwrite_with_blanks       = TRUE,
+  convert_logical_to_integer  = FALSE,
+  verbose                     = TRUE,
+  config_options              = NULL,
+  handle_httr                 = NULL
 ) {
 
   start_time <- base::Sys.time()
@@ -130,34 +143,41 @@ redcap_write <- function(
   lst_outcome_message   <- NULL
   success_combined      <- TRUE
 
-  message(sprintf(
-    "Starting to update %s records to be written at %s.",
-    format(nrow(ds_to_write), big.mark = ",", scientific = FALSE, trim = TRUE),
-    Sys.time()
-  ))
+  if (verbose) {
+    message(sprintf(
+      "Starting to update %s records to be written at %s.",
+      format(nrow(ds_to_write), big.mark = ",", scientific = FALSE, trim = TRUE),
+      Sys.time()
+    ))
+  }
+
   for (i in seq_along(ds_glossary$id)) {
     selected_indices <- seq(
       from  = ds_glossary$start_index[i],
       to    = ds_glossary$stop_index[i]
     )
 
-    if (i > 0) Sys.sleep(time = interbatch_delay)
-    message(sprintf(
-      "Writing batch %i of %i, with indices %i through %i.",
-      i,
-      nrow(ds_glossary),
-      min(selected_indices),
-      max(selected_indices)
-    ))
+    if (0L < i) Sys.sleep(time = interbatch_delay)
+
+    if (verbose) {
+      message(sprintf(
+        "Writing batch %i of %i, with indices %i through %i.",
+        i,
+        nrow(ds_glossary),
+        min(selected_indices),
+        max(selected_indices)
+      ))
+    }
 
     write_result <- REDCapR::redcap_write_oneshot(
-      ds               = ds_to_write[selected_indices, ],
-      redcap_uri       = redcap_uri,
-      token            = token,
-      overwrite_with_blanks = overwrite_with_blanks,
-      convert_logical_to_integer = convert_logical_to_integer,
-      verbose          = verbose,
-      config_options   = config_options
+      ds                          = ds_to_write[selected_indices, ],
+      redcap_uri                  = redcap_uri,
+      token                       = token,
+      overwrite_with_blanks       = overwrite_with_blanks,
+      convert_logical_to_integer  = convert_logical_to_integer,
+      verbose                     = verbose,
+      config_options              = config_options,
+      handle_httr                 = handle_httr
     )
 
     lst_status_code[[i]]     <- write_result$status_code
@@ -174,7 +194,7 @@ redcap_write <- function(
     affected_ids     <- c(affected_ids, write_result$affected_ids)
     success_combined <- success_combined & write_result$success
 
-    rm(write_result) #Admittedly overkill defensiveness.
+    rm(write_result) # Admittedly overkill defensiveness.
   }
 
   elapsed_seconds          <- as.numeric(difftime( Sys.time(), start_time, units="secs"))

@@ -1,19 +1,42 @@
-#' @title List authorized users
+#' @title
+#' List authorized users
 #'
-#' @description List users authorized for a project.
+#' @description
+#' List users authorized for a project.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details below.  Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return a [utils::packageDescription].
+#' @return
+#; Currently, a list is returned with the following elements:
+#' * `data_user`: A [tibble::tibble()] of all users associated with the project.
+#' One row represents one user.
+#' * `data_user_form`: A [tibble::tibble()] of permissions for users and forms.
+#' One row represents a unique user-by-form combination.
+#' * `success`: A boolean value indicating if the operation was apparently
+#' successful.
+#' * `status_codes`: A collection of
+#' [http status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes),
+#' separated by semicolons.  There is one code for each batch attempted.
+#' * `outcome_messages`: A collection of human readable strings indicating the
+#' operations' semicolons.  There is one code for each batch attempted.  In an
+#' unsuccessful operation, it should contain diagnostic information.
+#' * `elapsed_seconds`: The duration of the function.
 #'
 #' @note
 #' **Documentation in REDCap 8.4.0**
@@ -28,19 +51,24 @@
 #' ```
 #'
 #' @examples
+#' \dontrun{
 #' uri      <- "https://bbmc.ouhsc.edu/redcap/api/"
 #' token    <- "06DEFB601F9B46847DAA9DF0CFA951B4"
 #' result   <- REDCapR::redcap_users_export(redcap_uri=uri, token=token)
 #' result$data_user
 #' result$data_user_form
+#' }
 
+#' @importFrom magrittr %>%
 #' @export
 redcap_users_export <- function(
   redcap_uri,
   token,
   verbose         = TRUE,
-  config_options  = NULL
+  config_options  = NULL,
+  handle_httr       = NULL
 ) {
+
   checkmate::assert_character(redcap_uri , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token      , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
@@ -62,7 +90,7 @@ redcap_users_export <- function(
     data_access_group             = readr::col_character(),
     data_access_group_id          = readr::col_character(),
     design                        = readr::col_logical(),
-    user_rights                   = readr::col_logical(),
+    user_rights                   = readr::col_integer(),
     data_access_groups            = readr::col_logical(),
     # data_export                   = readr::col_character(), # dropped sometime between 10.5.1 and 12.5.2
     reports                       = readr::col_logical(),
@@ -72,11 +100,13 @@ redcap_users_export <- function(
     data_import_tool              = readr::col_logical(),
     data_comparison_tool          = readr::col_logical(),
     logging                       = readr::col_logical(),
+    email_logging                 = readr::col_logical(), # added 14.6.0
     file_repository               = readr::col_logical(),
     data_quality_create           = readr::col_logical(),
     data_quality_execute          = readr::col_logical(),
     api_export                    = readr::col_logical(),
     api_import                    = readr::col_logical(),
+    api_modules                   = readr::col_logical(), # added 14.6.0 maybe
     mobile_app                    = readr::col_logical(),
     mobile_app_download_data      = readr::col_logical(),
     record_create                 = readr::col_logical(),
@@ -89,8 +119,14 @@ redcap_users_export <- function(
     forms_export                  = readr::col_character(),  # Added sometime between 10.5.1 and 12.5.2
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     try(
@@ -106,12 +142,12 @@ redcap_users_export <- function(
 
         ds_user <-
           ds_combined %>%
-          dplyr::select(-.data$forms)
+          dplyr::select(-"forms")
 
         ds_user_form <-
           ds_combined %>%
-          dplyr::select(.data$username, .data$forms) %>%
-          tidyr::separate_rows(.data$forms, sep = ",") %>%
+          dplyr::select("username", "forms") %>%
+          tidyr::separate_rows("forms", sep = ",") %>%
           # tidyr::separate_(
           #   col     = "form",
           #   into    = c("form_name", "permission"),
@@ -131,14 +167,14 @@ redcap_users_export <- function(
             #   ordered     = TRUE
             # )
           ) %>%
-          dplyr::select(-.data$forms)
+          dplyr::select(-"forms")
       },
       silent = TRUE
       # Don't print the warning in the try block.  Print it below, where it's
       #   under the control of the caller.
     )
 
-    if (exists("ds_user") & inherits(ds_user, "data.frame")) {
+    if (exists("ds_user") && inherits(ds_user, "data.frame")) {
       outcome_message <- sprintf(
         "The REDCap users were successfully exported in %0.1f seconds.  The http status code was %i.",
         kernel$elapsed_seconds,
@@ -156,8 +192,8 @@ redcap_users_export <- function(
     } else {
       # nocov start
       kernel$success   <- FALSE # Override the 'success' http status code.
-      ds_user          <- data.frame() # Return an empty data.frame
-      ds_user_form     <- data.frame() # Return an empty data.frame
+      ds_user          <- tibble::tibble() # Return an empty data.frame
+      ds_user_form     <- tibble::tibble() # Return an empty data.frame
       outcome_message  <- sprintf(
         "The REDCap user export failed.  The http status code was %i.  The 'raw_text' returned was '%s'.",
         kernel$status_code,
@@ -166,8 +202,8 @@ redcap_users_export <- function(
       # nocov end
     }
   } else {
-    ds_user          <- data.frame() # Return an empty data.frame
-    ds_user_form     <- data.frame() # Return an empty data.frame
+    ds_user          <- tibble::tibble() # Return an empty data.frame
+    ds_user_form     <- tibble::tibble() # Return an empty data.frame
     outcome_message  <- sprintf(
       "The REDCap user export failed.  The error message was:\n%s",
       kernel$raw_text

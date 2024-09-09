@@ -4,11 +4,20 @@
 \alias{redcap_users_export}
 \title{List authorized users}
 \usage{
-redcap_users_export(redcap_uri, token, verbose = TRUE, config_options = NULL)
+redcap_users_export(
+  redcap_uri,
+  token,
+  verbose = TRUE,
+  config_options = NULL,
+  handle_httr = NULL
+)
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -18,11 +27,30 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details below.  Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
-a \link[utils:packageDescription]{utils::packageDescription}.
+\itemize{
+\item \code{data_user}: A \code{\link[tibble:tibble]{tibble::tibble()}} of all users associated with the project.
+One row represents one user.
+\item \code{data_user_form}: A \code{\link[tibble:tibble]{tibble::tibble()}} of permissions for users and forms.
+One row represents a unique user-by-form combination.
+\item \code{success}: A boolean value indicating if the operation was apparently
+successful.
+\item \code{status_codes}: A collection of
+\href{https://en.wikipedia.org/wiki/List_of_HTTP_status_codes}{http status codes},
+separated by semicolons.  There is one code for each batch attempted.
+\item \code{outcome_messages}: A collection of human readable strings indicating the
+operations' semicolons.  There is one code for each batch attempted.  In an
+unsuccessful operation, it should contain diagnostic information.
+\item \code{elapsed_seconds}: The duration of the function.
+}
 }
 \description{
 List users authorized for a project.
@@ -39,9 +67,11 @@ the user with the role's defined privileges.
 }\if{html}{\out{</div>}}
 }
 \examples{
+\dontrun{
 uri      <- "https://bbmc.ouhsc.edu/redcap/api/"
 token    <- "06DEFB601F9B46847DAA9DF0CFA951B4"
 result   <- REDCapR::redcap_users_export(redcap_uri=uri, token=token)
 result$data_user
 result$data_user_form
+}
 }

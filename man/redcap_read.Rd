@@ -12,13 +12,9 @@ redcap_read(
   redcap_uri,
   token,
   records = NULL,
-  records_collapsed = "",
   fields = NULL,
-  fields_collapsed = "",
   forms = NULL,
-  forms_collapsed = "",
   events = NULL,
-  events_collapsed = "",
   raw_or_label = "raw",
   raw_or_label_headers = "raw",
   export_checkbox_label = FALSE,
@@ -27,13 +23,16 @@ redcap_read(
   filter_logic = "",
   datetime_range_begin = as.POSIXct(NA),
   datetime_range_end = as.POSIXct(NA),
+  blank_for_gray_form_status = FALSE,
   col_types = NULL,
+  na = c("", "NA"),
   guess_type = TRUE,
   guess_max = NULL,
   http_response_encoding = "UTF-8",
   locale = readr::default_locale(),
   verbose = TRUE,
   config_options = NULL,
+  handle_httr = NULL,
   id_position = 1L
 )
 }
@@ -48,8 +47,11 @@ before requesting a new subset from REDCap. The default is 0.5 seconds.}
 in subsequent batches be attempted.  The default is \code{FALSE}, which prevents
 subsequent batches from running.  Required.}
 
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -57,26 +59,14 @@ project.  Required.}
 \item{records}{An array, where each element corresponds to the ID of a
 desired record.  Optional.}
 
-\item{records_collapsed}{A single string, where the desired ID values are
-separated by commas.  Optional.}
-
 \item{fields}{An array, where each element corresponds to a desired project
 field.  Optional.}
-
-\item{fields_collapsed}{A single string, where the desired field names are
-separated by commas.  Optional.}
 
 \item{forms}{An array, where each element corresponds to a desired project
 form.  Optional.}
 
-\item{forms_collapsed}{A single string, where the desired form names are
-separated by commas.  Optional.}
-
 \item{events}{An array, where each element corresponds to a desired project
 event.  Optional.}
-
-\item{events_collapsed}{A single string, where the desired event names are
-separated by commas.  Optional.}
 
 \item{raw_or_label}{A string (either \code{'raw'} or \code{'label'} that specifies
 whether to export the raw coded values or the labels for the options of
@@ -118,12 +108,22 @@ modified \emph{before} a given datetime, provide a
 value.
 If not specified, REDCap will assume no end time.}
 
+\item{blank_for_gray_form_status}{A boolean value that specifies whether
+or not to export blank values for instrument complete status fields that have
+a gray status icon. All instrument complete status fields having a gray icon
+can be exported either as a blank value or as "0" (Incomplete). Blank values
+are recommended in a data export if the data will be re-imported into a
+REDCap project. Default is \code{FALSE}.}
+
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
 \code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
 
+\item{na}{A \link{character} vector passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}.
+Defaults to \code{c("", "NA")}.}
+
 \item{guess_type}{A boolean value indicating if all columns should be
 returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
-data type for each column.}
+data type for each column.  Ignored if \code{col_types} is not null.}
 
 \item{guess_max}{Deprecated.}
 
@@ -139,8 +139,13 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details in \code{redcap_read_oneshot()} Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 
 \item{id_position}{The column position of the variable that unique
 identifies the subject (typically \code{record_id}).
@@ -149,7 +154,7 @@ This defaults to the first variable in the dataset.}
 \value{
 Currently, a list is returned with the following elements:
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} of the desired records and columns.
+\item \code{data}: A \code{\link[tibble:tibble]{tibble::tibble()}} of the desired records and columns.
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_codes}: A collection of
@@ -165,22 +170,28 @@ string, separated by commas.
 \item \code{filter_logic}: The filter statement passed as an argument.
 \item \code{elapsed_seconds}: The duration of the function.
 }
+
+If no records are retrieved (such as no records meet the filter criteria),
+a zero-row tibble is returned.
+Currently the empty tibble has zero columns, but that may change in the future.
 }
 \description{
 From an external perspective, this function is similar to
 \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}.  The internals differ in that \code{redcap_read}
 retrieves subsets of the data, and then combines them before returning
-(among other objects) a single \code{\link[base:data.frame]{base::data.frame()}}.  This function can
+(among other objects) a single \code{\link[tibble:tibble]{tibble::tibble()}}.  This function can
 be more appropriate than \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} when returning large
 datasets that could tie up the server.
 }
-\details{
+\section{Batching subsets of data}{
+
+
 \code{\link[=redcap_read]{redcap_read()}} internally uses multiple calls to \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
 to select and return data.  Initially, only the primary key is queried
 through the REDCap API.  The long list is then subsetted into batches,
 whose sizes are determined by the \code{batch_size} parameter.  REDCap is then
 queried for all variables of the subset's subjects.  This is repeated for
-each subset, before returning a unified \code{\link[base:data.frame]{base::data.frame()}}.
+each subset, before returning a unified \code{\link[tibble:tibble]{tibble::tibble()}}.
 
 The function allows a delay between calls, which allows the server to
 attend to other users' requests (such as the users entering data in a
@@ -196,7 +207,20 @@ if you encounter the error:
 Please try importing/exporting a smaller amount of data.
 }\if{html}{\out{</div>}}
 
-For \code{\link[=redcap_read]{redcap_read()}} to function properly, the user must have Export
+A third benefit (compared to \code{\link[=redcap_read]{redcap_read()}}) is that important fields are
+included, even if not explicitly requested.  As a result:
+\enumerate{
+\item \code{record_id} (or it's customized name) will always be returned
+\item \code{redcap_event_name} will be returned for longitudinal projects
+\item \code{redcap_repeat_instrument} and \code{redcap_repeat_instance} will be returned
+for projects with repeating instruments
+}
+}
+
+\section{Export permissions}{
+
+
+For \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} to function properly, the user must have Export
 permissions for the 'Full Data Set'.  Users with only 'De-Identified'
 export privileges can still use \code{redcap_read_oneshot}.  To grant the
 appropriate permissions:
@@ -206,13 +230,65 @@ appropriate permissions:
 \item in the 'Data Exports' radio buttons, select 'Full Data Set'.
 }
 }
+
+\section{Pseudofields}{
+
+
+The REDCap project may contain "pseudofields", depending on its structure.
+Pseudofields are exported for certain project structures, but are not
+defined by users and do not appear in the codebook.
+If a recognized pseudofield is passed to the \code{fields} api parameter,
+it is suppressed by \code{\link[=redcap_read]{redcap_read()}} and \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
+so the server doesn't throw an error.
+Requesting a pseudofield is discouraged, so a message is returned to the user.
+
+Pseudofields include:
+\itemize{
+\item \code{redcap_event_name}: for longitudinal projects or multi-arm projects.
+\item \code{redcap_repeat_instrument}:  for projects with repeating instruments.
+\item \code{redcap_repeat_instance}:   for projects with repeating instruments.
+\item \code{redcap_data_access_group}: for projects with DAGs when the
+\code{export_data_access_groups} api parameter is TRUE.
+\item \code{redcap_survey_identifier}:  for projects with surveys when the
+\code{export_survey_fields} api parameter is TRUE.
+\item \emph{instrument_name}\verb{_timestamp}: for projects with surveys.
+For example, an instrument called "demographics" will have a pseudofield
+named \code{demographics_timestamp}.
+REDCapR does not suppress requests for timestamps, so the server will
+throw an error like
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ERROR: The following values in the parameter fields are not valid: 'demographics_timestamp'
+}\if{html}{\out{</div>}}
+}
+}
+
+\section{Events}{
+
+The \code{event} argument is a vector of characters passed to the server.
+It is the "event-name", not the "event-label".
+The event-label is the value presented to the users,
+which contains uppercase letters and spaces,
+while the event-name can contain only lowercase letters, digits,
+and underscores.
+
+If \code{event} is nonnull and the project is not longitudinal,
+\code{\link[=redcap_read]{redcap_read()}} will throw an error.
+Similarly, if a value in the \code{event} vector is not a current
+event-name, \code{\link[=redcap_read]{redcap_read()}} will throw an error.
+
+The simpler \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} function does not
+check for invalid event values, and will not throw errors.
+}
+
 \examples{
 \dontrun{
 uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
 token   <- "9A81268476645C4E5F03428B8AC3AA7B"
+
+# Return the entire dataset
 REDCapR::redcap_read(batch_size=2, redcap_uri=uri, token=token)$data
 
-# Specify the column types.
+# Return a subset of columns while also specifying the column types.
 col_types <- readr::cols(
   record_id  = readr::col_integer(),
   race___1   = readr::col_logical(),
@@ -228,7 +304,6 @@ REDCapR::redcap_read(
   col_types  = col_types,
   batch_size = 2
 )$data
-
 }
 }
 \references{

@@ -2,9 +2,11 @@
 #' @export redcap_project
 #' @importFrom methods new
 #'
-#' @title A Reference Class to make later calls to REDCap more convenient
+#' @title
+#' A Reference Class to make later calls to REDCap more convenient
 #'
-#' @description This `Reference Class` represents a REDCap project.
+#' @description
+#' This `Reference Class` represents a REDCap project.
 #' Once some values are set that are specific to a REDCap project
 #' (such as the URI and token), later calls are less verbose
 #' (such as reading and writing data).
@@ -16,7 +18,7 @@
 #'
 #' @examples
 #' uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
-#' token   <- "D70F9ACD1EDD6F151C6EA78683944E98"
+#' token   <- "9A81268476645C4E5F03428B8AC3AA7B"
 #' \dontrun{
 #' project <- REDCapR::redcap_project$new(redcap_uri=uri, token=token)
 #' ds_all  <- project$read()
@@ -31,12 +33,14 @@
 #' ds_males        <- project$read(records=ids_of_males, batch_size=2)$data
 #' ds_shorties     <- project$read(records=ids_of_shorties)$data
 #'
-#' #Switch the Genders
+#' }
+#' if (FALSE) {
+#' # Switch the Genders
 #' sex_original   <- ds_skinny$sex
 #' ds_skinny$sex  <- (1 - ds_skinny$sex)
 #' project$write(ds_skinny)
 #'
-#' #Switch the Genders back
+#' # Switch the Genders back
 #' ds_skinny$sex <- sex_original
 #' project$write(ds_skinny)
 #' }
@@ -46,7 +50,8 @@ redcap_project <- setRefClass(
 
   fields = list(
     redcap_uri  = "character",
-    token       = "character"
+    token       = "character",
+    verbose     = "logical"
   ),
 
   methods = list(
@@ -55,13 +60,9 @@ redcap_project <- setRefClass(
       batch_size                  = 100L,
       interbatch_delay            = 0,
       records                     = NULL,
-      records_collapsed           = "",
       fields                      = NULL,
-      fields_collapsed            = "",
       forms                       = NULL,
-      forms_collapsed             = "",
       events                      = NULL,
-      events_collapsed            = "",
       raw_or_label                = "raw",
       raw_or_label_headers        = "raw",
       export_checkbox_label       = FALSE,
@@ -69,9 +70,9 @@ redcap_project <- setRefClass(
       export_survey_fields        = FALSE,
       export_data_access_groups   = FALSE,
       filter_logic                  = "",
-
+      col_types                     = NULL,
       guess_type                    = TRUE,
-      guess_max                     = 1000L,
+      guess_max                     = 1000,
       verbose                       = TRUE,
       config_options                = NULL
     ) {
@@ -85,13 +86,9 @@ redcap_project <- setRefClass(
         redcap_uri                    = redcap_uri,
         token                         = token,
         records                       = records,
-        records_collapsed             = records_collapsed,
         fields                        = fields,
-        fields_collapsed              = fields_collapsed,
         forms                         = forms,
-        forms_collapsed               = forms_collapsed,
         events                        = events,
-        events_collapsed              = events_collapsed,
         raw_or_label                  = raw_or_label,
         raw_or_label_headers          = raw_or_label_headers,
         export_checkbox_label         = export_checkbox_label,
@@ -99,7 +96,7 @@ redcap_project <- setRefClass(
         export_survey_fields          = export_survey_fields,
         export_data_access_groups     = export_data_access_groups,
         filter_logic                  = filter_logic,
-
+        col_types                     = col_types,
         guess_type                    = guess_type,
         # placeholder guess_max
         verbose                       = verbose,
@@ -125,11 +122,12 @@ redcap_project <- setRefClass(
         continue_on_error       = continue_on_error,
         redcap_uri              = redcap_uri,
         token                   = token,
+        verbose                 = verbose,
         config_options          = config_options
       ))
     }
-  ) #End methods list
-) #End class
+  ) # End methods list
+) # End class
 
 # https://adv-r.had.co.nz/OO-essentials.html # nolint
 # https://stackoverflow.com/questions/21875596/mapping-a-c-sharp-class-definition-to-an-r-reference-class-definition # nolint

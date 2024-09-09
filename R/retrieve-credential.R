@@ -1,10 +1,16 @@
-#' @name retrieve_credential
-#' @aliases retrieve_credential_local retrieve_credential_mssql create_credential_local
-#' @title Read a token and other credentials from a (non-REDCap)
+#' @name
+#' retrieve_credential
+#'
+#' @aliases
+#' retrieve_credential_local retrieve_credential_mssql create_credential_local
+#'
+#' @title
+#' Read a token and other credentials from a (non-REDCap)
 #' database or file
 #'
-#' @description These functions are not essential to calling the REDCap API,
-#'  but instead are functions that help manage tokens securely.
+#' @description
+#' These functions are not essential to calling the REDCap API,
+#' but instead are functions that help manage tokens securely.
 #'
 #' @usage
 #' retrieve_credential_local(
@@ -51,7 +57,8 @@
 #' @param username A character value used to retrieve a credential.
 #' See the Notes below. Optional.
 #'
-#' @return A list of the following elements are returned from
+#' @return
+#' A list of the following elements are returned from
 #' `retrieve_credential_local()` and `retrieve_credential_mssql()`:
 #' * `redcap_uri`: The URI of the REDCap Server.
 #' * `username`: Username.
@@ -71,7 +78,7 @@
 #' Follow these steps to adapt to your desired REDCap project(s):
 #' 1. Modify the credential file for the REDCap API with a text editor
 #'    like [Notepad++](https://notepad-plus-plus.org/),
-#'    [Visual Studio Code](https://code.visualstudio.com/), or
+#'    [Visual Studio Code](https://code.visualstudio.com), or
 #'    [nano](https://www.nano-editor.org/).
 #'    Replace existing records with the information from your projects.
 #'    Delete the remaining example records.
@@ -86,7 +93,6 @@
 #' 6. Double-check the file is secured and not accessible by other users.
 #'
 #' @note
-#'
 #' *Storing credentials on a server is preferred*
 #'
 #' Although we strongly encourage storing all the tokens on a central server
@@ -96,7 +102,7 @@
 #' if your institution is using something other than SQL Server, and
 #' would like help adapting this approach to your infrastructure.
 #'
-#' *Stored credentials locally*
+#' *Storing credentials locally*
 #'
 #' When storing credentials locally, typically the credential file
 #' should be dedicated to just one user. Occasionally it makes sense to store
@@ -105,7 +111,8 @@
 #' The `username` field is connected only in the local credential file.
 #' It does not need to be the same as the official username in REDCap.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
 #' @examples
 #' # ---- Local File Example ----------------------------
@@ -182,7 +189,7 @@ retrieve_credential_local <- function(
     stop(
       "The project_id was not found in the csv credential file."
     )
-  } else if (nrow(ds_credential) > 1) {
+  } else if (1L < nrow(ds_credential)) {
     stop(
       "More than one matching project_id was found in the csv credential ",
       "file.  There should be only one."
@@ -210,7 +217,7 @@ retrieve_credential_local <- function(
 }
 
 # Privately-scoped function
-credential_local_validation <- function (
+credential_local_validation <- function(
   redcap_uri,
   token,
   username,
@@ -220,7 +227,7 @@ credential_local_validation <- function (
 
 ) {
   # Progress through the optional checks
-  if (check_url & !grepl("https://", redcap_uri, perl = TRUE)) {
+  if (check_url && !grepl("https://", redcap_uri, perl = TRUE)) {
     error_message_username <- paste(
       "The REDCap URL does not reference an https address.  First check",
       "that the URL is correct, and then consider using SSL to encrypt",
@@ -229,7 +236,7 @@ credential_local_validation <- function (
     )
     stop(error_message_username)
 
-  } else if (check_username & (Sys.info()["user"] != username)) {
+  } else if (check_username && (Sys.info()["user"] != username)) {
     error_message_username <- paste(
       "The username (according to R's `Sys.info()['user']` doesn't match the",
       "username in the credentials file.  This is a friendly check, and",
@@ -239,7 +246,7 @@ credential_local_validation <- function (
     )
     stop(error_message_username)
 
-  } else if (check_token_pattern & !grepl("[A-F0-9]{32}", token, perl = TRUE)) {
+  } else if (check_token_pattern && !grepl("[A-F0-9]{32}", token, perl = TRUE)) {
     error_message_token <- paste(
       "A REDCap token should be a string of 32 digits and uppercase",
       "characters.  The retrieved value was not.",
@@ -253,9 +260,8 @@ credential_local_validation <- function (
 # system.file("misc/vignette.css", package="REDCapR")
 # system.file("misc/example.credentials", package="REDCapR")
 
-
 #' @export
-create_credential_local <- function (path_credential) {
+create_credential_local <- function(path_credential) {
   path_source <- system.file(
     "misc/example.credentials",
     package   = "REDCapR"
@@ -292,8 +298,8 @@ retrieve_credential_mssql <- function(
   channel     = NULL
 ) {
 
-  if (!requireNamespace("DBI") )  stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `DBI` package is not installed.  Please install it and try again.")
-  if (!requireNamespace("odbc"))  stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `odbc` package is not installed.  Please install it and try again.")
+  if (!requireNamespace("DBI") ) stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `DBI` package is not installed.  Please install it and try again.")
+  if (!requireNamespace("odbc")) stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `odbc` package is not installed.  Please install it and try again.")
 
   regex_pattern_1 <- "^\\d+$"
   regex_pattern_2 <- "^\\[*[a-zA-Z0-9_]+\\]*$"
@@ -310,12 +316,12 @@ retrieve_credential_mssql <- function(
       "Either enclose in ",
       "quotes, or cast with `as.character()`."
     )
-  } else if (!(base::missing(dsn) | base::is.null(dsn)) & !(class(dsn) %in% c("character"))) {
+  } else if (!(base::missing(dsn) || base::is.null(dsn)) && !(class(dsn) %in% c("character"))) {
     stop(
       "The `dsn` parameter be a character type, or missing or NULL.  ",
       "Either enclose in quotes, or cast with `as.character()`."
     )
-  } else if (!(base::missing(channel) | base::is.null(channel)) & !methods::is(channel, "DBIConnection")) {
+  } else if (!(base::missing(channel) || base::is.null(channel)) && !methods::is(channel, "DBIConnection")) {
     stop("The `channel` parameter be a `DBIConnection` type, or NULL.")
 
   } else if (length(project_id) != 1L) {
@@ -341,8 +347,8 @@ retrieve_credential_mssql <- function(
   sql <- "EXEC [redcap].[prc_credential] @project_id = ?, @instance = ?"
   input <- list(project_id = project_id, instance = instance)
 
-  if (base::missing(channel) | base::is.null(channel)) {
-    if (base::missing(dsn) | base::is.null(dsn)) {
+  if (base::missing(channel) || base::is.null(channel)) {
+    if (base::missing(dsn) || base::is.null(dsn)) {
       stop(
         "The 'dsn' parameter can be missing only if a 'channel' has been ",
         "passed to 'retrieve_credential_mssql'."

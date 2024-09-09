@@ -1,24 +1,34 @@
-#' @title Import metadata of a REDCap project
+#' @title
+#' Import metadata of a REDCap project
 #'
 #' @description
 #' Import metadata (*i.e.*, data dictionary)
 #' into a project. Because of this method's destructive nature,
 #' it works for only projects in Development status.
 #'
-#' @param ds The [base::data.frame()] to be imported into the REDCap project.
+#' @param ds The [base::data.frame()] or [tibble::tibble()]
+#' to be imported into the REDCap project.
 #' Required.
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to [httr::POST()] method
-#' in the 'httr' package.  See the details in [redcap_read_oneshot()] Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements:
+#' @return
+#' Currently, a list is returned with the following elements:
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
@@ -32,9 +42,11 @@
 #' REDCap.  If an operation is successful, the `raw_text` is returned as an
 #' empty string to save RAM.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki.
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
@@ -50,7 +62,7 @@
 #' ds_to_write <-
 #'   readr::read_csv(
 #'     file = system.file(
-#'       "test-data/project-simple/simple-metadata.csv",
+#'       "test-data/project-simple/metadata.csv",
 #'       package = "REDCapR"
 #'     ),
 #'     col_types = readr::cols(.default = readr::col_character())
@@ -71,9 +83,14 @@ redcap_metadata_write <- function(
   redcap_uri,
   token,
   verbose         = TRUE,
-  config_options  = NULL
+  config_options  = NULL,
+  handle_httr       = NULL
 ) {
-  csv_elements <- NULL #This prevents the R CHECK NOTE: 'No visible binding for global variable Note in R CMD check';  Also see  if( getRversion() >= "2.15.1" )    utils::globalVariables(names=c("csv_elements")) #https://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check; https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when
+
+  # This prevents the R CHECK NOTE: 'No visible binding for global variable Note in R CMD check';
+  # Also see if( getRversion() >= "2.15.1" )    utils::globalVariables(names=c("csv_elements"))
+  # https://stackoverflow.com/questions/8096313/; https://stackoverflow.com/questions/9439256
+  csv_elements <- NULL
 
   checkmate::assert_character(redcap_uri, any.missing = FALSE, len = 1, pattern = "^.{1,}$")
   checkmate::assert_character(token     , any.missing = FALSE, len = 1, pattern = "^.{1,}$")
@@ -100,8 +117,14 @@ redcap_metadata_write <- function(
     returnFormat  = "csv"
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     field_count           <- as.integer(kernel$raw_text)

@@ -37,7 +37,7 @@ expected_data_frame <- structure(list(record_id = 1:5, name_first = c("Nutmeg", 
 
 expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-for( i in seq_len(read_count) ) {
+for (i in seq_len(read_count)) {
   expect_message(
     returned_object <- redcap_read_oneshot(
       redcap_uri    = credential$redcap_uri,
@@ -61,7 +61,7 @@ for( i in seq_len(read_count) ) {
 
 # File ---------------------------------------------------
 message("\n========\nFile")
-for( i in seq_len(file_count) ) {
+for (i in seq_len(file_count)) {
   start_clean_result <- REDCapR:::clean_start_simple(batch=FALSE)
   project <- start_clean_result$redcap_project
 
@@ -75,8 +75,8 @@ for( i in seq_len(file_count) ) {
     regexp = expected_outcome_message
   )
 
-#   start_time <- Sys.time() - lubridate::seconds(1) #Knock off a second inc ase there's small time imprecisions
-  start_time <- Sys.time() - 25 #Knock off a second in case there are small time imprecisions
+#   start_time <- Sys.time() - lubridate::seconds(1) # Knock off a second inc ase there's small time imprecisions
+  start_time <- Sys.time() - 25 # Knock off a second in case there are small time imprecisions
 
   path_of_expected <- system.file("test-data/mugshot-1.jpg", package="REDCapR")
   info_expected <- file.info(path_of_expected)
@@ -88,7 +88,7 @@ for( i in seq_len(file_count) ) {
 
   tryCatch({
     expect_message(
-      returned_object <- redcap_download_file_oneshot(
+      returned_object <- redcap_file_download_oneshot(
         record        = record,
         field         = field,
         redcap_uri    = start_clean_result$redcap_project$redcap_uri,
@@ -101,7 +101,7 @@ for( i in seq_len(file_count) ) {
     }, finally = base::unlink("mugshot-1.jpg")
   )
 
-  #Test the values of the returned object.
+  # Test the values of the returned object.
   expect_true(returned_object$success)
   expect_equal(returned_object$status_code, expected=200L)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
@@ -111,7 +111,7 @@ for( i in seq_len(file_count) ) {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_equal(returned_object$file_name, "mugshot-1.jpg", label="The name of the downloaded file should be correct.")
 
-  #Test the values of the file.
+  # Test the values of the file.
   expect_equal(info_actual$size, expected=info_expected$size, label="The size of the downloaded file should match.")
   expect_false(info_actual$isdir, "The downloaded file should not be a directory.")
   expect_equal(info_actual$mode, expected=info_expected$mode, label="The mode/permissions of the downloaded file should match.")

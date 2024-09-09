@@ -1,6 +1,6 @@
 # These functions are not exported.
 
-populate_project_simple <- function(batch = FALSE) {
+populate_project_simple <- function(batch = FALSE, verbose = TRUE) {
   checkmate::assert_logical(batch, any.missing = FALSE, len = 1)
 
   if (!requireNamespace("testthat")) {
@@ -16,10 +16,11 @@ populate_project_simple <- function(batch = FALSE) {
 
   project <- REDCapR::redcap_project$new(
     redcap_uri    = credential$redcap_uri,
-    token         = credential$token
+    token         = credential$token,
+    verbose       = verbose
   )
   path_in_simple <- system.file(
-    "test-data/project-simple/simple-data.csv",
+    "test-data/project-simple/data.csv",
     package = "REDCapR"
   )
 
@@ -42,41 +43,43 @@ populate_project_simple <- function(batch = FALSE) {
   ds_to_write$bmi <- NULL
 
   # Import the data into the REDCap project
-  testthat::expect_message(
-    returned_object <- if (batch) {
-      REDCapR::redcap_write(
-        ds          = ds_to_write,
-        redcap_uri  = project$redcap_uri,
-        token       = project$token,
-        verbose     = TRUE,
-        convert_logical_to_integer = TRUE
-      )
-    } else {
-      REDCapR::redcap_write_oneshot(
-        ds          = ds_to_write,
-        redcap_uri  = project$redcap_uri,
-        token       = project$token,
-        verbose     = TRUE,
-        convert_logical_to_integer = TRUE
-      )
-    }
-  )
+  returned_object <- if (batch) {
+    REDCapR::redcap_write(
+      ds_to_write                 = ds_to_write,
+      redcap_uri                  = project$redcap_uri,
+      token                       = project$token,
+      verbose                     = verbose,
+      convert_logical_to_integer  = TRUE
+    )
+  } else {
+    REDCapR::redcap_write_oneshot(
+      ds                          = ds_to_write,
+      redcap_uri                  = project$redcap_uri,
+      token                       = project$token,
+      verbose                     = verbose,
+      convert_logical_to_integer  = TRUE
+    )
+  }
 
   # If uploading the data was successful, then upload the image files.
   if (returned_object$success) {
     upload_file_simple(
       redcap_uri    = project$redcap_uri,
-      token         = project$token
+      token         = project$token,
+      verbose       = verbose
     )
   }
 
-  # Print a message and return a boolean value
-  base::message(base::sprintf(
-    "populate_project_simple success: %s.",
-    returned_object$success
-  ))
+  if (verbose) {
+    # Print a message and return a boolean value
+    base::message(base::sprintf(
+      "populate_project_simple success: %s.",
+      returned_object$success
+    ))
+  }
   list(is_success = returned_object$success, redcap_project = project)
 }
+
 clear_project_simple <- function(verbose = TRUE) {
   if (!requireNamespace("testthat")) {
     # nocov start
@@ -103,7 +106,7 @@ clear_project_simple <- function(verbose = TRUE) {
   was_successful
 }
 
-clean_start_simple <- function(batch = FALSE, delay_in_seconds = 1) {
+clean_start_simple <- function(batch = FALSE, delay_in_seconds = 1, verbose = FALSE) {
   checkmate::assert_logical(batch           , any.missing=FALSE, len=1)
   checkmate::assert_numeric(delay_in_seconds, any.missing=FALSE, len=1, lower=0)
 
@@ -115,24 +118,19 @@ clean_start_simple <- function(batch = FALSE, delay_in_seconds = 1) {
     )
     # nocov end
   }
-  testthat::expect_message(
-    clear_result <- clear_project_simple(),
-    regexp = "clear_project_simple success: TRUE."
-  )
-  testthat::expect_true(clear_result, "Clearing the results from the simple project should be successful.")
-  base::Sys.sleep(delay_in_seconds) #Pause after deleting records.
 
-  testthat::expect_message(
-    populate_result <- populate_project_simple(batch = batch),
-    regexp = "populate_project_simple success: TRUE."
-  )
+  clear_result <- clear_project_simple(verbose = verbose)
+  testthat::expect_true(clear_result, "Clearing the results from the simple project should be successful.")
+  base::Sys.sleep(delay_in_seconds) # Pause after deleting records.
+
+  populate_result <- populate_project_simple(batch = batch, verbose = verbose)
   testthat::expect_true(populate_result$is_success, "Population of the simple project should be successful.")
-  base::Sys.sleep(delay_in_seconds) #Pause after writing records.
+  base::Sys.sleep(delay_in_seconds) # Pause after writing records.
 
   populate_result
 }
 
-upload_file_simple <- function(redcap_uri, token = token) {
+upload_file_simple <- function(redcap_uri, token = token, verbose = FALSE) {
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, min.chars = 5)
   checkmate::assert_character(token     , any.missing=FALSE, len=1, pattern="^\\w{32}$")
 
@@ -150,12 +148,13 @@ upload_file_simple <- function(redcap_uri, token = token) {
   for (i in seq_along(records)) {
     record    <- records[i]
     file_path <- file_paths[i]
-    redcap_upload_file_oneshot(
+    redcap_file_upload_oneshot(
       file_name   = file_path,
       record      = record,
       field       = field,
       redcap_uri  = redcap_uri,
-      token       = token
+      token       = token,
+      verbose     = verbose
     )
   }
 }

@@ -1,10 +1,15 @@
-#' @title Read/Export records that populate a REDCap report
+#' @title
+#' Read/Export records that populate a REDCap report
 #'
-#' @description Exports the data set of a report created on a project's
+#' @description
+#' Exports the data set of a report created on a project's
 #' 'Data Exports, Reports, and Stats' page.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param report_id A single integer, provided next to the report name on the
@@ -23,19 +28,25 @@
 #' @param col_types A [readr::cols()] object passed internally to
 #' [readr::read_csv()].  Optional.
 #' @param guess_type A boolean value indicating if all columns should be
-#' returned as character.  If false, [readr::read_csv()] guesses the intended
+#' returned as character.  If true, [readr::read_csv()] guesses the intended
 #' data type for each column.  Ignored if `col_types` is not null.
-#' @param guess_max A positive integer passed to [readr::read_csv()] that
+#' @param guess_max A positive [base::numeric] value
+#' passed to [readr::read_csv()] that
 #' specifies the maximum number of records to use for guessing column types.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details below. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements:
-#' * `data`: An R [base::data.frame()] of the desired records and columns.
+#' @return
+#' Currently, a list is returned with the following elements:
+#' * `data`: A [tibble::tibble()] of the desired records and columns.
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
@@ -48,14 +59,11 @@
 #' REDCap.  If an operation is successful, the `raw_text` is returned as an
 #' empty string to save RAM.
 #'
-#' @details
-#' The full list of configuration options accepted by the `httr` package is
-#' viewable by executing [httr::httr_options()].  The `httr` package and
-#' documentation is available at https://cran.r-project.org/package=httr.
+#' @author
+#' Will Beasley
 #'
-#' @author Will Beasley
-#'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -124,9 +132,10 @@ redcap_report <- function(
 
   col_types                     = NULL,
   guess_type                    = TRUE,
-  guess_max                     = 1000L,
+  guess_max                     = 1000,
   verbose                       = TRUE,
-  config_options                = NULL
+  config_options                = NULL,
+  handle_httr                   = NULL
 ) {
 
   checkmate::assert_character(redcap_uri                , any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -139,7 +148,7 @@ redcap_report <- function(
   checkmate::assert_logical(  export_checkbox_label     , any.missing=FALSE, len=1)
 
   checkmate::assert_logical(  guess_type                , any.missing=FALSE, len=1)
-  checkmate::assert_integerish(guess_max                , any.missing=FALSE, len=1, lower=1)
+  checkmate::assert_numeric(   guess_max                , any.missing=FALSE, len=1, lower=1)
   checkmate::assert_logical(  verbose                   , any.missing=FALSE, len=1, null.ok=TRUE)
   checkmate::assert_list(     config_options            , any.missing=TRUE ,        null.ok=TRUE)
 
@@ -156,8 +165,14 @@ redcap_report <- function(
     exportCheckboxLabel     = tolower(as.character(export_checkbox_label))
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     col_types <-
@@ -173,15 +188,14 @@ redcap_report <- function(
           col_types       = col_types,
           guess_max       = guess_max,
           show_col_types  = FALSE
-        ) %>%
-        as.data.frame(),
+        ),
 
       # Don't print the warning in the try block.  Print it below,
       #   where it's under the control of the caller.
       silent = TRUE
     )
 
-    if (exists("ds") & inherits(ds, "data.frame")) {
+    if (exists("ds") && inherits(ds, "data.frame")) {
       outcome_message <- sprintf(
         "%s records and %s columns were read from REDCap in %0.1f seconds.  The http status code was %i.",
         format(  nrow(ds), big.mark = ",", scientific = FALSE, trim = TRUE),
@@ -199,7 +213,7 @@ redcap_report <- function(
       # Override the 'success' determination from the http status code.
       #   and return an empty data.frame.
       kernel$success   <- FALSE
-      ds               <- data.frame()
+      ds               <- tibble::tibble() # Return an empty data.frame
       outcome_message  <- sprintf(
         "The REDCap report failed.  The http status code was %i.  The 'raw_text' returned was '%s'.",
         kernel$status_code,
@@ -208,15 +222,16 @@ redcap_report <- function(
       # nocov end
     }
   } else { # kernel fails
-    ds              <- data.frame() #Return an empty data.frame
-    outcome_message <- if (any(grepl(kernel$regex_empty, kernel$raw_text))) {
-      "The REDCapR report operation was not successful.  The returned dataset was empty."  # nocov
-    } else {
-      sprintf(
-        "The REDCapR report operation was not successful.  The error message was:\n%s",
-        kernel$raw_text
-      )
-    }
+    ds              <- tibble::tibble() # Return an empty data.frame
+    outcome_message <-
+      if (any(grepl(kernel$regex_empty, kernel$raw_text))) {
+        "The REDCapR report operation was not successful.  The returned dataset was empty."  # nocov
+      } else {
+        sprintf(
+          "The REDCapR report operation was not successful.  The error message was:\n%s",
+          kernel$raw_text
+        )
+      }
   }
 
   if (verbose)

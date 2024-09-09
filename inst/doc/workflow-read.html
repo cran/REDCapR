@@ -30,27 +30,27 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -64,55 +64,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -121,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -371,10 +377,10 @@ PHI.</p>
 <p>First confirm that the REDCapR package is installed on your local
 machine. If not, the following line will throw the error
 <code>Loading required namespace: REDCapR.  Failed with error: ‘there is no package called ‘REDCapR’’</code>.
-If this call fails, follow the installation instructions on the <a href="https://ouhscbbmc.github.io/REDCapR/">REDCapR</a> webpage.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">requireNamespace</span>(<span class="st">&quot;REDCapR&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If this fails, run `install.packages(&quot;REDCapR&quot;)` or `remotes::install_github(repo=&quot;OuhscBbmc/REDCapR&quot;)`</span></span></code></pre></div>
+If this call fails, follow the installation instructions on the <a href="https://ouhscbbmc.github.io/REDCapR/">REDCapR</a> website.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">requireNamespace</span>(<span class="st">&quot;REDCapR&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># If this fails, run `install.packages(&quot;REDCapR&quot;)` or `remotes::install_github(repo=&quot;OuhscBbmc/REDCapR&quot;)`</span></span></code></pre></div>
 <p>If you’re a workshop attendee, you can use this vignette to copy
 snippets of code to your local machine to follow along with the
 examples: <a href="https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html" class="uri">https://ouhscbbmc.github.io/REDCapR/articles/workflow-read.html</a>.</p>
@@ -433,7 +439,7 @@ Protect it like any other password to PHI (<a href="https://www.hhs.gov/answers/
 health information</a>). For a project with PHI, <strong>never hard-code
 the password directly in an R file</strong>. In other words, no PHI
 project should be accessed with an R file that includes the line</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_secret_token <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>my_secret_token <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span></code></pre></div>
 <p>Instead, we suggest storing the token in a location that can be
 accessed by only you. We have two recommendations.</p>
 <div id="security-method-1-token-file" class="section level2">
@@ -452,27 +458,27 @@ like this:</p>
 &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,213,D70F9ACD1EDD6F151C6EA78683944E98,&quot;write data&quot;</code></pre>
 <p>To retrieve the credentials for the first project listed above, pass
 the value of “153” to <code>project_id</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">153</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>credential</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $redcap_uri</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $username</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;myusername&quot;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $project_id</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $token</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;simple static (read-only) test project&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">153</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>credential</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; $redcap_uri</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $username</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;myusername&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; $project_id</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; $token</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [1] &quot;simple static (read-only) test project&quot;</span></span></code></pre></div>
 <p>A credential file is already created for this vignette. In your next
 real project, call <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>create_credential_local()</code></a>
 to start a well-formed csv file that can contain tokens.</p>
@@ -494,143 +500,577 @@ have at least basic database administration experience.</p>
 <p>The <code>redcap_uri</code> and <code>token</code> fields are the
 only required arguments of <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>;
 both are in the credential object created in the previous section.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ds_1 <span class="ot">&lt;-</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:06.</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .default = col_double(),</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_first = col_character(),</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_last = col_character(),</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   address = col_character(),</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   telephone = col_character(),</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   email = col_character(),</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   dob = col_date(format = &quot;&quot;),</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   comments = col_character(),</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mugshot = col_character()</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>ds_1 <span class="ot">&lt;-</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:40.486384.</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span></code></pre></div>
 <p>At this point, the data.frame <code>ds_1</code> has everything you
 need to start analyzing the project.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ds_1</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id name_first name_last                                 address</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2     Tumtum  Nutmouse 14 Rose Cottage Blvd.\nKenning UK 34243</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3     Marcus      Wood          243 Hill St.\nGuthrie OK 73402</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         4      Trudy       DAG          342 Elm\nDuncanville TX, 75116</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         5   John Lee    Walker      Hotel Suite\nNew Orleans LA, 70115</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        telephone               email        dob age sex demographics_complete</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 (405) 321-1111     nutty@mouse.com 2003-08-30  11   0                     2</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 (405) 321-2222    tummy@mouse.comm 2003-03-10  11   1                     2</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 (405) 321-3333        mw@mwood.net 1934-04-09  80   1                     2</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 (405) 321-4444 peroxide@blonde.com 1952-11-02  61   0                     2</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 (405) 321-5555  left@hippocket.com 1955-04-15  59   1                     2</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   height weight   bmi</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   7.00      1 204.1</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   6.00      1 277.8</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 180.00     80  24.7</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 165.00     54  19.8</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 193.04    104  27.9</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                                      comments</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                                                                     Character in a book, with some guessing</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                                                                          A mouse character from a good book</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                                                                                          completely made up</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 This record doesn&#39;t have a DAG assigned\n\nSo call up Trudy on the telephone\nSend her a letter in the mail</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                 Had a hand for trouble and a eye for cash\n\nHe had a gold watch chain and a black mustache</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         mugshot health_complete race___1 race___2 race___3 race___4 race___5</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mugshot-1.jpg               1        0        0        0        0        1</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 mugshot-2.jpg               0        0        0        1        0        1</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 mugshot-3.jpg               2        0        0        0        1        1</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 mugshot-4.jpg               2        0        1        0        0        1</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 mugshot-5.jpg               0        1        0        0        0        0</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   race___6 ethnicity interpreter_needed race_and_ethnicity_complete</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        0         1                  0                           2</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2        0         1                  0                           0</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3        0         0                  1                           2</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4        0         1                 NA                           2</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5        1         2                  0                           2</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ds_1<span class="sc">$</span>weight)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ds_1)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    record_id  name_first         name_last           address         </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   :1   Length:5           Length:5           Length:5          </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:2   Class :character   Class :character   Class :character  </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median :3   Mode  :character   Mode  :character   Mode  :character  </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :3                                                           </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:4                                                           </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :5                                                           </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   telephone            email                dob                  age      </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Length:5           Length:5           Min.   :1934-04-09   Min.   :11.0  </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Class :character   Class :character   1st Qu.:1952-11-02   1st Qu.:11.0  </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mode  :character   Mode  :character   Median :1955-04-15   Median :59.0  </span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                        Mean   :1969-11-06   Mean   :44.4  </span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                        3rd Qu.:2003-03-10   3rd Qu.:61.0  </span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                        Max.   :2003-08-30   Max.   :80.0  </span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                           </span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sex      demographics_complete     height          weight   </span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :2             Min.   :  6.0   Min.   :  1  </span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:2             1st Qu.:  7.0   1st Qu.:  1  </span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median :1.0   Median :2             Median :165.0   Median : 54  </span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.6   Mean   :2             Mean   :110.2   Mean   : 48  </span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:1.0   3rd Qu.:2             3rd Qu.:180.0   3rd Qu.: 80  </span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :2             Max.   :193.0   Max.   :104  </span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                   </span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       bmi          comments           mugshot          health_complete</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   : 19.8   Length:5           Length:5           Min.   :0      </span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 24.7   Class :character   Class :character   1st Qu.:0      </span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median : 27.9   Mode  :character   Mode  :character   Median :1      </span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :110.9                                         Mean   :1      </span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:204.1                                         3rd Qu.:2      </span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :277.8                                         Max.   :2      </span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                       </span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     race___1      race___2      race___3      race___4      race___5  </span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :0.0   Min.   :0.0   Min.   :0.0   Min.   :0.0  </span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:0.0   1st Qu.:0.0   1st Qu.:0.0   1st Qu.:1.0  </span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median :0.0   Median :0.0   Median :0.0   Median :0.0   Median :1.0  </span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.2   Mean   :0.2   Mean   :0.2   Mean   :0.2   Mean   :0.8  </span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:1.0  </span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :1.0   Max.   :1.0   Max.   :1.0   Max.   :1.0  </span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                       </span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     race___6     ethnicity interpreter_needed race_and_ethnicity_complete</span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :0   Min.   :0.00       Min.   :0.0                </span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:1   1st Qu.:0.00       1st Qu.:2.0                </span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Median :0.0   Median :1   Median :0.00       Median :2.0                </span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.2   Mean   :1   Mean   :0.25       Mean   :1.6                </span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:0.0   3rd Qu.:1   3rd Qu.:0.25       3rd Qu.:2.0                </span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :2   Max.   :1.00       Max.   :2.0                </span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            NA&#39;s   :1</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> bmi, <span class="at">data =</span> ds_1))</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = age ~ 1 + sex + bmi, data = ds_1)</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1       2       3       4       5 </span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -2.491   1.954   9.132   2.491 -11.086 </span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 63.34496    8.89980   7.118   0.0192 *</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sex         13.55626    9.62958   1.408   0.2945  </span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; bmi         -0.24426    0.04337  -5.632   0.0301 *</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 10.55 on 2 degrees of freedom</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9442, Adjusted R-squared:  0.8884 </span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic: 16.92 on 2 and 2 DF,  p-value: 0.05581</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>ds_1</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+record<br>id
+</th>
+<th style="text-align:left;">
+name<br>first
+</th>
+<th style="text-align:left;">
+name<br>last
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+telephone
+</th>
+<th style="text-align:left;">
+email
+</th>
+<th style="text-align:left;">
+dob
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:right;">
+sex
+</th>
+<th style="text-align:right;">
+demographics<br>complete
+</th>
+<th style="text-align:right;">
+height
+</th>
+<th style="text-align:right;">
+weight
+</th>
+<th style="text-align:right;">
+bmi
+</th>
+<th style="text-align:left;">
+comments
+</th>
+<th style="text-align:left;">
+mugshot
+</th>
+<th style="text-align:right;">
+health<br>complete
+</th>
+<th style="text-align:right;">
+race<br><br><br>1
+</th>
+<th style="text-align:right;">
+race<br><br><br>2
+</th>
+<th style="text-align:right;">
+race<br><br><br>3
+</th>
+<th style="text-align:right;">
+race<br><br><br>4
+</th>
+<th style="text-align:right;">
+race<br><br><br>5
+</th>
+<th style="text-align:right;">
+race<br><br><br>6
+</th>
+<th style="text-align:right;">
+ethnicity
+</th>
+<th style="text-align:right;">
+interpreter<br>needed
+</th>
+<th style="text-align:right;">
+race<br>and<br>ethnicity<br>complete
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nutmeg
+</td>
+<td style="text-align:left;">
+Nutmouse
+</td>
+<td style="text-align:left;">
+14 Rose Cottage St. Kenning UK, 323232
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-1111
+</td>
+<td style="text-align:left;">
+<a href="mailto:nutty@mouse.com" class="email">nutty@mouse.com</a>
+</td>
+<td style="text-align:left;">
+2003-08-30
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+204.1
+</td>
+<td style="text-align:left;">
+Character in a book, with some guessing
+</td>
+<td style="text-align:left;">
+mugshot-1.jpg
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Tumtum
+</td>
+<td style="text-align:left;">
+Nutmouse
+</td>
+<td style="text-align:left;">
+14 Rose Cottage Blvd. Kenning UK 34243
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-2222
+</td>
+<td style="text-align:left;">
+<a href="mailto:tummy@mouse.comm" class="email">tummy@mouse.comm</a>
+</td>
+<td style="text-align:left;">
+2003-03-10
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+277.8
+</td>
+<td style="text-align:left;">
+A mouse character from a good book
+</td>
+<td style="text-align:left;">
+mugshot-2.jpg
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Marcus
+</td>
+<td style="text-align:left;">
+Wood
+</td>
+<td style="text-align:left;">
+243 Hill St. Guthrie OK 73402
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-3333
+</td>
+<td style="text-align:left;">
+<a href="mailto:mw@mwood.net" class="email">mw@mwood.net</a>
+</td>
+<td style="text-align:left;">
+1934-04-09
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+180.00
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+24.7
+</td>
+<td style="text-align:left;">
+completely made up
+</td>
+<td style="text-align:left;">
+mugshot-3.jpg
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Trudy
+</td>
+<td style="text-align:left;">
+DAG
+</td>
+<td style="text-align:left;">
+342 Elm Duncanville TX, 75116
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-4444
+</td>
+<td style="text-align:left;">
+<a href="mailto:peroxide@blonde.com" class="email">peroxide@blonde.com</a>
+</td>
+<td style="text-align:left;">
+1952-11-02
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+165.00
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+19.8
+</td>
+<td style="text-align:left;">
+This record doesn’t have a DAG assigned</li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+So call up Trudy on the telephone Send her a letter in the mail
+</td>
+<td style="text-align:left;">
+mugshot-4.jpg
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+John Lee
+</td>
+<td style="text-align:left;">
+Walker
+</td>
+<td style="text-align:left;">
+Hotel Suite New Orleans LA, 70115
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-5555
+</td>
+<td style="text-align:left;">
+<a href="mailto:left@hippocket.com" class="email">left@hippocket.com</a>
+</td>
+<td style="text-align:left;">
+1955-04-15
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+193.04
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+27.9
+</td>
+<td style="text-align:left;">
+Had a hand for trouble and a eye for cash</li>
+</ol>
+He had a gold watch chain and a black mustache
+</td>
+<td style="text-align:left;">
+mugshot-5.jpg
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">hist</span>(ds_1<span class="sc">$</span>weight)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">summary</span>(ds_1)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;    record_id  name_first         name_last           address         </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;  Min.   :1   Length:5           Length:5           Length:5          </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:2   Class :character   Class :character   Class :character  </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;  Median :3   Mode  :character   Mode  :character   Mode  :character  </span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;  Mean   :3                                                           </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:4                                                           </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt;  Max.   :5                                                           </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt;                                                                      </span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;   telephone            email                dob                  age      </span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  Length:5           Length:5           Min.   :1934-04-09   Min.   :11.0  </span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  Class :character   Class :character   1st Qu.:1952-11-02   1st Qu.:11.0  </span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  Mode  :character   Mode  :character   Median :1955-04-15   Median :59.0  </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;                                        Mean   :1969-11-06   Mean   :44.4  </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;                                        3rd Qu.:2003-03-10   3rd Qu.:61.0  </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;                                        Max.   :2003-08-30   Max.   :80.0  </span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;                                                                           </span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt;       sex      demographics_complete     height          weight   </span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :2             Min.   :  6.0   Min.   :  1  </span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:2             1st Qu.:  7.0   1st Qu.:  1  </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;  Median :1.0   Median :2             Median :165.0   Median : 54  </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.6   Mean   :2             Mean   :110.2   Mean   : 48  </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:1.0   3rd Qu.:2             3rd Qu.:180.0   3rd Qu.: 80  </span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :2             Max.   :193.0   Max.   :104  </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt;                                                                   </span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt;       bmi          comments           mugshot          health_complete</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt;  Min.   : 19.8   Length:5           Length:5           Min.   :0      </span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt;  1st Qu.: 24.7   Class :character   Class :character   1st Qu.:0      </span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt;  Median : 27.9   Mode  :character   Mode  :character   Median :1      </span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt;  Mean   :110.9                                         Mean   :1      </span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:204.1                                         3rd Qu.:2      </span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt;  Max.   :277.8                                         Max.   :2      </span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt;                                                                       </span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt;     race___1      race___2      race___3      race___4      race___5  </span></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :0.0   Min.   :0.0   Min.   :0.0   Min.   :0.0  </span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:0.0   1st Qu.:0.0   1st Qu.:0.0   1st Qu.:1.0  </span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt;  Median :0.0   Median :0.0   Median :0.0   Median :0.0   Median :1.0  </span></span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.2   Mean   :0.2   Mean   :0.2   Mean   :0.2   Mean   :0.8  </span></span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:0.0   3rd Qu.:1.0  </span></span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :1.0   Max.   :1.0   Max.   :1.0   Max.   :1.0  </span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt;                                                                       </span></span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co">#&gt;     race___6     ethnicity interpreter_needed race_and_ethnicity_complete</span></span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a><span class="co">#&gt;  Min.   :0.0   Min.   :0   Min.   :0.00       Min.   :0.0                </span></span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:0.0   1st Qu.:1   1st Qu.:0.00       1st Qu.:2.0                </span></span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a><span class="co">#&gt;  Median :0.0   Median :1   Median :0.00       Median :2.0                </span></span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a><span class="co">#&gt;  Mean   :0.2   Mean   :1   Mean   :0.25       Mean   :1.6                </span></span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:0.0   3rd Qu.:1   3rd Qu.:0.25       3rd Qu.:2.0                </span></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.0   Max.   :2   Max.   :1.00       Max.   :2.0                </span></span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a><span class="co">#&gt;                            NA&#39;s   :1</span></span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(age <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> sex <span class="sc">+</span> bmi, <span class="at">data =</span> ds_1))</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; lm(formula = age ~ 1 + sex + bmi, data = ds_1)</span></span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a><span class="co">#&gt;       1       2       3       4       5 </span></span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a><span class="co">#&gt;  -2.491   1.954   9.132   2.491 -11.086 </span></span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span></span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a><span class="co">#&gt; (Intercept) 63.34496    8.89980   7.118   0.0192 *</span></span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a><span class="co">#&gt; sex         13.55626    9.62958   1.408   0.2945  </span></span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a><span class="co">#&gt; bmi         -0.24426    0.04337  -5.632   0.0301 *</span></span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 10.55 on 2 degrees of freedom</span></span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.9442, Adjusted R-squared:  0.8884 </span></span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a><span class="co">#&gt; F-statistic: 16.92 on 2 and 2 DF,  p-value: 0.05581</span></span></code></pre></div>
 <p><em>Pause here in the workshop for a few minutes. Raise hand if
 you’re having trouble.</em></p>
 </div>
@@ -660,47 +1100,256 @@ remain on the server.</li>
 <h2>Specify Record IDs</h2>
 <p>The most basic operation to limit rows is passing the exact record
 identifiers.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only records with IDs of 1 and 4</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>desired_records <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">records     =</span> desired_records,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2022-08-10 09:25:08.</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .default = col_double(),</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_first = col_character(),</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_last = col_character(),</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   address = col_character(),</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   telephone = col_character(),</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   email = col_character(),</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   dob = col_date(format = &quot;&quot;),</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   comments = col_character(),</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mugshot = col_character()</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id name_first name_last                                 address</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         4      Trudy       DAG          342 Elm\nDuncanville TX, 75116</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        telephone               email        dob age sex demographics_complete</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 (405) 321-1111     nutty@mouse.com 2003-08-30  11   0                     2</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 (405) 321-4444 peroxide@blonde.com 1952-11-02  61   0                     2</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   height weight   bmi</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      7      1 204.1</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    165     54  19.8</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                                                      comments</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1                                                                     Character in a book, with some guessing</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 This record doesn&#39;t have a DAG assigned\n\nSo call up Trudy on the telephone\nSend her a letter in the mail</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         mugshot health_complete race___1 race___2 race___3 race___4 race___5</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mugshot-1.jpg               1        0        0        0        0        1</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 mugshot-4.jpg               2        0        1        0        0        1</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   race___6 ethnicity interpreter_needed race_and_ethnicity_complete</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        0         1                  0                           2</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2        0         1                 NA                           2</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Return only records with IDs of 1 and 4</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>desired_records <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">records     =</span> desired_records,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+record<br>id
+</th>
+<th style="text-align:left;">
+name<br>first
+</th>
+<th style="text-align:left;">
+name<br>last
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+telephone
+</th>
+<th style="text-align:left;">
+email
+</th>
+<th style="text-align:left;">
+dob
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:right;">
+sex
+</th>
+<th style="text-align:right;">
+demographics<br>complete
+</th>
+<th style="text-align:right;">
+height
+</th>
+<th style="text-align:right;">
+weight
+</th>
+<th style="text-align:right;">
+bmi
+</th>
+<th style="text-align:left;">
+comments
+</th>
+<th style="text-align:left;">
+mugshot
+</th>
+<th style="text-align:right;">
+health<br>complete
+</th>
+<th style="text-align:right;">
+race<br><br><br>1
+</th>
+<th style="text-align:right;">
+race<br><br><br>2
+</th>
+<th style="text-align:right;">
+race<br><br><br>3
+</th>
+<th style="text-align:right;">
+race<br><br><br>4
+</th>
+<th style="text-align:right;">
+race<br><br><br>5
+</th>
+<th style="text-align:right;">
+race<br><br><br>6
+</th>
+<th style="text-align:right;">
+ethnicity
+</th>
+<th style="text-align:right;">
+interpreter<br>needed
+</th>
+<th style="text-align:right;">
+race<br>and<br>ethnicity<br>complete
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nutmeg
+</td>
+<td style="text-align:left;">
+Nutmouse
+</td>
+<td style="text-align:left;">
+14 Rose Cottage St. Kenning UK, 323232
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-1111
+</td>
+<td style="text-align:left;">
+<a href="mailto:nutty@mouse.com" class="email">nutty@mouse.com</a>
+</td>
+<td style="text-align:left;">
+2003-08-30
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+204.1
+</td>
+<td style="text-align:left;">
+Character in a book, with some guessing
+</td>
+<td style="text-align:left;">
+mugshot-1.jpg
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Trudy
+</td>
+<td style="text-align:left;">
+DAG
+</td>
+<td style="text-align:left;">
+342 Elm Duncanville TX, 75116
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-4444
+</td>
+<td style="text-align:left;">
+<a href="mailto:peroxide@blonde.com" class="email">peroxide@blonde.com</a>
+</td>
+<td style="text-align:left;">
+1952-11-02
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+165
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+19.8
+</td>
+<td style="text-align:left;">
+This record doesn’t have a DAG assigned</li>
+</ol></li>
+</ol>
+So call up Trudy on the telephone Send her a letter in the mail
+</td>
+<td style="text-align:left;">
+mugshot-4.jpg
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="specify-row-filter" class="section level2">
 <h2>Specify Row Filter</h2>
@@ -709,70 +1358,339 @@ filter the records before returning. See your server’s documentation for
 the syntax rules of the filter statements. Remember to enclose your
 variable names in square brackets. Also be aware of differences between
 strings and numbers.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only records with a birth date after January 2003</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri    =</span> credential<span class="sc">$</span>redcap_uri,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">token         =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">filter_logic  =</span> <span class="st">&quot;&#39;2003-01-01&#39; &lt; [dob]&quot;</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose       =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2022-08-10 09:25:09.</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .default = col_double(),</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_first = col_character(),</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_last = col_character(),</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   address = col_character(),</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   telephone = col_character(),</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   email = col_character(),</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   dob = col_date(format = &quot;&quot;),</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   comments = col_character(),</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   mugshot = col_character()</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id name_first name_last                                 address</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1     Nutmeg  Nutmouse 14 Rose Cottage St.\nKenning UK, 323232</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2     Tumtum  Nutmouse 14 Rose Cottage Blvd.\nKenning UK 34243</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        telephone            email        dob age sex demographics_complete</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 (405) 321-1111  nutty@mouse.com 2003-08-30  11   0                     2</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 (405) 321-2222 tummy@mouse.comm 2003-03-10  11   1                     2</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   height weight   bmi                                comments       mugshot</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      7      1 204.1 Character in a book, with some guessing mugshot-1.jpg</span></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      6      1 277.8      A mouse character from a good book mugshot-2.jpg</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   health_complete race___1 race___2 race___3 race___4 race___5 race___6</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1               1        0        0        0        0        1        0</span></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2               0        0        0        1        0        1        0</span></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ethnicity interpreter_needed race_and_ethnicity_complete</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1                  0                           2</span></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         1                  0                           0</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Return only records with a birth date after January 2003</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">redcap_uri    =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">token         =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">filter_logic  =</span> <span class="st">&quot;&#39;2003-01-01&#39; &lt; [dob]&quot;</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">verbose       =</span> <span class="cn">FALSE</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+record<br>id
+</th>
+<th style="text-align:left;">
+name<br>first
+</th>
+<th style="text-align:left;">
+name<br>last
+</th>
+<th style="text-align:left;">
+address
+</th>
+<th style="text-align:left;">
+telephone
+</th>
+<th style="text-align:left;">
+email
+</th>
+<th style="text-align:left;">
+dob
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:right;">
+sex
+</th>
+<th style="text-align:right;">
+demographics<br>complete
+</th>
+<th style="text-align:right;">
+height
+</th>
+<th style="text-align:right;">
+weight
+</th>
+<th style="text-align:right;">
+bmi
+</th>
+<th style="text-align:left;">
+comments
+</th>
+<th style="text-align:left;">
+mugshot
+</th>
+<th style="text-align:right;">
+health<br>complete
+</th>
+<th style="text-align:right;">
+race<br><br><br>1
+</th>
+<th style="text-align:right;">
+race<br><br><br>2
+</th>
+<th style="text-align:right;">
+race<br><br><br>3
+</th>
+<th style="text-align:right;">
+race<br><br><br>4
+</th>
+<th style="text-align:right;">
+race<br><br><br>5
+</th>
+<th style="text-align:right;">
+race<br><br><br>6
+</th>
+<th style="text-align:right;">
+ethnicity
+</th>
+<th style="text-align:right;">
+interpreter<br>needed
+</th>
+<th style="text-align:right;">
+race<br>and<br>ethnicity<br>complete
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nutmeg
+</td>
+<td style="text-align:left;">
+Nutmouse
+</td>
+<td style="text-align:left;">
+14 Rose Cottage St. Kenning UK, 323232
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-1111
+</td>
+<td style="text-align:left;">
+<a href="mailto:nutty@mouse.com" class="email">nutty@mouse.com</a>
+</td>
+<td style="text-align:left;">
+2003-08-30
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+204.1
+</td>
+<td style="text-align:left;">
+Character in a book, with some guessing
+</td>
+<td style="text-align:left;">
+mugshot-1.jpg
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Tumtum
+</td>
+<td style="text-align:left;">
+Nutmouse
+</td>
+<td style="text-align:left;">
+14 Rose Cottage Blvd. Kenning UK 34243
+</td>
+<td style="text-align:left;">
+<ol start="405" style="list-style-type: decimal">
+<li>321-2222
+</td>
+<td style="text-align:left;">
+<a href="mailto:tummy@mouse.comm" class="email">tummy@mouse.comm</a>
+</td>
+<td style="text-align:left;">
+2003-03-10
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+277.8
+</td>
+<td style="text-align:left;">
+A mouse character from a good book
+</td>
+<td style="text-align:left;">
+mugshot-2.jpg
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table></li>
+</ol></li>
+</ol>
 </div>
 <div id="specify-column-names" class="section level2">
 <h2>Specify Column Names</h2>
 <p>Limit the returned fields by passing a vector of the desired
 names.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Return only the fields record_id, name_first, and age</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;name_first&quot;</span>, <span class="st">&quot;age&quot;</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:11.</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id = col_double(),</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   name_first = col_character(),</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   age = col_double()</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id name_first age</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1     Nutmeg  11</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2     Tumtum  11</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3     Marcus  80</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         4      Trudy  61</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         5   John Lee  59</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Return only the fields record_id, name_first, and age</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;name_first&quot;</span>, <span class="st">&quot;age&quot;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+record<br>id
+</th>
+<th style="text-align:left;">
+name<br>first
+</th>
+<th style="text-align:right;">
+age
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nutmeg
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Tumtum
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Marcus
+</td>
+<td style="text-align:right;">
+80
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Trudy
+</td>
+<td style="text-align:right;">
+61
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+John Lee
+</td>
+<td style="text-align:right;">
+59
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="part-5---read-data-structured-approach" class="section level1">
@@ -783,8 +1701,9 @@ more predictable is to specify the column names <em>and</em> the column
 data types. In the previous example, notice that R (specifically <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>)
 made its best guess and reported it in the “Column specification”
 section.</p>
-<p>In the following example, REDCapR passes <code>col_types</code> to <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>)
-as it converts the plain-text output returned from REDCap into an R <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/data.frame.html"><code>data.frame</code></a>.</p>
+<p>In the following example, REDCapR passes <code>col_types</code> to <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>readr::read_csv()</code></a>
+as it converts the plain-text output returned from REDCap into an R data
+frame. (To be precise, a <a href="https://tibble.tidyverse.org/">tibble</a> is returned.)</p>
 <p>When readr sees a column with values like 1, 2, 3, and 4, it will
 make the reasonable guess that the column should be a double precision
 floating-point data type. However we <a href="https://ouhscbbmc.github.io/data-science-practices-1/coding.html#coding-simplify-types">recommend
@@ -795,54 +1714,328 @@ specifically for identifiers like <code>record_id</code> specify either
 an integer or character.</p>
 <div id="specify-column-names-types" class="section level2">
 <h2>Specify Column Names &amp; Types</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;race&quot;</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>col_types <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols</span>(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">record_id  =</span> readr<span class="sc">::</span><span class="fu">col_integer</span>(),</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___1   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___2   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___3   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___4   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___5   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">race___6   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>()</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:12.</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id race___1 race___2 race___3 race___4 race___5 race___6</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1    FALSE    FALSE    FALSE    FALSE     TRUE    FALSE</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2    FALSE    FALSE     TRUE    FALSE     TRUE    FALSE</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3    FALSE    FALSE    FALSE     TRUE     TRUE    FALSE</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         4    FALSE     TRUE    FALSE    FALSE     TRUE    FALSE</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         5     TRUE    FALSE    FALSE    FALSE    FALSE     TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;race&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>col_types <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="at">record_id  =</span> readr<span class="sc">::</span><span class="fu">col_integer</span>(),</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="at">race___1   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="at">race___2   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="at">race___3   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="at">race___4   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  <span class="at">race___5   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>(),</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  <span class="at">race___6   =</span> readr<span class="sc">::</span><span class="fu">col_logical</span>()</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>)</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+record<br>id
+</th>
+<th style="text-align:left;">
+race<br><br><br>1
+</th>
+<th style="text-align:left;">
+race<br><br><br>2
+</th>
+<th style="text-align:left;">
+race<br><br><br>3
+</th>
+<th style="text-align:left;">
+race<br><br><br>4
+</th>
+<th style="text-align:left;">
+race<br><br><br>5
+</th>
+<th style="text-align:left;">
+race<br><br><br>6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="specify-everything-is-a-character" class="section level2">
 <h2>Specify Everything is a Character</h2>
 <p>REDCap internally stores every value as a string. To accept full
 responsibility of the data types, tell <a href="https://readr.tidyverse.org/reference/cols.html"><code>readr::cols()</code></a>
 to keep them as strings.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;race&quot;</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>col_types <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols</span>(<span class="at">.default =</span> readr<span class="sc">::</span><span class="fu">col_character</span>())</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2022-08-10 09:25:13.</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   record_id race___1 race___2 race___3 race___4 race___5 race___6</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1        0        0        0        0        1        0</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2        0        0        1        0        1        0</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3        0        0        0        1        1        0</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         4        0        1        0        0        1        0</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         5        1        0        0        0        0        1</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Specify the column types.</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>desired_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;record_id&quot;</span>, <span class="st">&quot;race&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>col_types <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols</span>(<span class="at">.default =</span> readr<span class="sc">::</span><span class="fu">col_character</span>())</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="at">fields      =</span> desired_fields,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>  <span class="at">col_types   =</span> col_types</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+record<br>id
+</th>
+<th style="text-align:left;">
+race<br><br><br>1
+</th>
+<th style="text-align:left;">
+race<br><br><br>2
+</th>
+<th style="text-align:left;">
+race<br><br><br>3
+</th>
+<th style="text-align:left;">
+race<br><br><br>4
+</th>
+<th style="text-align:left;">
+race<br><br><br>5
+</th>
+<th style="text-align:left;">
+race<br><br><br>6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="part-6---next-steps" class="section level1">
@@ -885,20 +2078,113 @@ discusses the trade offs.</p>
 <h2>Writing to the Server</h2>
 <p>Reading record data is only one API capability. REDCapR <a href="https://ouhscbbmc.github.io/REDCapR/reference/">exposes 20+ API
 functions</a>, such as reading metadata, retrieving survey links, and
-writing records back to REDCap. This last operation is relevant in <a href="https://twitter.com/kennethmclean92">Kenneth McLean</a>’s
+writing records back to REDCap. This last operation is relevant in <a href="https://orcid.org/0000-0001-6482-9086">Kenneth McLean</a>’s
 presentation following a five-minute break.</p>
 </div>
 </div>
 <div id="notes" class="section level1">
 <h1>Notes</h1>
 <p>This vignette was originally designed for a 2021 R/Medicine REDCap
-workshop with <a href="https://www.med.umich.edu/higginslab/">Peter
+workshop with <a href="https://scholar.google.com/citations?user=UGJGFaAAAAAJ&amp;hl=en">Peter
 Higgins</a>, <a href="https://coloradosph.cuanschutz.edu/resources/directory/directory-profile/Miller-Amanda-UCD6000053152">Amanda
-Miller</a>, and <a href="https://twitter.com/kennethmclean92">Kenneth
+Miller</a>, and <a href="https://orcid.org/0000-0001-6482-9086">Kenneth
 McLean</a>.</p>
 <p>This work was made possible in part by the NIH grant <a href="https://taggs.hhs.gov/Detail/AwardDetail?arg_AwardNum=U54GM104938&amp;arg_ProgOfficeCode=127">U54GM104938</a>
 to the <a href="http://osctr.ouhsc.edu">Oklahoma Shared Clinical and
 Translational Resource)</a>.</p>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<p>For the sake of documentation and reproducibility, the current report
+was rendered in the following environment. Click the line below to
+expand.</p>
+<details>
+<summary>
+Environment <span class="glyphicon glyphicon-plus-sign"></span>
+</summary>
+<pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
+#&gt;  setting  value
+#&gt;  version  R version 4.4.1 (2024-06-14)
+#&gt;  os       Ubuntu 24.04.1 LTS
+#&gt;  system   x86_64, linux-gnu
+#&gt;  ui       X11
+#&gt;  language (EN)
+#&gt;  collate  C
+#&gt;  ctype    en_US.UTF-8
+#&gt;  tz       America/Chicago
+#&gt;  date     2024-09-07
+#&gt;  pandoc   3.1.11 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown)
+#&gt; 
+#&gt; ─ Packages ───────────────────────────────────────────────────────────────────
+#&gt;  package     * version date (UTC) lib source
+#&gt;  archive       1.1.8   2024-04-28 [3] CRAN (R 4.4.0)
+#&gt;  backports     1.5.0   2024-05-23 [3] CRAN (R 4.4.0)
+#&gt;  bit           4.0.5   2022-11-15 [3] CRAN (R 4.4.0)
+#&gt;  bit64         4.0.5   2020-08-30 [3] CRAN (R 4.4.0)
+#&gt;  bslib         0.8.0   2024-07-29 [3] CRAN (R 4.4.1)
+#&gt;  cachem        1.1.0   2024-05-16 [3] CRAN (R 4.4.0)
+#&gt;  checkmate     2.3.2   2024-07-29 [3] CRAN (R 4.4.1)
+#&gt;  cli           3.6.3   2024-06-21 [3] CRAN (R 4.4.1)
+#&gt;  colorspace    2.1-1   2024-07-26 [3] CRAN (R 4.4.1)
+#&gt;  crayon        1.5.3   2024-06-20 [3] CRAN (R 4.4.1)
+#&gt;  curl          5.2.2   2024-08-26 [3] CRAN (R 4.4.1)
+#&gt;  digest        0.6.37  2024-08-19 [3] CRAN (R 4.4.1)
+#&gt;  dplyr         1.1.4   2023-11-17 [3] CRAN (R 4.4.0)
+#&gt;  evaluate      0.24.0  2024-06-10 [3] CRAN (R 4.4.1)
+#&gt;  fansi         1.0.6   2023-12-08 [3] CRAN (R 4.4.0)
+#&gt;  fastmap       1.2.0   2024-05-15 [3] CRAN (R 4.4.0)
+#&gt;  generics      0.1.3   2022-07-05 [3] CRAN (R 4.4.0)
+#&gt;  glue          1.7.0   2024-01-09 [3] CRAN (R 4.4.0)
+#&gt;  highr         0.11    2024-05-26 [3] CRAN (R 4.4.0)
+#&gt;  hms           1.1.3   2023-03-21 [3] CRAN (R 4.4.0)
+#&gt;  htmltools     0.5.8.1 2024-04-04 [3] CRAN (R 4.4.0)
+#&gt;  httr          1.4.7   2023-08-15 [3] CRAN (R 4.4.0)
+#&gt;  jquerylib     0.1.4   2021-04-26 [3] CRAN (R 4.4.0)
+#&gt;  jsonlite      1.8.8   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  kableExtra    1.4.0   2024-01-24 [3] CRAN (R 4.4.0)
+#&gt;  knitr       * 1.48    2024-07-07 [3] CRAN (R 4.4.1)
+#&gt;  lifecycle     1.0.4   2023-11-07 [3] CRAN (R 4.4.0)
+#&gt;  magrittr    * 2.0.3   2022-03-30 [3] CRAN (R 4.4.0)
+#&gt;  munsell       0.5.1   2024-04-01 [3] CRAN (R 4.4.0)
+#&gt;  pillar        1.9.0   2023-03-22 [3] CRAN (R 4.4.0)
+#&gt;  pkgconfig     2.0.3   2019-09-22 [3] CRAN (R 4.4.0)
+#&gt;  png           0.1-8   2022-11-29 [3] CRAN (R 4.4.0)
+#&gt;  purrr         1.0.2   2023-08-10 [3] CRAN (R 4.4.0)
+#&gt;  R6            2.5.1   2021-08-19 [3] CRAN (R 4.4.0)
+#&gt;  readr         2.1.5   2024-01-10 [3] CRAN (R 4.4.0)
+#&gt;  REDCapR     * 1.2.0   2024-09-07 [1] local
+#&gt;  rlang         1.1.4   2024-06-04 [3] CRAN (R 4.4.0)
+#&gt;  rmarkdown     2.28    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  rstudioapi    0.16.0  2024-03-24 [3] CRAN (R 4.4.0)
+#&gt;  sass          0.4.9   2024-03-15 [3] CRAN (R 4.4.0)
+#&gt;  scales        1.3.0   2023-11-28 [3] CRAN (R 4.4.0)
+#&gt;  sessioninfo   1.2.2   2021-12-06 [3] CRAN (R 4.4.0)
+#&gt;  stringi       1.8.4   2024-05-06 [3] CRAN (R 4.4.0)
+#&gt;  stringr       1.5.1   2023-11-14 [3] CRAN (R 4.4.0)
+#&gt;  svglite       2.1.3   2023-12-08 [3] CRAN (R 4.4.0)
+#&gt;  systemfonts   1.1.0   2024-05-15 [3] CRAN (R 4.4.0)
+#&gt;  tibble        3.2.1   2023-03-20 [3] CRAN (R 4.4.0)
+#&gt;  tidyr         1.3.1   2024-01-24 [3] CRAN (R 4.4.0)
+#&gt;  tidyselect    1.2.1   2024-03-11 [3] CRAN (R 4.4.0)
+#&gt;  tzdb          0.4.0   2023-05-12 [3] CRAN (R 4.4.0)
+#&gt;  utf8          1.2.4   2023-10-22 [3] CRAN (R 4.4.0)
+#&gt;  vctrs         0.6.5   2023-12-01 [3] CRAN (R 4.4.0)
+#&gt;  viridisLite   0.4.2   2023-05-02 [3] CRAN (R 4.4.0)
+#&gt;  vroom         1.6.5   2023-12-05 [3] CRAN (R 4.4.0)
+#&gt;  withr         3.0.1   2024-07-31 [3] CRAN (R 4.4.1)
+#&gt;  xfun          0.47    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  xml2          1.3.6   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  yaml          2.3.10  2024-07-26 [3] CRAN (R 4.4.1)
+#&gt; 
+#&gt;  [1] /tmp/RtmpHXOXHl/Rinst3543a76242474
+#&gt;  [2] /tmp/RtmpdEHRth/temp_libpath275e142605d6e
+#&gt;  [3] /home/wibeasley/R/x86_64-pc-linux-gnu-library/4.4
+#&gt;  [4] /usr/local/lib/R/site-library
+#&gt;  [5] /usr/lib/R/site-library
+#&gt;  [6] /usr/lib/R/library
+#&gt; 
+#&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
+</details>
 </div>
 
 

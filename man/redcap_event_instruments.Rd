@@ -7,32 +7,42 @@
 redcap_event_instruments(
   redcap_uri,
   token,
-  arms = c("1"),
+  arms = NULL,
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
 
-\item{arms}{A character string of arms to retrieve.  (Default: '1')}
+\item{arms}{A character string of arms to retrieve.
+Defaults to all arms of the project.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details below. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements,
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} where each row represents one column
+\item \code{data}: A \code{\link[tibble:tibble]{tibble::tibble()}} where each row represents one column
 in the REDCap dataset.
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
@@ -54,16 +64,26 @@ events in a longitudinal project).
 (Copied from "Export Instrument-Event Mappings" method of
 REDCap API documentation, v.10.5.1)
 }
-\details{
-The full list of configuration options accepted by the \code{httr} package is
-viewable by executing \code{\link[httr:httr_options]{httr::httr_options()}}.  The \code{httr} package and
-documentation is available at https://cran.r-project.org/package=httr.
-}
 \examples{
 \dontrun{
 uri                 <- "https://bbmc.ouhsc.edu/redcap/api/"
-token               <- "0434F0E9CF53ED0587847AB6E51DE762"
-ds_event_instrument <- REDCapR::redcap_event_instruments(redcap_uri=uri, token=token)$data
+
+# Longitudinal project with one arm
+token_1  <- "786334BEB4A87D572DD0E99C4BFCE144" # pid 2629
+REDCapR::redcap_arm_export(redcap_uri=uri, token=token_1)$data
+REDCapR::redcap_event_instruments(redcap_uri=uri, token=token_1)$data
+
+# Project with two arms
+token_2  <- "0434F0E9CF53ED0587847AB6E51DE762" # pid 212
+REDCapR::redcap_arm_export(redcap_uri=uri, token=token_2)$data
+REDCapR::redcap_event_instruments(redcap_uri=uri, token=token_2)$data
+REDCapR::redcap_event_instruments(redcap_uri=uri, token=token_2, arms = c("1", "2"))$data
+REDCapR::redcap_event_instruments(redcap_uri=uri, token=token_2, arms = "2")$data
+
+# Classic project (without arms) throws an error
+token_3  <- "9A81268476645C4E5F03428B8AC3AA7B" # pid 153
+REDCapR::redcap_arm_export(redcap_uri=uri, token=token_3)$data
+# REDCapR::redcap_event_instruments(redcap_uri=uri, token=token_3)$data
 }
 }
 \references{

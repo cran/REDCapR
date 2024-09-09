@@ -6,21 +6,33 @@ credential_3  <- retrieve_credential_testing(2597L)
 
 test_that("smoke test -superwide 1", {
   testthat::skip_on_cran()
-  expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential_1$redcap_uri, token=credential_1$token)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential_1$redcap_uri,
+      token       = credential_1$token,
+      verbose     = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 test_that("smoke test -superwide 2", {
   testthat::skip_on_cran()
-  expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential_2$redcap_uri, token=credential_2$token)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential_2$redcap_uri,
+      token       = credential_2$token,
+      verbose     = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 test_that("smoke test -superwide 3", {
   testthat::skip_on_cran()
-  expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential_3$redcap_uri, token=credential_3$token)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential_3$redcap_uri,
+      token       = credential_3$token,
+      verbose     = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 
 test_that("correct dimensions -superwide 1 -oneshot", {
@@ -30,10 +42,12 @@ test_that("correct dimensions -superwide 1 -oneshot", {
   expected_row_count <- 2L
   expected_column_count <- 3000L + 4L # 3,000 variables, plus `record_id` and three `form_q_complete`
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential_1$redcap_uri, token=credential_1$token)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential_1$redcap_uri,
+      token       = credential_1$token,
+      verbose     = FALSE
+    )
 
   expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
   expect_equal(ncol(returned_object$data), expected=expected_column_count)
@@ -46,6 +60,7 @@ test_that("correct dimensions -superwide 1 -oneshot", {
   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+  expect_s3_class(returned_object$data, "tbl")
 })
 test_that("correct dimensions -superwide 1 -batch", {
   testthat::skip_on_cran()
@@ -54,10 +69,12 @@ test_that("correct dimensions -superwide 1 -batch", {
   expected_row_count <- 2L
   expected_column_count <- 3000L + 4L # 3,000 variables, plus `record_id` and three `form_q_complete`
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <- redcap_read(redcap_uri=credential_1$redcap_uri, token=credential_1$token)
-  )
+  returned_object <-
+    redcap_read(
+      redcap_uri  = credential_1$redcap_uri,
+      token       = credential_1$token,
+      verbose     = FALSE
+    )
 
   expect_equal(nrow(returned_object$data), expected=expected_row_count) # dput(returned_object$data)
   expect_equal(ncol(returned_object$data), expected=expected_column_count)
@@ -69,6 +86,7 @@ test_that("correct dimensions -superwide 1 -batch", {
   expect_true(  returned_object$fields_collapsed=="", "A subset of fields was not requested.")
   expect_true(  returned_object$filter_logic=="", "A filter was not specified.")
   expect_match( returned_object$outcome_messages, regexp=expected_outcome_message, perl=TRUE)
+  expect_s3_class(returned_object$data, "tbl")
 })
 
 # test_that("correct dimensions -superwide 3 -oneshot", {

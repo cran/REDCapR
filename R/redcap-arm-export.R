@@ -1,24 +1,33 @@
-#' @title Export Arms
+#' @title
+#' Export Arms
 #'
-#' @description Export Arms of a REDCap project
+#' @description
+#' Export Arms of a REDCap project
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
-#'
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details in [redcap_read_oneshot()]. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements:
+#' @return
+#' Currently, a list is returned with the following elements:
 #' * `has_arms`: a `logical` value indicating if the REDCap project has
 #' arms (*i.e.*, "TRUE") or is a classic non-longitudinal project
 #' (*i.e.*, "FALSE").
-#' * `data`: a [`tibble`] with one row per arm.  The columns are
+#' * `data`: a [tibble::tibble()] with one row per arm.  The columns are
 #' `arm_number` (an integer) and `arm_name` (a human-friendly string).
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
@@ -32,9 +41,11 @@
 #' REDCap.  If an operation is successful, the `raw_text` is returned as an
 #' empty string to save RAM.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -59,12 +70,14 @@
 #' }
 
 #' @importFrom rlang .data
+#' @importFrom magrittr %>%
 #' @export
 redcap_arm_export <- function(
   redcap_uri,
   token,
   verbose         = TRUE,
-  config_options  = NULL
+  config_options  = NULL,
+  handle_httr     = NULL
 ) {
 
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -82,8 +95,14 @@ redcap_arm_export <- function(
 
   try(
     {
-      # This is the important line that communicates with the REDCap server.
-      kernel <- kernel_api(redcap_uri, post_body, config_options)
+      # This is the important call that communicates with the REDCap server.
+      kernel <-
+        kernel_api(
+          redcap_uri      = redcap_uri,
+          post_body       = post_body,
+          config_options  = config_options,
+          handle_httr     = handle_httr
+        )
     },
     # Don't print the warning in the try block.  Print it below,
     #   where it's under the control of the caller.
@@ -107,13 +126,16 @@ redcap_arm_export <- function(
         name    = readr::col_character()
       )
       d <-
-        readr::read_csv(I(kernel$raw_text), col_types = col_types) %>%
+        readr::read_csv(
+          I(kernel$raw_text),
+          col_types = col_types
+        ) %>%
         dplyr::select(
-          arm_number  = .data$arm_num,
-          arm_name    = .data$name
+          arm_number  = "arm_num",
+          arm_name    = "name"
         )
 
-      #If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
+      # If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
       kernel$raw_text <- ""
     } else if (kernel$raw_text == "ERROR: You cannot export arms for classic projects") {
       has_arms <- FALSE

@@ -1,7 +1,11 @@
-#' @name replace_nas_with_explicit
-#' @title Create explicit factor level for missing values
+#' @name
+#' replace_nas_with_explicit
 #'
-#' @description Missing values are converted to a factor level.
+#' @title
+#' Create explicit factor level for missing values
+#'
+#' @description
+#' Missing values are converted to a factor level.
 #' This explicit assignment can reduce the chances that missing values
 #' are inadvertently ignored. It also allows the presence of a missing
 #' to become a predictor in models.
@@ -15,8 +19,9 @@
 #' @param add_unknown_level Should a new factor level be created?
 #' (Specify `TRUE` if it already exists.)   Defaults to `FALSE`.
 #'
-#' @return An array of values, where the `NA` values are now a factor level,
-#'   with the label specified by the `new_na_label` value.
+#' @return
+#' An array of values, where the `NA` values are now a factor level,
+#' with the label specified by the `new_na_label` value.
 #'
 #' @note
 #' The `create_factor` parameter is respected only if `scores` isn't already
@@ -25,10 +30,11 @@
 #' A `stop` error will be thrown if the operation fails to convert all the
 #' `NA` values.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
 #' @examples
-#' library(REDCapR) #Load the package into the current R session.
+#' library(REDCapR) # Load the package into the current R session.
 
 ## We're intentionally not exporting this function.
 replace_nas_with_explicit <- function(
@@ -38,7 +44,7 @@ replace_nas_with_explicit <- function(
   add_unknown_level = FALSE
 ) {
 
-  if (create_factor & !is.factor(scores)) {
+  if (create_factor && !is.factor(scores)) {
     scores <- factor(scores)
   }
 
@@ -64,6 +70,7 @@ replace_nas_with_explicit <- function(
 
 
 #' @name collapse_vector
+#'
 #' @title Collapse a vector of values into a single string when necessary
 #'
 #' @description REDCap's API frequently specifies a series of values
@@ -73,35 +80,28 @@ replace_nas_with_explicit <- function(
 #' (presumably right before the return value is passed to the API)
 #'
 #' @param elements An array of values.  Can be `NULL`.  Required.
-#' @param collapsed A single character element, where the values are separated
-#' by commas.  Can be `NULL`.  Required.
 #'
 #' @return A single character element, where the values are separated by
 #' commas.  Can be blank. (*i.e.*, `""`).
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
 #' @examples
-#' library(REDCapR) #Load the package into the current R session.
-#' REDCapR:::collapse_vector(elements=NULL, collapsed=NULL)
-#' REDCapR:::collapse_vector(elements=letters, collapsed=NULL)
-#' REDCapR:::collapse_vector(elements=NULL, collapsed="4,5,6")
+#' library(REDCapR) # Load the package into the current R session.
+#' REDCapR:::collapse_vector(elements = NULL   )
+#' REDCapR:::collapse_vector(elements = letters)
 
 ## We're intentionally not exporting this function.
-collapse_vector <- function(elements, collapsed) {
-  checkmate::assert_character(collapsed, len=1, any.missing=TRUE, null.ok=TRUE)
+collapse_vector <- function(elements) {
+  checkmate::assert_vector(elements, any.missing=FALSE, null.ok=TRUE)
 
-  if ((is.null(collapsed) | length(collapsed) == 0L) | all(nchar(collapsed) == 0L)) {
-
-    # This is an empty string if `elements` (eg, fields`) is NULL.
-    collapsed <- dplyr::if_else(
-      is.null(elements),
-      "",
-      paste0(elements, collapse = ",")
-    )
-  }
-
-  collapsed
+  # This is an empty string if `elements` (eg, fields`) is NULL.
+  dplyr::if_else(
+    is.null(elements),
+    "",
+    paste0(elements, collapse = ",")
+  )
 }
 
 ## We're intentionally not exporting this function.
@@ -113,6 +113,6 @@ filter_logic_prepare <- function(filter_logic) {
 }
 
 ## We're intentionally not exporting this function.
-verbose_prepare <- function (verbose) {
+verbose_prepare <- function(verbose) {
   ifelse(!is.null(verbose), verbose, getOption("verbose"))
 }

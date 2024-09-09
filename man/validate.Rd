@@ -2,43 +2,50 @@
 % Please edit documentation in R/validate.R
 \name{validate}
 \alias{validate}
-\alias{validate_no_logical}
+\alias{validate_data_frame_inherits}
 \alias{validate_for_write}
+\alias{validate_no_logical}
 \alias{validate_field_names}
-\alias{validate_field_names_collapsed}
+\alias{validate_record_id_name}
+\alias{validate_repeat_instance}
+\alias{validate_uniqueness}
 \title{Inspect a dataset to anticipate problems before
 writing to a REDCap project}
 \usage{
-validate_for_write( d )
+validate_for_write( d, convert_logical_to_integer, record_id_name )
 
-validate_no_logical( data_types, stop_on_error )
+validate_data_frame_inherits( d )
 
-validate_field_names( field_names, stop_on_error = FALSE )
+validate_no_logical( d, stop_on_error = FALSE )
 
-validate_field_names_collapsed( field_names_collapsed, stop_on_error = FALSE )
+validate_field_names( d, stop_on_error = FALSE )
+
+validate_record_id_name( d, record_id_name = "record_id", stop_on_error = FALSE )
+
+validate_repeat_instance( d, stop_on_error = FALSE )
+
+validate_uniqueness( d, record_id_name, stop_on_error = FALSE)
 }
 \arguments{
-\item{data_types}{The data types of the \code{\link[base:data.frame]{base::data.frame()}} corresponding
-to the REDCap project.}
+\item{d}{The \code{\link[base:data.frame]{base::data.frame()}} or \code{\link[tibble:tibble]{tibble::tibble()}}
+containing the dataset used to update
+the REDCap project.}
+
+\item{record_id_name}{The name of the field that represents one record.
+The default name in REDCap is "record_id".}
 
 \item{stop_on_error}{If \code{TRUE}, an error is thrown for violations.
 Otherwise, a dataset summarizing the problems is returned.}
 
-\item{d}{The \code{\link[base:data.frame]{base::data.frame()}} containing the dataset used to update
-the REDCap project.}
-
-\item{field_names}{The names of the fields/variables in the REDCap project.
-Each field is an individual element in the character vector.}
-
-\item{field_names_collapsed}{The names of the fields/variables in the
-REDCap project.  All fields are combined in a single vector element,
-separated by commas.}
+\item{convert_logical_to_integer}{This mimics the \code{convert_logical_to_integer} parameter  in
+\code{\link[=redcap_write]{redcap_write()}} when checking for potential importing problems.
+Defaults to \code{FALSE}.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}}, where each potential violation is a row.
 The two columns are:
 \itemize{
-\item \code{field_name}: The name of the \code{\link[base:data.frame]{base::data.frame()}} that might cause
+\item \code{field_name}: The name of the field/column/variable that might cause
 problems during the upload.
 \item \code{field_index}: The position of the field.  (For example, a value of
 '1' indicates the first column, while a '3' indicates the third column.)
@@ -47,8 +54,8 @@ problems during the upload.
 }
 }
 \description{
-This set of functions inspect a \code{\link[base:data.frame]{base::data.frame()}} to
-anticipate problems before writing with REDCap's API.
+This set of functions inspect a data frame
+to anticipate problems before writing with REDCap's API.
 }
 \details{
 All functions listed in the Usage section above inspect a specific aspect
@@ -56,15 +63,36 @@ of the dataset.  The \code{\link[=validate_for_write]{validate_for_write()}} fun
 individual validation checks.  It allows the client to check everything
 with one call.
 
-Currently it verifies that the dataset
-\itemize{
-\item does not contain
+Currently, the individual checks include:
+\enumerate{
+\item \code{validate_data_frame_inherits(d)}:
+\code{d} inherits from \code{\link[base:data.frame]{base::data.frame()}}
+\item \code{validate_field_names(d)}:
+The columns of \code{d}
+start with a lowercase letter, and subsequent optional characters are a
+sequence of (a) lowercase letters, (b) digits 0-9, and/or (c) underscores.
+(The exact regex is \verb{^[a-z][0-9a-z_]*$}.)
+\item \code{validate_record_id_name(d)}:
+\code{d} contains a field called "record_id",
+or whatever value was passed to \code{record_id_name}.
+\item \code{validate_no_logical(d)} (unless \code{convert_logical_to_integer} is TRUE):
+\code{d} does not contain
 \href{https://stat.ethz.ch/R-manual/R-devel/library/base/html/logical.html}{logical}
 values (because REDCap typically wants \code{0}/\code{1} values instead of
 \code{FALSE}/\code{TRUE}).
-\item starts with a lowercase letter, and subsequent optional characters are a
-sequence of (a) lowercase letters, (b) digits 0-9, and/or (c) underscores.
-(The exact regex is \verb{^[a-z][0-9a-z_]*$}.)
+\item \code{validate_repeat_instance(d)}:
+\code{d} has an integer for \code{redcap_repeat_instance}, if the column is present.
+\item \code{validate_uniqueness(d, record_id_name = record_id_name)}:
+\code{d} does not contain multiple rows with duplicate values of
+\code{record_id},
+\code{redcap_event_name},
+\code{redcap_repeat_instrument}, and
+\code{redcap_repeat_instance}
+(depending on the longitudinal & repeating structure of the project).
+
+Technically duplicate rows are not errors,
+but we feel that this will almost always be unintentional,
+and lead to an irrecoverable corruption of the data.
 }
 
 If you encounter additional types of problems when attempting to write to
@@ -73,12 +101,46 @@ REDCap, please tell us by creating a
 incorporate a new validation check into this function.
 }
 \examples{
-d <- data.frame(
+d1 <- data.frame(
   record_id      = 1:4,
   flag_logical   = c(TRUE, TRUE, FALSE, TRUE),
   flag_Uppercase = c(4, 6, 8, 2)
 )
-REDCapR::validate_for_write(d = d)
+REDCapR::validate_for_write(d = d1)
+
+REDCapR::validate_for_write(d = d1, convert_logical_to_integer = TRUE)
+
+# If `d1` is not a data.frame, the remaining validation checks are skipped:
+# REDCapR::validate_for_write(as.matrix(mtcars))
+# REDCapR::validate_for_write(c(mtcars, iris))
+
+d2 <- tibble::tribble(
+  ~record_id, ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance,
+  1L, "e1", "i1", 1L,
+  1L, "e1", "i1", 2L,
+  1L, "e1", "i1", 3L,
+  1L, "e1", "i1", 4L,
+  1L, "e1", "i2", 1L,
+  1L, "e1", "i2", 2L,
+  1L, "e1", "i2", 3L,
+  1L, "e1", "i2", 4L,
+  2L, "e1", "i1", 1L,
+  2L, "e1", "i1", 2L,
+  2L, "e1", "i1", 3L,
+  2L, "e1", "i1", 4L,
+)
+validate_uniqueness(d2)
+validate_for_write(d2)
+
+d3 <- tibble::tribble(
+  ~record_id, ~redcap_event_name, ~redcap_repeat_instrument, ~redcap_repeat_instance,
+  1L, "e1", "i1", 1L,
+  1L, "e1", "i1", 3L,
+  1L, "e1", "i1", 3L, # Notice this duplicates the row above
+)
+# validate_uniqueness(d3)
+# Throws error:
+# validate_uniqueness(d3, stop_on_error = TRUE)
 }
 \references{
 The official documentation can be found on the 'API Help Page'

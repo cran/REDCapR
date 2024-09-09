@@ -9,15 +9,20 @@ redcap_metadata_write(
   redcap_uri,
   token,
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{ds}{The \code{\link[base:data.frame]{base::data.frame()}} to be imported into the REDCap project.
+\item{ds}{The \code{\link[base:data.frame]{base::data.frame()}} or \code{\link[tibble:tibble]{tibble::tibble()}}
+to be imported into the REDCap project.
 Required.}
 
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -27,8 +32,13 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{\link[httr:POST]{httr::POST()}} method
-in the 'httr' package.  See the details in \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
@@ -63,7 +73,7 @@ token          <- "457C24AB91B7FCF5B1A7DA67E70E24C7"
 ds_to_write <-
   readr::read_csv(
     file = system.file(
-      "test-data/project-simple/simple-metadata.csv",
+      "test-data/project-simple/metadata.csv",
       package = "REDCapR"
     ),
     col_types = readr::cols(.default = readr::col_character())

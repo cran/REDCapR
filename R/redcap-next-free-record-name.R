@@ -1,22 +1,33 @@
-#' @title Determine free available record ID
+#' @title
+#' Determine free available record ID
 #'
-#' @description Determines the next available record ID.
+#' @description
+#' Determines the next available record ID.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details below.  Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return a [base::character] vector of either
+#' @return
+#' a [base::character] vector of either
 #' length 1 (if successful) or length 0 (if not successful).
 #'
-#' @details If the API call is unsuccessful, a value of `character(0)` will
+#' @details
+#' If the API call is unsuccessful, a value of `character(0)` will
 #' be returned (*i.e.*, an empty vector).  This ensures that a the function
 #' will always return an object of class
 #' [base::character].
@@ -61,9 +72,11 @@
 redcap_next_free_record_name <- function(
   redcap_uri,
   token,
-  verbose = TRUE,
-  config_options = NULL
+  verbose           = TRUE,
+  config_options    = NULL,
+  handle_httr       = NULL
 ) {
+
   value_error       <- character(0)
 
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -79,8 +92,14 @@ redcap_next_free_record_name <- function(
     format    = "csv"
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     # Don't print the warning in the try block.  Print it below,

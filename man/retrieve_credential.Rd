@@ -89,7 +89,7 @@ Follow these steps to adapt to your desired REDCap project(s):
 \enumerate{
 \item Modify the credential file for the REDCap API with a text editor
 like \href{https://notepad-plus-plus.org/}{Notepad++},
-\href{https://code.visualstudio.com/}{Visual Studio Code}, or
+\href{https://code.visualstudio.com}{Visual Studio Code}, or
 \href{https://www.nano-editor.org/}{nano}.
 Replace existing records with the information from your projects.
 Delete the remaining example records.
@@ -113,7 +113,7 @@ feasible and the token must be stored locally.  Please contact us
 if your institution is using something other than SQL Server, and
 would like help adapting this approach to your infrastructure.
 
-\emph{Stored credentials locally}
+\emph{Storing credentials locally}
 
 When storing credentials locally, typically the credential file
 should be dedicated to just one user. Occasionally it makes sense to store

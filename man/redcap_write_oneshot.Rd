@@ -11,25 +11,30 @@ redcap_write_oneshot(
   overwrite_with_blanks = TRUE,
   convert_logical_to_integer = FALSE,
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{ds}{The \code{\link[base:data.frame]{base::data.frame()}} to be imported into the REDCap project.
+\item{ds}{The \code{\link[base:data.frame]{base::data.frame()}} or \code{\link[tibble:tibble]{tibble::tibble()}}
+to be imported into the REDCap project.
 Required.}
 
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
 
 \item{overwrite_with_blanks}{A boolean value indicating if
-blank/\code{NA} values in the R \link[base:data.frame]{base::data.frame}
+blank/\code{NA} values in the R data frame
 will overwrite data on the server.
 This is the default behavior for REDCapR,
 which essentially deletes the cell's value
-If \code{FALSE}, blank/\code{NA} values in the \link[base:data.frame]{base::data.frame}
+If \code{FALSE}, blank/\code{NA} values in the data frame
 will be ignored.  Optional.}
 
 \item{convert_logical_to_integer}{If \code{TRUE}, all \link[base:logical]{base::logical} columns
@@ -42,8 +47,13 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{\link[httr:POST]{httr::POST()}} method
-in the 'httr' package.  See the details in \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}} Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
@@ -72,8 +82,8 @@ REDCap's supported variables.  See \code{\link[=validate_for_write]{validate_for
 function that checks for some common important conflicts.
 }
 \examples{
-\dontrun{
-#Define some constants
+if (FALSE) {
+# Define some constants
 uri            <- "https://bbmc.ouhsc.edu/redcap/api/"
 token          <- "D70F9ACD1EDD6F151C6EA78683944E98"
 
@@ -86,7 +96,7 @@ ds1$telephone
 ds1$telephone  <- paste0("(405) 321-000", seq_len(nrow(ds1)))
 
 ds1 <- ds1[1:3, ]
-ds1$age        <- NULL; ds1$bmi <- NULL #Drop the calculated fields before writing.
+ds1$age        <- NULL; ds1$bmi <- NULL # Drop the calculated fields before writing.
 result_write   <- REDCapR::redcap_write_oneshot(ds=ds1, redcap_uri=uri, token=token)
 
 # Read the dataset for the second time.

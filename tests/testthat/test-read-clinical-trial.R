@@ -5,19 +5,26 @@ update_expectation  <- FALSE
 
 test_that("smoke test", {
   testthat::skip_on_cran()
-  expect_message(
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      verbose     = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 test_that("default", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/read-clinical-trial/default.R"
   expected_outcome_message <- "500 records and 13 columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, guess_type=FALSE)
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri    = credential$redcap_uri,
+      token         = credential$token,
+      guess_type    = FALSE,
+      verbose       = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -30,6 +37,7 @@ test_that("default", {
   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+  expect_s3_class(returned_object$data, "tbl")
 })
 
 rm(credential)

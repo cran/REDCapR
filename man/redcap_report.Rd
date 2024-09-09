@@ -13,14 +13,18 @@ redcap_report(
   export_checkbox_label = FALSE,
   col_types = NULL,
   guess_type = TRUE,
-  guess_max = 1000L,
+  guess_max = 1000,
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -45,10 +49,11 @@ displayed to the users.  Otherwise, the values will be 0/1.}
 \code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
 
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If false, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
+returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
 data type for each column.  Ignored if \code{col_types} is not null.}
 
-\item{guess_max}{A positive integer passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
+\item{guess_max}{A positive \link[base:numeric]{base::numeric} value
+passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
 specifies the maximum number of records to use for guessing column types.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
@@ -56,13 +61,18 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details below. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} of the desired records and columns.
+\item \code{data}: A \code{\link[tibble:tibble]{tibble::tibble()}} of the desired records and columns.
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
@@ -79,11 +89,6 @@ empty string to save RAM.
 \description{
 Exports the data set of a report created on a project's
 'Data Exports, Reports, and Stats' page.
-}
-\details{
-The full list of configuration options accepted by the \code{httr} package is
-viewable by executing \code{\link[httr:httr_options]{httr::httr_options()}}.  The \code{httr} package and
-documentation is available at https://cran.r-project.org/package=httr.
 }
 \examples{
 \dontrun{

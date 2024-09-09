@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-08-10" />
+<meta name="date" content="2024-09-07" />
 
 <title>Advanced REDCapR Operations</title>
 
@@ -30,27 +30,27 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -64,55 +64,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -121,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -332,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Advanced REDCapR Operations</h1>
-<h4 class="date">2022-08-10</h4>
+<h4 class="date">2024-09-07</h4>
 
 
 
@@ -354,10 +360,10 @@ securely and avoiding hard-coding them like below. Our recommendation is
 to store tokens <a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">in
 a database</a>. If that is not feasible for your institution, consider
 storing them in a secured csv and retrieving with <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>REDCapR::retrieve_credential_local()</code></a>.</em></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(REDCapR) <span class="co">#Load the package into the current R session.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>uri                   <span class="ot">&lt;-</span> <span class="st">&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>token_simple          <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>token_longitudinal    <span class="ot">&lt;-</span> <span class="st">&quot;0434F0E9CF53ED0587847AB6E51DE762&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(REDCapR) <span class="co">#Load the package into the current R session.</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>uri                   <span class="ot">&lt;-</span> <span class="st">&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>token_simple          <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>token_longitudinal    <span class="ot">&lt;-</span> <span class="st">&quot;0434F0E9CF53ED0587847AB6E51DE762&quot;</span></span></code></pre></div>
 </div>
 <div id="converting-from-talllong-to-wide" class="section level1">
 <h1>Converting from tall/long to wide</h1>
@@ -375,121 +381,119 @@ every time point; otherwise the anova excludes the patient entirely.</p>
 <p>However we like going wide to produce visual tables for publications,
 and here’s one way to do it in R. First retrieve the dataset from
 REDCap.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;dplyr&quot;</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;tidyr&quot;</span>))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>events_to_retain  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dose_1_arm_1&quot;</span>, <span class="st">&quot;visit_1_arm_1&quot;</span>, <span class="st">&quot;dose_2_arm_1&quot;</span>, <span class="st">&quot;visit_2_arm_1&quot;</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ds_long <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">redcap_read_oneshot</span>(<span class="at">redcap_uri =</span> uri, <span class="at">token =</span> token_longitudinal)<span class="sc">$</span>data</span></code></pre></div>
-<pre><code>#&gt; 18 records and 125 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ds_long <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4)</span></code></pre></div>
-<pre><code>#&gt;    study_id        redcap_event_name pmq1 pmq2 pmq3 pmq4
-#&gt; 1       100         enrollment_arm_1   NA   NA   NA   NA
-#&gt; 2       100             dose_1_arm_1    2    2    1    1
-#&gt; 3       100            visit_1_arm_1    1    0    0    0
-#&gt; 4       100             dose_2_arm_1    3    1    0    0
-#&gt; 5       100            visit_2_arm_1    0    1    0    0
-#&gt; 6       100        final_visit_arm_1   NA   NA   NA   NA
-#&gt; 7       220         enrollment_arm_1   NA   NA   NA   NA
-#&gt; 8       220             dose_1_arm_1    0    1    0    2
-#&gt; 9       220            visit_1_arm_1    0    3    1    0
-#&gt; 10      220             dose_2_arm_1    1    2    0    1
-#&gt; 11      220            visit_2_arm_1    3    4    1    0
-#&gt; 12      220        final_visit_arm_1   NA   NA   NA   NA
-#&gt; 13      304         enrollment_arm_2   NA   NA   NA   NA
-#&gt; 14      304 deadline_to_opt_ou_arm_2   NA   NA   NA   NA
-#&gt; 15      304         first_dose_arm_2    0    1    0    0
-#&gt; 16      304        first_visit_arm_2    2    0    0    0
-#&gt; 17      304        final_visit_arm_2   NA   NA   NA   NA
-#&gt; 18      304 deadline_to_return_arm_2   NA   NA   NA   NA</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;dplyr&quot;</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;tidyr&quot;</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>events_to_retain  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dose_1_arm_1&quot;</span>, <span class="st">&quot;visit_1_arm_1&quot;</span>, <span class="st">&quot;dose_2_arm_1&quot;</span>, <span class="st">&quot;visit_2_arm_1&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>ds_long <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">redcap_read_oneshot</span>(<span class="at">redcap_uri =</span> uri, <span class="at">token =</span> token_longitudinal)<span class="sc">$</span>data</span></code></pre></div>
+<pre><code>#&gt; 18 records and 125 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>ds_long <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4)</span></code></pre></div>
+<pre><code>#&gt; # A tibble: 18 × 6
+#&gt;    study_id redcap_event_name         pmq1  pmq2  pmq3  pmq4
+#&gt;       &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1      100 enrollment_arm_1            NA    NA    NA    NA
+#&gt;  2      100 dose_1_arm_1                 2     2     1     1
+#&gt;  3      100 visit_1_arm_1                1     0     0     0
+#&gt;  4      100 dose_2_arm_1                 3     1     0     0
+#&gt;  5      100 visit_2_arm_1                0     1     0     0
+#&gt;  6      100 final_visit_arm_1           NA    NA    NA    NA
+#&gt;  7      220 enrollment_arm_1            NA    NA    NA    NA
+#&gt;  8      220 dose_1_arm_1                 0     1     0     2
+#&gt;  9      220 visit_1_arm_1                0     3     1     0
+#&gt; 10      220 dose_2_arm_1                 1     2     0     1
+#&gt; 11      220 visit_2_arm_1                3     4     1     0
+#&gt; 12      220 final_visit_arm_1           NA    NA    NA    NA
+#&gt; 13      304 enrollment_arm_2            NA    NA    NA    NA
+#&gt; 14      304 deadline_to_opt_ou_arm_2    NA    NA    NA    NA
+#&gt; 15      304 first_dose_arm_2             0     1     0     0
+#&gt; 16      304 first_visit_arm_2            2     0     0     0
+#&gt; 17      304 final_visit_arm_2           NA    NA    NA    NA
+#&gt; 18      304 deadline_to_return_arm_2    NA    NA    NA    NA</code></pre>
 <p>When widening only one variable (<em>e.g.</em>, <code>pmq1</code>),
 the code’s pretty simple:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ds_wide <span class="ot">&lt;-</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1) <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(redcap_event_name <span class="sc">%in%</span> events_to_retain) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols     =</span> study_id,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span> redcap_event_name,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> pmq1</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tidyr::spread(key=redcap_event_name, value=pmq1)</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>ds_wide</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>ds_wide <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(redcap_event_name <span class="sc">%in%</span> events_to_retain) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="at">id_cols     =</span> study_id,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="at">names_from  =</span> redcap_event_name,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="at">values_from =</span> pmq1</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  )</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>ds_wide</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 2 × 5
 #&gt;   study_id dose_1_arm_1 visit_1_arm_1 dose_2_arm_1 visit_2_arm_1
 #&gt;      &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt;
 #&gt; 1      100            2             1            3             0
 #&gt; 2      220            0             0            1             3</code></pre>
 <p>In some scenarios, multiple variables (<em>e.g.</em>,
-<code>pmq1</code> - <code>pmq4</code>) can be widened in a single
-<code>tidyr::pivot_wider()</code> operation. This example contains the
-additional wrinkle that the REDCap event names “first_dose” and
-“first_visit” are renamed “dose_1” and “visit_1”, which will help all
-the values be dose and visit values be proper numbers.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">&quot;^(</span><span class="sc">\\</span><span class="st">w+?)_arm_(</span><span class="sc">\\</span><span class="st">d)$&quot;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ds_wide <span class="ot">&lt;-</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">event =</span> <span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, redcap_event_name),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">event =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(event, <span class="st">&quot;first_dose&quot;</span><span class="ot">=</span><span class="st">&quot;dose_1&quot;</span>, <span class="st">&quot;first_visit&quot;</span><span class="ot">=</span><span class="st">&quot;visit_1&quot;</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">arm   =</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">2&quot;</span>, redcap_event_name))</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(event <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols     =</span> <span class="fu">c</span>(study_id, arm),</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span> event,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(pmq1, pmq2, pmq3, pmq4)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>ds_wide</span></code></pre></div>
+<code>pmq1</code> - <code>pmq4</code>) can be widened in a single <a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>tidyr::pivot_wider()</code></a>
+operation. This example contains the additional wrinkle that the REDCap
+event names “first_dose” and “first_visit” are renamed “dose_1” and
+“visit_1”, which will help all the values be dose and visit values be
+proper numbers.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">&quot;^(</span><span class="sc">\\</span><span class="st">w+?)_arm_(</span><span class="sc">\\</span><span class="st">d)$&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>ds_wide <span class="ot">&lt;-</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">event =</span> <span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, redcap_event_name),</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="at">event =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(event, <span class="st">&quot;first_dose&quot;</span><span class="ot">=</span><span class="st">&quot;dose_1&quot;</span>, <span class="st">&quot;first_visit&quot;</span><span class="ot">=</span><span class="st">&quot;visit_1&quot;</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="at">arm   =</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">2&quot;</span>, redcap_event_name))</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(event <span class="sc">%in%</span> </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>    <span class="at">id_cols     =</span> <span class="fu">c</span>(study_id, arm),</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>    <span class="at">names_from  =</span> event,</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(pmq1, pmq2, pmq3, pmq4)</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  )</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>ds_wide</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 3 × 18
-#&gt;   study_id   arm pmq1_…¹ pmq1_…² pmq1_…³ pmq1_…⁴ pmq2_…⁵ pmq2_…⁶ pmq2_…⁷ pmq2_…⁸
-#&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1      100     1       2       1       3       0       2       0       1       1
-#&gt; 2      220     1       0       0       1       3       1       3       2       4
-#&gt; 3      304     2       0       2      NA      NA       1       0      NA      NA
-#&gt; # … with 8 more variables: pmq3_dose_1 &lt;dbl&gt;, pmq3_visit_1 &lt;dbl&gt;,
+#&gt;   study_id   arm pmq1_dose_1 pmq1_visit_1 pmq1_dose_2 pmq1_visit_2 pmq2_dose_1
+#&gt;      &lt;dbl&gt; &lt;int&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+#&gt; 1      100     1           2            1           3            0           2
+#&gt; 2      220     1           0            0           1            3           1
+#&gt; 3      304     2           0            2          NA           NA           1
+#&gt; # ℹ 11 more variables: pmq2_visit_1 &lt;dbl&gt;, pmq2_dose_2 &lt;dbl&gt;,
+#&gt; #   pmq2_visit_2 &lt;dbl&gt;, pmq3_dose_1 &lt;dbl&gt;, pmq3_visit_1 &lt;dbl&gt;,
 #&gt; #   pmq3_dose_2 &lt;dbl&gt;, pmq3_visit_2 &lt;dbl&gt;, pmq4_dose_1 &lt;dbl&gt;,
-#&gt; #   pmq4_visit_1 &lt;dbl&gt;, pmq4_dose_2 &lt;dbl&gt;, pmq4_visit_2 &lt;dbl&gt;, and abbreviated
-#&gt; #   variable names ¹​pmq1_dose_1, ²​pmq1_visit_1, ³​pmq1_dose_2, ⁴​pmq1_visit_2,
-#&gt; #   ⁵​pmq2_dose_1, ⁶​pmq2_visit_1, ⁷​pmq2_dose_2, ⁸​pmq2_visit_2
-#&gt; # ℹ Use `colnames()` to see all variable names</code></pre>
+#&gt; #   pmq4_visit_1 &lt;dbl&gt;, pmq4_dose_2 &lt;dbl&gt;, pmq4_visit_2 &lt;dbl&gt;</code></pre>
 <p>However, in other widening scenarios, it can be easier to go even
 longer/taller (<em>e.g.</em>, <code>ds_eav</code>) before reversing
 direction and going wide.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ds_eav <span class="ot">&lt;-</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">event =</span> <span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, redcap_event_name),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">event =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(event, <span class="st">&quot;first_dose&quot;</span> <span class="ot">=</span> <span class="st">&quot;dose_1&quot;</span>, <span class="st">&quot;first_visit&quot;</span> <span class="ot">=</span> <span class="st">&quot;visit_1&quot;</span>),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">arm   =</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">2&quot;</span>, redcap_event_name))</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols      =</span> <span class="fu">c</span>(pmq1, pmq2, pmq3, pmq4),</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">&quot;key&quot;</span>,</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %&gt;%</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(event <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span>)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>( <span class="co"># Simulate correcting for mismatched names across arms:</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">key =</span> <span class="fu">paste0</span>(key, <span class="st">&quot;_&quot;</span>, event)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>event)</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 10 rows of the EAV table.</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>ds_eav <span class="sc">%&gt;%</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>ds_eav <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  ds_long <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    <span class="at">event =</span> <span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, redcap_event_name),</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    <span class="at">event =</span> dplyr<span class="sc">::</span><span class="fu">recode</span>(event, <span class="st">&quot;first_dose&quot;</span> <span class="ot">=</span> <span class="st">&quot;dose_1&quot;</span>, <span class="st">&quot;first_visit&quot;</span> <span class="ot">=</span> <span class="st">&quot;visit_1&quot;</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>    <span class="at">arm   =</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(pattern, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">2&quot;</span>, redcap_event_name))</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>    <span class="at">cols      =</span> <span class="fu">c</span>(pmq1, pmq2, pmq3, pmq4),</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">&quot;key&quot;</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>  <span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>  <span class="co"># tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %&gt;%</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(event <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>    <span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>( <span class="co"># Simulate correcting for mismatched names across arms:</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>    <span class="at">key =</span> <span class="fu">paste0</span>(key, <span class="st">&quot;_&quot;</span>, event)</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>event)</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co"># Show the first 10 rows of the EAV table.</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>ds_eav <span class="sc">%&gt;%</span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 10 × 4
 #&gt;    study_id   arm key          value
 #&gt;       &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
@@ -503,29 +507,27 @@ direction and going wide.</p>
 #&gt;  8      100     1 pmq4_visit_1     0
 #&gt;  9      100     1 pmq1_dose_2      3
 #&gt; 10      100     1 pmq2_dose_2      1</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Spread the EAV to wide.</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ds_wide_2 <span class="ot">&lt;-</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  ds_eav <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols     =</span> <span class="fu">c</span>(study_id, arm),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from  =</span> key,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> value</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># tidyr::spread(key=key, value=value)</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>ds_wide_2</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># Spread the EAV to wide.</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>ds_wide_2 <span class="ot">&lt;-</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  ds_eav <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="at">id_cols     =</span> <span class="fu">c</span>(study_id, arm),</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="at">names_from  =</span> key,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="at">values_from =</span> value</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  )</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co"># tidyr::spread(key=key, value=value)</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>ds_wide_2</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 3 × 18
-#&gt;   study_id   arm pmq1_…¹ pmq2_…² pmq3_…³ pmq4_…⁴ pmq1_…⁵ pmq2_…⁶ pmq3_…⁷ pmq4_…⁸
-#&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1      100     1       2       2       1       1       1       0       0       0
-#&gt; 2      220     1       0       1       0       2       0       3       1       0
-#&gt; 3      304     2       0       1       0       0       2       0       0       0
-#&gt; # … with 8 more variables: pmq1_dose_2 &lt;dbl&gt;, pmq2_dose_2 &lt;dbl&gt;,
+#&gt;   study_id   arm pmq1_dose_1 pmq2_dose_1 pmq3_dose_1 pmq4_dose_1 pmq1_visit_1
+#&gt;      &lt;dbl&gt; &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+#&gt; 1      100     1           2           2           1           1            1
+#&gt; 2      220     1           0           1           0           2            0
+#&gt; 3      304     2           0           1           0           0            2
+#&gt; # ℹ 11 more variables: pmq2_visit_1 &lt;dbl&gt;, pmq3_visit_1 &lt;dbl&gt;,
+#&gt; #   pmq4_visit_1 &lt;dbl&gt;, pmq1_dose_2 &lt;dbl&gt;, pmq2_dose_2 &lt;dbl&gt;,
 #&gt; #   pmq3_dose_2 &lt;dbl&gt;, pmq4_dose_2 &lt;dbl&gt;, pmq1_visit_2 &lt;dbl&gt;,
-#&gt; #   pmq2_visit_2 &lt;dbl&gt;, pmq3_visit_2 &lt;dbl&gt;, pmq4_visit_2 &lt;dbl&gt;, and abbreviated
-#&gt; #   variable names ¹​pmq1_dose_1, ²​pmq2_dose_1, ³​pmq3_dose_1, ⁴​pmq4_dose_1,
-#&gt; #   ⁵​pmq1_visit_1, ⁶​pmq2_visit_1, ⁷​pmq3_visit_1, ⁸​pmq4_visit_1
-#&gt; # ℹ Use `colnames()` to see all variable names</code></pre>
+#&gt; #   pmq2_visit_2 &lt;dbl&gt;, pmq3_visit_2 &lt;dbl&gt;, pmq4_visit_2 &lt;dbl&gt;</code></pre>
 <p>Lots of packages and documentation exist. Our current preference is
 the <a href="https://tidyr.tidyverse.org/articles/pivot.html">tidyverse
 approach</a> to pivoting, but the <a href="https://www.r-bloggers.com/2019/03/creating-blazing-fast-pivot-tables-from-r-with-data-table-now-with-subtotals-using-grouping-sets/">data.table
@@ -553,27 +555,27 @@ then copy the code to R (or alternatively, use <a href="https://ouhscbbmc.github
 which is helpful if you need a timestamp from surveys that were not
 marked as completed. Replace ‘444’ with your pid, and 1001 through 1003
 with the desired events.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  p.participant_id      <span class="kw">as</span> participant_survey_id</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  ,r.<span class="dt">record</span>             <span class="kw">as</span> record_id</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  ,p.event_id</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  ,e.descrip            <span class="kw">as</span> event_name</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ,r.first_submit_time</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  ,r.completion_time</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- ,p.*</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- ,r.*</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> redcapv3.redcap_surveys_participants     <span class="kw">as</span> p</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">left</span>  <span class="kw">join</span> redcapv3.redcap_surveys_response <span class="kw">as</span> r <span class="kw">on</span> p.participant_id <span class="op">=</span> r.participant_id</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">left</span>  <span class="kw">join</span> redcapv3.redcap_events_metadata  <span class="kw">as</span> e <span class="kw">on</span> p.event_id       <span class="op">=</span> e.event_id</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  p.survey_id <span class="op">=</span> <span class="dv">444</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">and</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  p.event_id <span class="kw">in</span> (</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1001</span>, <span class="co">-- start of the year</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1002</span>, <span class="co">-- mid term</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1003</span>  <span class="co">-- end of year</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  p.participant_id      <span class="kw">as</span> participant_survey_id</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  ,r.<span class="dt">record</span>             <span class="kw">as</span> record_id</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  ,p.event_id</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  ,e.descrip            <span class="kw">as</span> event_name</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  ,r.first_submit_time</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  ,r.completion_time</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="co">-- ,p.*</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="co">-- ,r.*</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="kw">FROM</span> redcapv3.redcap_surveys_participants     <span class="kw">as</span> p</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>  <span class="kw">left</span>  <span class="kw">join</span> redcapv3.redcap_surveys_response <span class="kw">as</span> r <span class="kw">on</span> p.participant_id <span class="op">=</span> r.participant_id</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  <span class="kw">left</span>  <span class="kw">join</span> redcapv3.redcap_events_metadata  <span class="kw">as</span> e <span class="kw">on</span> p.event_id       <span class="op">=</span> e.event_id</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>  p.survey_id <span class="op">=</span> <span class="dv">444</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>  <span class="kw">and</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>  p.event_id <span class="kw">in</span> (</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>    <span class="dv">1001</span>, <span class="co">-- start of the year</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>    <span class="dv">1002</span>, <span class="co">-- mid term</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>    <span class="dv">1003</span>  <span class="co">-- end of year</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 <div id="ssl-options" class="section level1">
 <h1>SSL Options</h1>
@@ -581,32 +583,32 @@ with the desired events.</p>
 process of using SSL to verify the server being connected to.</p>
 <p>Use the SSL cert file that come with the <code>openssl</code>
 package.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cert_location <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;cacert.pem&quot;</span>, <span class="at">package =</span> <span class="st">&quot;openssl&quot;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(cert_location)) {</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  config_options         <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">cainfo =</span> cert_location)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  ds_different_cert_file <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">redcap_uri     =</span> uri,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">token          =</span> token_simple,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">config_options =</span> config_options</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>cert_location <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;cacert.pem&quot;</span>, <span class="at">package =</span> <span class="st">&quot;openssl&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(cert_location)) {</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  config_options         <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">cainfo =</span> cert_location)</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  ds_different_cert_file <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>    <span class="at">redcap_uri     =</span> uri,</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>    <span class="at">token          =</span> token_simple,</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>    <span class="at">config_options =</span> config_options</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</code></pre>
 <p>Force the connection to use SSL=3 (which is not preferred, and
 possibly insecure).</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>config_options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sslversion =</span> <span class="dv">3</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ds_ssl_3 <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri     =</span> uri,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">token          =</span> token_simple,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">config_options =</span> config_options</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
-<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>config_options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ssl.verifypeer =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ds_no_ssl <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">redcap_uri     =</span> uri,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">token          =</span> token_simple,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">config_options =</span> config_options</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
-<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.1 seconds.  The http status code was 200.</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>config_options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sslversion =</span> <span class="dv">3</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>ds_ssl_3 <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">redcap_uri     =</span> uri,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="at">token          =</span> token_simple,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>  <span class="at">config_options =</span> config_options</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>config_options <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ssl.verifypeer =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>ds_no_ssl <span class="ot">&lt;-</span> <span class="fu">redcap_read_oneshot</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">redcap_uri     =</span> uri,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">token          =</span> token_simple,</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="at">config_options =</span> config_options</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>)<span class="sc">$</span>data</span></code></pre></div>
+<pre><code>#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</code></pre>
 </div>
 <div id="convert-spss-output-to-redcap-data-dictionary" class="section level1">
 <h1>Convert SPSS Output to REDCap data dictionary</h1>
@@ -635,93 +637,88 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 </summary>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.2.0 (2022-04-22)
-#&gt;  os       Ubuntu 22.04.1 LTS
+#&gt;  version  R version 4.4.1 (2024-06-14)
+#&gt;  os       Ubuntu 24.04.1 LTS
 #&gt;  system   x86_64, linux-gnu
 #&gt;  ui       X11
 #&gt;  language (EN)
 #&gt;  collate  C
 #&gt;  ctype    en_US.UTF-8
 #&gt;  tz       America/Chicago
-#&gt;  date     2022-08-10
-#&gt;  pandoc   2.18 @ /usr/lib/rstudio/bin/quarto/bin/tools/ (via rmarkdown)
+#&gt;  date     2024-09-07
+#&gt;  pandoc   3.1.11 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────
 #&gt;  package     * version date (UTC) lib source
-#&gt;  archive       1.1.5   2022-05-06 [3] CRAN (R 4.2.0)
-#&gt;  assertthat    0.2.1   2019-03-21 [3] CRAN (R 4.2.0)
-#&gt;  backports     1.4.1   2021-12-13 [3] CRAN (R 4.2.0)
-#&gt;  bit           4.0.4   2020-08-04 [3] CRAN (R 4.2.0)
-#&gt;  bit64         4.0.5   2020-08-30 [3] CRAN (R 4.2.0)
-#&gt;  bslib         0.4.0   2022-07-16 [3] CRAN (R 4.2.0)
-#&gt;  cachem        1.0.6   2021-08-19 [3] CRAN (R 4.2.0)
-#&gt;  checkmate     2.1.0   2022-04-21 [3] CRAN (R 4.2.0)
-#&gt;  cli           3.3.0   2022-04-25 [3] CRAN (R 4.2.0)
-#&gt;  colorspace    2.0-3   2022-02-21 [3] CRAN (R 4.2.0)
-#&gt;  crayon        1.5.1   2022-03-26 [3] CRAN (R 4.2.0)
-#&gt;  curl          4.3.2   2021-06-23 [3] CRAN (R 4.2.0)
-#&gt;  DBI           1.1.3   2022-06-18 [3] CRAN (R 4.2.0)
-#&gt;  digest        0.6.29  2021-12-01 [3] CRAN (R 4.2.0)
-#&gt;  dplyr         1.0.9   2022-04-28 [3] CRAN (R 4.2.0)
-#&gt;  ellipsis      0.3.2   2021-04-29 [3] CRAN (R 4.2.0)
-#&gt;  evaluate      0.16    2022-08-09 [3] CRAN (R 4.2.0)
-#&gt;  fansi         1.0.3   2022-03-24 [3] CRAN (R 4.2.0)
-#&gt;  fastmap       1.1.0   2021-01-25 [3] CRAN (R 4.2.0)
-#&gt;  generics      0.1.3   2022-07-05 [3] CRAN (R 4.2.0)
-#&gt;  glue          1.6.2   2022-02-24 [3] CRAN (R 4.2.0)
-#&gt;  highr         0.9     2021-04-16 [3] CRAN (R 4.2.0)
-#&gt;  hms           1.1.1   2021-09-26 [3] CRAN (R 4.2.0)
-#&gt;  htmltools     0.5.3   2022-07-18 [3] CRAN (R 4.2.0)
-#&gt;  httr          1.4.3   2022-05-04 [3] CRAN (R 4.2.0)
-#&gt;  jquerylib     0.1.4   2021-04-26 [3] CRAN (R 4.2.0)
-#&gt;  jsonlite      1.8.0   2022-02-22 [3] CRAN (R 4.2.0)
-#&gt;  kableExtra    1.3.4   2021-02-20 [3] CRAN (R 4.2.0)
-#&gt;  knitr       * 1.39    2022-04-26 [3] CRAN (R 4.2.0)
-#&gt;  lifecycle     1.0.1   2021-09-24 [3] CRAN (R 4.2.0)
-#&gt;  magrittr    * 2.0.3   2022-03-30 [3] CRAN (R 4.2.0)
-#&gt;  munsell       0.5.0   2018-06-12 [3] CRAN (R 4.2.0)
-#&gt;  pillar        1.8.0   2022-07-18 [3] CRAN (R 4.2.0)
-#&gt;  pkgconfig     2.0.3   2019-09-22 [3] CRAN (R 4.2.0)
-#&gt;  png           0.1-7   2013-12-03 [3] CRAN (R 4.2.0)
-#&gt;  purrr         0.3.4   2020-04-17 [3] CRAN (R 4.2.0)
-#&gt;  R6            2.5.1   2021-08-19 [3] CRAN (R 4.2.0)
-#&gt;  readr         2.1.2   2022-01-30 [3] CRAN (R 4.2.0)
-#&gt;  REDCapR     * 1.1.0   2022-08-10 [1] local
-#&gt;  rlang         1.0.4   2022-07-12 [3] CRAN (R 4.2.0)
-#&gt;  rmarkdown     2.14    2022-04-25 [3] CRAN (R 4.2.0)
-#&gt;  rstudioapi    0.13    2020-11-12 [3] CRAN (R 4.2.0)
-#&gt;  rvest         1.0.2   2021-10-16 [3] CRAN (R 4.2.0)
-#&gt;  sass          0.4.2   2022-07-16 [3] CRAN (R 4.2.0)
-#&gt;  scales        1.2.0   2022-04-13 [3] CRAN (R 4.2.0)
-#&gt;  sessioninfo   1.2.2   2021-12-06 [3] CRAN (R 4.2.0)
-#&gt;  stringi       1.7.8   2022-07-11 [3] CRAN (R 4.2.0)
-#&gt;  stringr       1.4.0   2019-02-10 [3] CRAN (R 4.2.0)
-#&gt;  svglite       2.1.0   2022-02-03 [3] CRAN (R 4.2.0)
-#&gt;  systemfonts   1.0.4   2022-02-11 [3] CRAN (R 4.2.0)
-#&gt;  tibble        3.1.8   2022-07-22 [3] CRAN (R 4.2.0)
-#&gt;  tidyr         1.2.0   2022-02-01 [3] CRAN (R 4.2.0)
-#&gt;  tidyselect    1.1.2   2022-02-21 [3] CRAN (R 4.2.0)
-#&gt;  tzdb          0.3.0   2022-03-28 [3] CRAN (R 4.2.0)
-#&gt;  utf8          1.2.2   2021-07-24 [3] CRAN (R 4.2.0)
-#&gt;  vctrs         0.4.1   2022-04-13 [3] CRAN (R 4.2.0)
-#&gt;  viridisLite   0.4.0   2021-04-13 [3] CRAN (R 4.2.0)
-#&gt;  vroom         1.5.7   2021-11-30 [3] CRAN (R 4.2.0)
-#&gt;  webshot       0.5.3   2022-04-14 [3] CRAN (R 4.2.0)
-#&gt;  withr         2.5.0   2022-03-03 [3] CRAN (R 4.2.0)
-#&gt;  xfun          0.32    2022-08-10 [3] CRAN (R 4.2.0)
-#&gt;  xml2          1.3.3   2021-11-30 [3] CRAN (R 4.2.0)
-#&gt;  yaml          2.3.5   2022-02-21 [3] CRAN (R 4.2.0)
+#&gt;  archive       1.1.8   2024-04-28 [3] CRAN (R 4.4.0)
+#&gt;  backports     1.5.0   2024-05-23 [3] CRAN (R 4.4.0)
+#&gt;  bit           4.0.5   2022-11-15 [3] CRAN (R 4.4.0)
+#&gt;  bit64         4.0.5   2020-08-30 [3] CRAN (R 4.4.0)
+#&gt;  bslib         0.8.0   2024-07-29 [3] CRAN (R 4.4.1)
+#&gt;  cachem        1.1.0   2024-05-16 [3] CRAN (R 4.4.0)
+#&gt;  checkmate     2.3.2   2024-07-29 [3] CRAN (R 4.4.1)
+#&gt;  cli           3.6.3   2024-06-21 [3] CRAN (R 4.4.1)
+#&gt;  colorspace    2.1-1   2024-07-26 [3] CRAN (R 4.4.1)
+#&gt;  crayon        1.5.3   2024-06-20 [3] CRAN (R 4.4.1)
+#&gt;  curl          5.2.2   2024-08-26 [3] CRAN (R 4.4.1)
+#&gt;  digest        0.6.37  2024-08-19 [3] CRAN (R 4.4.1)
+#&gt;  dplyr         1.1.4   2023-11-17 [3] CRAN (R 4.4.0)
+#&gt;  evaluate      0.24.0  2024-06-10 [3] CRAN (R 4.4.1)
+#&gt;  fansi         1.0.6   2023-12-08 [3] CRAN (R 4.4.0)
+#&gt;  fastmap       1.2.0   2024-05-15 [3] CRAN (R 4.4.0)
+#&gt;  generics      0.1.3   2022-07-05 [3] CRAN (R 4.4.0)
+#&gt;  glue          1.7.0   2024-01-09 [3] CRAN (R 4.4.0)
+#&gt;  highr         0.11    2024-05-26 [3] CRAN (R 4.4.0)
+#&gt;  hms           1.1.3   2023-03-21 [3] CRAN (R 4.4.0)
+#&gt;  htmltools     0.5.8.1 2024-04-04 [3] CRAN (R 4.4.0)
+#&gt;  httr          1.4.7   2023-08-15 [3] CRAN (R 4.4.0)
+#&gt;  jquerylib     0.1.4   2021-04-26 [3] CRAN (R 4.4.0)
+#&gt;  jsonlite      1.8.8   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  kableExtra    1.4.0   2024-01-24 [3] CRAN (R 4.4.0)
+#&gt;  knitr       * 1.48    2024-07-07 [3] CRAN (R 4.4.1)
+#&gt;  lifecycle     1.0.4   2023-11-07 [3] CRAN (R 4.4.0)
+#&gt;  magrittr    * 2.0.3   2022-03-30 [3] CRAN (R 4.4.0)
+#&gt;  munsell       0.5.1   2024-04-01 [3] CRAN (R 4.4.0)
+#&gt;  pillar        1.9.0   2023-03-22 [3] CRAN (R 4.4.0)
+#&gt;  pkgconfig     2.0.3   2019-09-22 [3] CRAN (R 4.4.0)
+#&gt;  png           0.1-8   2022-11-29 [3] CRAN (R 4.4.0)
+#&gt;  purrr         1.0.2   2023-08-10 [3] CRAN (R 4.4.0)
+#&gt;  R6            2.5.1   2021-08-19 [3] CRAN (R 4.4.0)
+#&gt;  readr         2.1.5   2024-01-10 [3] CRAN (R 4.4.0)
+#&gt;  REDCapR     * 1.2.0   2024-09-07 [1] local
+#&gt;  rlang         1.1.4   2024-06-04 [3] CRAN (R 4.4.0)
+#&gt;  rmarkdown     2.28    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  rstudioapi    0.16.0  2024-03-24 [3] CRAN (R 4.4.0)
+#&gt;  sass          0.4.9   2024-03-15 [3] CRAN (R 4.4.0)
+#&gt;  scales        1.3.0   2023-11-28 [3] CRAN (R 4.4.0)
+#&gt;  sessioninfo   1.2.2   2021-12-06 [3] CRAN (R 4.4.0)
+#&gt;  stringi       1.8.4   2024-05-06 [3] CRAN (R 4.4.0)
+#&gt;  stringr       1.5.1   2023-11-14 [3] CRAN (R 4.4.0)
+#&gt;  svglite       2.1.3   2023-12-08 [3] CRAN (R 4.4.0)
+#&gt;  systemfonts   1.1.0   2024-05-15 [3] CRAN (R 4.4.0)
+#&gt;  tibble        3.2.1   2023-03-20 [3] CRAN (R 4.4.0)
+#&gt;  tidyr         1.3.1   2024-01-24 [3] CRAN (R 4.4.0)
+#&gt;  tidyselect    1.2.1   2024-03-11 [3] CRAN (R 4.4.0)
+#&gt;  tzdb          0.4.0   2023-05-12 [3] CRAN (R 4.4.0)
+#&gt;  utf8          1.2.4   2023-10-22 [3] CRAN (R 4.4.0)
+#&gt;  vctrs         0.6.5   2023-12-01 [3] CRAN (R 4.4.0)
+#&gt;  viridisLite   0.4.2   2023-05-02 [3] CRAN (R 4.4.0)
+#&gt;  vroom         1.6.5   2023-12-05 [3] CRAN (R 4.4.0)
+#&gt;  withr         3.0.1   2024-07-31 [3] CRAN (R 4.4.1)
+#&gt;  xfun          0.47    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  xml2          1.3.6   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  yaml          2.3.10  2024-07-26 [3] CRAN (R 4.4.1)
 #&gt; 
-#&gt;  [1] /tmp/RtmpSYJzex/Rinst29b36238315a1
-#&gt;  [2] /tmp/RtmplvH3JR/temp_libpath1796625c20c6
-#&gt;  [3] /home/wibeasley/R/x86_64-pc-linux-gnu-library/4.2
+#&gt;  [1] /tmp/RtmpHXOXHl/Rinst3543a76242474
+#&gt;  [2] /tmp/RtmpdEHRth/temp_libpath275e142605d6e
+#&gt;  [3] /home/wibeasley/R/x86_64-pc-linux-gnu-library/4.4
 #&gt;  [4] /usr/local/lib/R/site-library
 #&gt;  [5] /usr/lib/R/site-library
 #&gt;  [6] /usr/lib/R/library
 #&gt; 
 #&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </details>
-<p>Report rendered by wibeasley at 2022-08-10, 09:25 -0500 in 2
+<p>Report rendered by wibeasley at 2024-09-07, 15:18 -0500 in 2
 seconds.</p>
 </div>
 

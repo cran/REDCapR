@@ -8,14 +8,12 @@ test_that("default-mismatched", {
   path_expected <- "test-data/decimal-comma-and-dot/redcapr-specific/default-mismatched.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    returned_object <-
-      redcap_read_oneshot(
-        credential$redcap_uri,
-        credential$token
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      verbose     = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -28,6 +26,7 @@ test_that("default-mismatched", {
   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+  expect_s3_class(returned_object$data, "tbl")
 })
 
 test_that("locale-comma-oneshot", {
@@ -38,15 +37,13 @@ test_that("locale-comma-oneshot", {
   path_expected <- "test-data/decimal-comma/redcapr-specific/set-locale.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    returned_object <-
-      redcap_read_oneshot(
-        credential$redcap_uri,
-        credential$token,
-        locale                  = locale
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_read_oneshot(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      locale      = locale,
+      verbose     = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -59,6 +56,7 @@ test_that("locale-comma-oneshot", {
   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+  expect_s3_class(returned_object$data, "tbl")
 })
 
 test_that("locale-comma-batch", {
@@ -69,15 +67,13 @@ test_that("locale-comma-batch", {
   path_expected <- "test-data/decimal-comma/redcapr-specific/set-locale.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    returned_object <-
-      redcap_read(
-        redcap_uri  = credential$redcap_uri,
-        token       = credential$token,
-        locale      = locale
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_read(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      locale      = locale,
+      verbose     = FALSE
+    )
 
   # Saved w/ the oneshot test
   expected_data_frame <- retrieve_expected(path_expected)

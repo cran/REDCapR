@@ -1,31 +1,37 @@
-#' @title Export the metadata of a REDCap project
+#' @title
+#' Export the metadata of a REDCap project
 #'
-#' @description Export the metadata (as a data dictionary) of a REDCap project
-#' as a [base::data.frame()]. Each row in the data dictionary corresponds to
+#' @description
+#' Export the metadata (as a data dictionary) of a REDCap project
+#' as a [tibble::tibble()]. Each row in the data dictionary corresponds to
 #' one field in the project's dataset.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param forms An array, where each element corresponds to the REDCap form
 #' of the desired fields.  Optional.
-#' @param forms_collapsed A single string, where the desired forms are
-#' separated by commas.  Optional.
 #' @param fields An array, where each element corresponds to a desired project
 #' field.  Optional.
-#' @param fields_collapsed A single string, where the desired field names are
-#' separated by commas.  Optional.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options  A list of options to pass to `POST` method in the
-#' `httr` package.  See the details in [redcap_read_oneshot()]. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements:
+#' @return
+#' Currently, a list is returned with the following elements:
 #'
-#' * `data`: An R [base::data.frame()] of the desired records and columns.
+#' * `data`: An R [tibble::tibble()] of the desired fields (as rows).
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_codes`: A collection of
@@ -40,20 +46,11 @@
 #' string, separated by commas.
 #' * `elapsed_seconds`: The duration of the function.
 #'
-#' @details
-#' Specifically, it internally uses multiple calls to [redcap_read_oneshot()]
-#' to select and return data.  Initially, only primary key is queried through
-#' the REDCap API.  The long list is then subsetted into partitions, whose
-#' sizes are determined by the `batch_size` parameter.  REDCap is then queried
-#' for all variables of the subset's subjects.  This is repeated for each
-#' subset, before returning a unified [base::data.frame()].
+#' @author
+#' Will Beasley
 #'
-#' The function allows a delay between calls, which allows the server to
-#' attend to other users' requests.
-#'
-#' @author Will Beasley
-#'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -63,7 +60,17 @@
 #' @examples
 #' \dontrun{
 #' uri   <- "https://bbmc.ouhsc.edu/redcap/api/"
+#'
+#' # A simple project (pid 153)
 #' token <- "9A81268476645C4E5F03428B8AC3AA7B"
+#' REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
+#'
+#' # A longitudinal project (pid 212)
+#' token <- "0434F0E9CF53ED0587847AB6E51DE762"
+#' REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
+#'
+#' # A repeating measures (pid 3181)
+#' token <- "22C3FF1C8B08899FB6F86D91D874A159"
 #' REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
 #' }
 
@@ -73,36 +80,42 @@ redcap_metadata_read <- function(
   redcap_uri,
   token,
   forms             = NULL,
-  forms_collapsed   = "",
   fields            = NULL,
-  fields_collapsed  = "",
   verbose           = TRUE,
-  config_options    = NULL
+  config_options    = NULL,
+  handle_httr       = NULL
 ) {
 
   checkmate::assert_character(redcap_uri  , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token       , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
-  validate_field_names(fields, stop_on_error = TRUE)
+  assert_field_names(fields)
 
   token               <- sanitize_token(token)
-  fields_collapsed    <- collapse_vector(fields   , fields_collapsed)
-  forms_collapsed     <- collapse_vector(forms    , forms_collapsed)
+  fields_collapsed    <- collapse_vector(fields)
+  fields_array        <- to_api_array(fields, "fields")
+  forms_collapsed     <- collapse_vector(forms)
+  forms_array         <- to_api_array(forms, "forms")
   verbose             <- verbose_prepare(verbose)
-
-  if (1L <= nchar(fields_collapsed) )
-    validate_field_names_collapsed(fields_collapsed, stop_on_error = TRUE)
 
   post_body <- list(
     token    = token,
     content  = "metadata",
-    format   = "json",
-    forms    = forms_collapsed,
-    fields   = fields_collapsed
+    format   = "json"
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # append forms and fields arrays in format expected by REDCap API
+  # If either is NULL nothing will be appended
+  post_body <- c(post_body, fields_array, forms_array)
+
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     try(
@@ -123,7 +136,7 @@ redcap_metadata_read <- function(
       silent = TRUE
     )
 
-    if (exists("ds") & inherits(ds, "data.frame")) {
+    if (exists("ds") && inherits(ds, "data.frame")) {
       outcome_message <- sprintf(
         "The data dictionary describing %s fields was read from REDCap in %0.1f seconds.  The http status code was %i.",
         format(nrow(ds), big.mark = ",", scientific = FALSE, trim = TRUE),
@@ -139,7 +152,7 @@ redcap_metadata_read <- function(
       # Override the 'success' determination from the http status code
       #   and return an empty data.frame.
       kernel$success    <- FALSE
-      ds                <- data.frame()
+      ds                <- tibble::tibble()
       outcome_message   <- sprintf(
         "The REDCap metadata export failed.  The http status code was %i.  The 'raw_text' returned was '%s'.",
         kernel$status_code,
@@ -147,11 +160,13 @@ redcap_metadata_read <- function(
       )
     }       # nocov end
   } else {
-    ds                  <- data.frame() #Return an empty data.frame
+    # nocov start
+    ds                  <- tibble::tibble() # Return an empty data.frame
     outcome_message     <- sprintf(
       "The REDCapR metadata export operation was not successful.  The error message was:\n%s",
       kernel$raw_text
     )
+    # nocov end
   }
 
   if (verbose)
@@ -167,4 +182,38 @@ redcap_metadata_read <- function(
     elapsed_seconds    = kernel$elapsed_seconds,
     raw_text           = kernel$raw_text
   )
+}
+
+#' @title
+#' Convert a vector to the array format expected by the REDCap API
+#'
+#' @description
+#' Utility function to convert a vector into the array format expected by the
+#' some REDCap API calls.  It is called internally by REDCapR functions,
+#' and is not intended to be called directly.
+#'
+#' @param x A vector to convert to array format.  Can be `NULL`.
+#' @param element_names A string containing the name of the API request parameter for
+#' the array.  Must be either "fields" or "forms".
+#'
+#' @return
+#' If `x` is not `NULL` a list is returned with one element for
+#' each element of x in the format:
+#' \code{list(`element_names[0]` = x[1], `element_names[1]` = x[2], ...)}.
+#'
+#' If `x` is `NULL` then `NULL` is returned.
+to_api_array <- function(x, element_names) {
+  checkmate::assert_character(x       , null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_character(element_names, null.ok = TRUE, any.missing = FALSE, max.len = 1L, pattern = "^fields|forms$")
+
+  if (is.null(x)) {
+    return(NULL)
+  } else if (is.null(element_names)) {
+    rlang::abort("The `element_names` parameter cannot be null if `x` is not null.")
+  }
+
+  res <- as.list(x)
+  names(res) <- paste0(element_names, "[", seq_along(res) - 1L, "]")
+
+  res
 }

@@ -8,16 +8,18 @@ redcap_metadata_read(
   redcap_uri,
   token,
   forms = NULL,
-  forms_collapsed = "",
   fields = NULL,
-  fields_collapsed = "",
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -25,27 +27,26 @@ project.  Required.}
 \item{forms}{An array, where each element corresponds to the REDCap form
 of the desired fields.  Optional.}
 
-\item{forms_collapsed}{A single string, where the desired forms are
-separated by commas.  Optional.}
-
 \item{fields}{An array, where each element corresponds to a desired project
 field.  Optional.}
-
-\item{fields_collapsed}{A single string, where the desired field names are
-separated by commas.  Optional.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details in \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} of the desired records and columns.
+\item \code{data}: An R \code{\link[tibble:tibble]{tibble::tibble()}} of the desired fields (as rows).
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_codes}: A collection of
@@ -63,24 +64,23 @@ string, separated by commas.
 }
 \description{
 Export the metadata (as a data dictionary) of a REDCap project
-as a \code{\link[base:data.frame]{base::data.frame()}}. Each row in the data dictionary corresponds to
+as a \code{\link[tibble:tibble]{tibble::tibble()}}. Each row in the data dictionary corresponds to
 one field in the project's dataset.
-}
-\details{
-Specifically, it internally uses multiple calls to \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
-to select and return data.  Initially, only primary key is queried through
-the REDCap API.  The long list is then subsetted into partitions, whose
-sizes are determined by the \code{batch_size} parameter.  REDCap is then queried
-for all variables of the subset's subjects.  This is repeated for each
-subset, before returning a unified \code{\link[base:data.frame]{base::data.frame()}}.
-
-The function allows a delay between calls, which allows the server to
-attend to other users' requests.
 }
 \examples{
 \dontrun{
 uri   <- "https://bbmc.ouhsc.edu/redcap/api/"
+
+# A simple project (pid 153)
 token <- "9A81268476645C4E5F03428B8AC3AA7B"
+REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
+
+# A longitudinal project (pid 212)
+token <- "0434F0E9CF53ED0587847AB6E51DE762"
+REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
+
+# A repeating measures (pid 3181)
+token <- "22C3FF1C8B08899FB6F86D91D874A159"
 REDCapR::redcap_metadata_read(redcap_uri=uri, token=token)
 }
 }

@@ -1,6 +1,6 @@
 # These functions are not exported.
 
-populate_project_dag_write <- function(batch = FALSE) {
+populate_project_dag_write <- function(batch = FALSE, verbose = FALSE) {
   checkmate::assert_logical(batch, any.missing = FALSE, len = 1)
 
   if (!requireNamespace("testthat")) {
@@ -19,7 +19,7 @@ populate_project_dag_write <- function(batch = FALSE) {
     token         = credential$token
   )
   path_in_dag <- system.file(
-    "test-data/project-dag/dag-data.csv",
+    "test-data/project-dag/data.csv",
     package = "REDCapR"
   )
 
@@ -46,23 +46,23 @@ populate_project_dag_write <- function(batch = FALSE) {
 
   # Import the data into the REDCap project
   # testthat::expect_message(
-    returned_object <- if (batch) {
-      REDCapR::redcap_write(
-        ds          = ds_to_write,
-        redcap_uri  = project$redcap_uri,
-        token       = project$token,
-        verbose     = TRUE,
-        convert_logical_to_integer = TRUE
-      )
-    } else {
-        REDCapR::redcap_write_oneshot(
-          ds          = ds_to_write,
-          redcap_uri  = project$redcap_uri,
-          token       = project$token,
-          verbose     = TRUE,
-          convert_logical_to_integer = TRUE
-        )
-    }
+  returned_object <- if (batch) {
+    REDCapR::redcap_write(
+      ds_to_write                 = ds_to_write,
+      redcap_uri                  = project$redcap_uri,
+      token                       = project$token,
+      verbose                     = verbose,
+      convert_logical_to_integer  = TRUE
+    )
+  } else {
+    REDCapR::redcap_write_oneshot(
+      ds                          = ds_to_write,
+      redcap_uri                  = project$redcap_uri,
+      token                       = project$token,
+      verbose                     = verbose,
+      convert_logical_to_integer  = TRUE
+    )
+  }
   # )
 
   # # If uploading the data was successful, then upload the image files.
@@ -74,13 +74,18 @@ populate_project_dag_write <- function(batch = FALSE) {
   # }
 
   # Print a message and return a boolean value
-  base::message(base::sprintf(
-    "populate_project_dag_write success: %s.",
-    returned_object$success
-  ))
+  if (verbose) {
+    # no cov start
+    base::message(base::sprintf(
+      "populate_project_dag_write success: %s.",
+      returned_object$success
+    ))
+    # no cov end
+  }
   list(is_success = returned_object$success, redcap_project = project)
 }
-clear_project_dag_write <- function(verbose = TRUE) {
+
+clear_project_dag_write <- function(verbose = FALSE) {
   if (!requireNamespace("testthat")) {
     # nocov start
     stop(
@@ -97,16 +102,22 @@ clear_project_dag_write <- function(verbose = TRUE) {
 
   # Print a message and return a boolean value
   if (verbose) {
+    # no cov start
     base::message(base::sprintf(
       "clear_project_dag_write success: %s.",
       was_successful
     ))
+    # no cov end
   }
 
   was_successful
 }
 
-clean_start_dag_write <- function(batch = FALSE, delay_in_seconds = 1) {
+clean_start_dag_write <- function(
+  batch             = FALSE,
+  delay_in_seconds  = 1,
+  verbose           = FALSE
+) {
   checkmate::assert_logical(batch           , any.missing=FALSE, len=1)
   checkmate::assert_numeric(delay_in_seconds, any.missing=FALSE, len=1, lower=0)
 
@@ -118,19 +129,19 @@ clean_start_dag_write <- function(batch = FALSE, delay_in_seconds = 1) {
     )
     # nocov end
   }
-  testthat::expect_message(
-    clear_result <- clear_project_dag_write(),
-    regexp = "clear_project_dag_write success: TRUE."
-  )
+  # testthat::expect_message(
+  clear_result <- clear_project_dag_write(verbose = verbose)
+  #   regexp = "clear_project_dag_write success: TRUE."
+  # )
   testthat::expect_true(clear_result, "Clearing the results from the dag_write project should be successful.")
-  base::Sys.sleep(delay_in_seconds) #Pause after deleting records.
+  base::Sys.sleep(delay_in_seconds) # Pause after deleting records.
 
-  testthat::expect_message(
-    populate_result <- populate_project_dag_write(batch = batch),
-    regexp = "populate_project_dag_write success: TRUE."
-  )
+  # testthat::expect_message(
+  populate_result <- populate_project_dag_write(batch = batch, verbose = verbose)
+  #   regexp = "populate_project_dag_write success: TRUE."
+  # )
   testthat::expect_true(populate_result$is_success, "Population of the dag_write project should be successful.")
-  base::Sys.sleep(delay_in_seconds) #Pause after writing records.
+  base::Sys.sleep(delay_in_seconds) # Pause after writing records.
 
   populate_result
 }
@@ -153,7 +164,7 @@ clean_start_dag_write <- function(batch = FALSE, delay_in_seconds = 1) {
 #   for (i in seq_along(records)) {
 #     record    <- records[i]
 #     file_path <- file_paths[i]
-#     redcap_upload_file_oneshot(
+#     redcap_file_upload_oneshot(
 #       file_name   = file_path,
 #       record      = record,
 #       field       = field,

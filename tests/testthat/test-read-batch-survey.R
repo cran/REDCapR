@@ -8,31 +8,43 @@ test_that("smoke", {
   testthat::skip_on_cran()
 
   #Static method w/ default batch size
-  expect_message(
-    returned_object <- redcap_read(
-      redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE
+  returned_object <-
+    redcap_read(
+      redcap_uri           = credential$redcap_uri,
+      token                = credential$token,
+      export_survey_fields = TRUE,
+      verbose              = FALSE
     )
-  )
+  expect_type(returned_object, "list")
+
   #Instance method w/ default batch size
-  expect_message(
-    returned_object <- project$read(export_survey_fields=TRUE)
-  )
+  returned_object <-
+    project$read(
+      export_survey_fields  = TRUE,
+      verbose               = FALSE
+    )
+  expect_type(returned_object, "list")
 
   #Instance method w/ tiny batch size
-  expect_message(
-    returned_object <- project$read(batch_size=2, export_survey_fields=TRUE)
-  )
+  returned_object <-
+    project$read(
+      batch_size            = 2,
+      export_survey_fields  = TRUE,
+      verbose               = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 
 test_that("so-example-data-frame-retrieval", {
   path_expected <- "test-data/project-survey/expected/so-example-data-frame-retrieval.R"
 
-  actual <- data.frame(a=1:5, b=6:10) # saveRDS(actual, file.path("./inst", directory_relative, file_name))
+  actual <- tibble::tibble(a=1:5, b=6:10) # saveRDS(actual, file.path("./inst", directory_relative, file_name))
 
   if (update_expectation) save_expected(actual, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(actual, expected_data_frame, label="The returned data.frame should be correct")
+  expect_equal(actual, expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE)
+  expect_s3_class(actual, "tbl")
 })
 
 test_that("default", {
@@ -42,10 +54,13 @@ test_that("default", {
 
   ###########################
   ## Default Batch size
-  expect_message(
-    regexp            = expected_outcome_message,
-    returned_object1 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE)
-  )
+  returned_object1 <-
+    redcap_read(
+      redcap_uri            = credential$redcap_uri,
+      token                 = credential$token,
+      export_survey_fields  = TRUE,
+      verbose               = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object1$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -58,15 +73,20 @@ test_that("default", {
   expect_true(returned_object1$fields_collapsed=="", "A subset of fields was not requested.")
   expect_true(nchar(returned_object1$filter_logic)==0L, "A filter was not specified.")
   expect_match(returned_object1$outcome_messages, regexp=expected_outcome_message, perl=TRUE)
+  expect_s3_class(returned_object1$data, "tbl")
 
   ###########################
   ## Tiny Batch size
-  expect_message(
-    regexp            = expected_outcome_message,
-    returned_object2 <- redcap_read(redcap_uri=credential$redcap_uri, token=credential$token, export_survey_fields=TRUE, batch_size=8)
-  )
+  returned_object2 <-
+    redcap_read(
+      redcap_uri            = credential$redcap_uri,
+      token                 = credential$token,
+      export_survey_fields  = TRUE,
+      batch_size            = 8,
+      verbose               = FALSE
+    )
 
-  expect_equal(returned_object2$data, expected=expected_data_frame, label="The returned data.frame should be correct") # dput(returned_object2$data)
+  expect_equal(returned_object2$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object2$data)
   expect_true(all(!is.na(returned_object1$data$prescreening_survey_timestamp)))
   expect_true(returned_object2$success)
   expect_match(returned_object2$status_codes, regexp="200", perl=TRUE)
@@ -74,6 +94,7 @@ test_that("default", {
   expect_true(returned_object2$fields_collapsed=="", "A subset of fields was not requested.")
   expect_true(nchar(returned_object2$filter_logic)==0L, "A filter was not specified.")
   expect_match(returned_object2$outcome_messages, regexp=expected_outcome_message, perl=TRUE)
+  expect_s3_class(returned_object2$data, "tbl")
 })
 
 rm(credential, update_expectation)

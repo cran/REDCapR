@@ -1,22 +1,35 @@
-#' @title Download a file from a REDCap project record
+#' @title
+#' Get survey link from REDCap
 #'
-#' @description This function uses REDCap's API to download a file.
+#' @description
+#' This function uses REDCap's API to get the link for a survey.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
-#' @param record The record ID where the file is to be imported. Required
+#' @param record The record ID associated with the
+#' survey link. Required
 #' @param instrument The name of the instrument associated with the
 #' survey link.  Required
-#' @param event The name of the event where the file is saved in REDCap.
+#' @param event The name of the event associated with the
+#' survey link.
 #' Optional
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  Optional.
-#' @param config_options  A list of options to pass to [httr::POST()] method
-#' in the 'httr' package.  See the details below. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements,
+#' @return
+#' Currently, a list is returned with the following elements,
+#' * `survey_link`: a character string containing the URL for the survey.
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
 #' * `status_code`: The
@@ -24,14 +37,14 @@
 #' of the operation.
 #' * `outcome_message`: A human readable string indicating the operation's
 #' outcome.
-#' * `records_affected_count`: The number of records inserted or updated.
-#' * `affected_ids`: The subject IDs of the inserted or updated records.
+#' * `instrument`: The instrument associated with the survey link.
+#' * `records_affected_count`: The number of records associated with
+#' the survey link.
+#' * `affected_ids`: The subject IDs associated with the survey link.
 #' * `elapsed_seconds`: The duration of the function.
 #' * `raw_text`: If an operation is NOT successful, the text returned by
 #' REDCap.  If an operation is successful, the `raw_text` is returned as an
 #' empty string to save RAM.
-#' * `file_name`: The name of the file persisted to disk. This is useful if
-#' the name stored in REDCap is used (which is the default).
 #'
 #' @details
 #' Currently, the function doesn't modify any variable types to conform to
@@ -42,9 +55,11 @@
 #' To use this method, you must have API Export privileges in the project.
 #' (As stated in the 9.0.0 documentation.)
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -54,7 +69,7 @@
 #' @examples
 #' \dontrun{
 #' uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
-#' token   <- "8FA9A6BDAE2C0B5DD3CB472DD8E8918C" #pid=817
+#' token   <- "8FA9A6BDAE2C0B5DD3CB472DD8E8918C" # pid=817
 #' record  <- 1
 #' instrument   <- "participant_morale_questionnaire"
 #' # event <- "" # only for longitudinal projects
@@ -68,7 +83,6 @@
 #' result$survey_link
 #' }
 
-
 #' @export
 redcap_survey_link_export_oneshot <- function(
   redcap_uri,
@@ -77,7 +91,8 @@ redcap_survey_link_export_oneshot <- function(
   instrument,
   event           = "",
   verbose         = TRUE,
-  config_options  = NULL
+  config_options  = NULL,
+  handle_httr     = NULL
 ) {
 
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -102,9 +117,14 @@ redcap_survey_link_export_oneshot <- function(
 
   if (0L < nchar(event)) post_body$event <- event
 
-  # This is the first of two important lines in the function.
-  #   It retrieves the information from the server and stores it in RAM.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
   if (kernel$success) {
     if (verbose)
@@ -125,7 +145,7 @@ redcap_survey_link_export_oneshot <- function(
     # If an operation is successful, the `raw_text` is no longer returned to
     #   save RAM.  The content is not really necessary with httr's status
     #   message exposed.
-  } else { #If the operation was unsuccessful, then...
+  } else { # If the operation was unsuccessful, then...
     # kernel$status_code placeholder
     outcome_message         <- "survey link NOT returned."
     records_affected_count  <- 0L

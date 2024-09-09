@@ -9,30 +9,45 @@ kernel_api(
   post_body,
   config_options,
   encoding = "UTF-8",
-  content_type = "text/csv"
+  content_type = "text/csv",
+  handle_httr = NULL,
+  encode_httr = "form"
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{post_body}{List of contents expected by the REDCap API.  Required.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details below.  Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
 
 \item{encoding}{The encoding value passed to \code{\link[httr:content]{httr::content()}}.  Defaults
 to 'UTF-8'.}
 
 \item{content_type}{The MIME value passed to \code{\link[httr:content]{httr::content()}}.  Defaults
 to 'text/csv'.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.}
+
+\item{encode_httr}{The value passed to the \code{encode} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+Defaults to \code{"form"}, which is appropriate for most actions.
+(Currently, the only exception is importing a file,
+which uses "multipart".)}
 }
 \value{
 A \link[utils:packageDescription]{utils::packageVersion}.
 }
 \description{
-This function is used by other functions to read and write
-values.
+This function is used by other functions to read and write values.
 }
 \details{
 If the API call is unsuccessful, a value of
@@ -46,15 +61,15 @@ uri            <- "https://bbmc.ouhsc.edu/redcap/api/"
 token          <- "9A81268476645C4E5F03428B8AC3AA7B"
 post_body      <- list(
   token    = token,
-  content  = 'project',
-  format   = 'csv'
+  content  = "project",
+  format   = "csv"
 )
 \dontrun{
 kernel <- REDCapR:::kernel_api(uri, post_body, config_options)
 
 # Consume the results in a few different ways.
 kernel$result
-read.csv(text=kernel$raw_text)
-as.list(read.csv(text=kernel$raw_text))
+read.csv(text = kernel$raw_text)
+as.list(read.csv(text = kernel$raw_text))
 }
 }

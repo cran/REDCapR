@@ -1,12 +1,12 @@
-#' @docType package
+#' @keywords internal
+"_PACKAGE"
+
 #' @name REDCapR-package
-#' @aliases REDCapR
-#'
-#' @title R utilities for interacting with a REDCap data system
-#' <https://www.project-redcap.org/>
-#'
+
+## usethis namespace: start
+## usethis namespace: end
+
 #' @description
-#'
 #' Comprehensive documentation is also available at
 #' https://ouhscbbmc.github.io/REDCapR/.
 #'
@@ -14,7 +14,7 @@
 #' following projects.  We appreciate the support.
 #' * *OUHSC CCAN Independent Evaluation of the State of Oklahoma Competitive
 #' Maternal, Infant, and Early Childhood Home Visiting
-#' ([MIECHV](https://mchb.hrsa.gov/maternal-child-health-initiatives/home-visiting-overview)) Project*.
+#' ([MIECHV](https://mchb.hrsa.gov/programs-impact/programs/home-visiting/maternal-infant-early-childhood-home-visiting-miechv-program)) Project*.
 #' HRSA/ACF D89MC23154.
 #' David Bard, PI, OUHSC; 2011-2015.
 #' * *Independent Evaluation of the State of OK MIECHV Evidence Based Home
@@ -39,7 +39,8 @@
 #' 2013-2017.
 #'
 #'
-#' @note The release version is available through
+#' @note
+#' The release version is available through
 #' [CRAN](https://cran.r-project.org/package=REDCapR) by running
 #' `install.packages('REDCapR')`.  The most recent development version is
 #' available through [GitHub](https://github.com/OuhscBbmc/REDCapR) by
@@ -56,10 +57,10 @@
 #' @examples
 #' \dontrun{
 #' # Install/update REDCapR with the release version from CRAN.
-#' install.packages('REDCapR')
+#' # install.packages('REDCapR')
 #'
 #' # Install/update REDCapR with the development version from GitHub
 #' # install.packages("remotes") # Uncomment if `remotes` isn't installed already.
-#' remotes::install_github('OuhscBbmc/REDCapR')
+#' # remotes::install_github('OuhscBbmc/REDCapR')
 #' }
 NULL

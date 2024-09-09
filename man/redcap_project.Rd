@@ -27,21 +27,18 @@ password for a project.  Required.}
   batch_size = 100L,
   interbatch_delay = 0,
   records = NULL,
-  records_collapsed = "",
   fields = NULL,
-  fields_collapsed = "",
   forms = NULL,
-  forms_collapsed = "",
   events = NULL,
-  events_collapsed = "",
   raw_or_label = "raw",
   raw_or_label_headers = "raw",
   export_checkbox_label = FALSE,
   export_survey_fields = FALSE,
   export_data_access_groups = FALSE,
   filter_logic = "",
+  col_types = NULL,
   guess_type = TRUE,
-  guess_max = 1000L,
+  guess_max = 1000,
   verbose = TRUE,
   config_options = NULL
 )}}{Exports records from a REDCap project.}
@@ -58,7 +55,7 @@ password for a project.  Required.}
 
 \examples{
 uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
-token   <- "D70F9ACD1EDD6F151C6EA78683944E98"
+token   <- "9A81268476645C4E5F03428B8AC3AA7B"
 \dontrun{
 project <- REDCapR::redcap_project$new(redcap_uri=uri, token=token)
 ds_all  <- project$read()
@@ -73,12 +70,14 @@ ids_of_shorties <- ds_skinny$record_id[ds_skinny$height < 40]
 ds_males        <- project$read(records=ids_of_males, batch_size=2)$data
 ds_shorties     <- project$read(records=ids_of_shorties)$data
 
-#Switch the Genders
+}
+if (FALSE) {
+# Switch the Genders
 sex_original   <- ds_skinny$sex
 ds_skinny$sex  <- (1 - ds_skinny$sex)
 project$write(ds_skinny)
 
-#Switch the Genders back
+# Switch the Genders back
 ds_skinny$sex <- sex_original
 project$write(ds_skinny)
 }

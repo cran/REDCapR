@@ -1,4 +1,4 @@
-## ----set_options, echo=FALSE, results='hide'----------------------------------
+## ----set_options--------------------------------------------------------------
 report_render_start_time <- Sys.time()
 
 library(knitr)
@@ -10,32 +10,13 @@ opts_chunk$set(
   tidy    = FALSE
 )
 
-# knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
-knit_print.data.frame <- function(x, ...) {
-  # See https://cran.r-project.org/package=knitr/vignettes/knit_print.html
-
-  x %>%
-    # rmarkdown::print.paged_df() %>%
-    kable(
-      col.names = gsub("_", " ", colnames(.)),
-      format = "html"
-    ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width        = FALSE
-    ) %>%
-    c("", "", .) %>%
-    paste(collapse = "\n") %>%
-    asis_output()
-}
-
 ## ----project_values-----------------------------------------------------------
 library(REDCapR) #Load the package into the current R session.
 uri                   <- "https://bbmc.ouhsc.edu/redcap/api/"
 token_simple          <- "9A81268476645C4E5F03428B8AC3AA7B"
 token_longitudinal    <- "0434F0E9CF53ED0587847AB6E51DE762"
 
-## ----retrieve-longitudinal, results='hold'------------------------------------
+## ----retrieve-longitudinal----------------------------------------------------
 library(magrittr)
 suppressPackageStartupMessages(requireNamespace("dplyr"))
 suppressPackageStartupMessages(requireNamespace("tidyr"))
@@ -45,7 +26,7 @@ ds_long <- REDCapR::redcap_read_oneshot(redcap_uri = uri, token = token_longitud
 ds_long %>%
   dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4)
 
-## ----widen-simple, results='hold'---------------------------------------------
+## ----widen-simple-------------------------------------------------------------
 ds_wide <-
   ds_long %>%
   dplyr::select(study_id, redcap_event_name, pmq1) %>%
@@ -55,8 +36,6 @@ ds_wide <-
     names_from  = redcap_event_name,
     values_from = pmq1
   )
-  # For old versions of tidyr that predate `pivot_wider()`:
-  # tidyr::spread(key=redcap_event_name, value=pmq1)
 ds_wide
 
 ## ----widen-typical------------------------------------------------------------
@@ -70,8 +49,8 @@ ds_wide <-
     arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
   ) %>%
   dplyr::select(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) %>%
-  dplyr::filter(!(event %in% c(
-    "enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
+  dplyr::filter(!(event %in% 
+    c("enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
   )) %>%
   tidyr::pivot_wider(
     id_cols     = c(study_id, arm),
@@ -118,8 +97,8 @@ ds_wide_2 <-
     names_from  = key,
     values_from = value
   )
-  # For old versions of tidyr that predate `pivot_wider()`:
-  # tidyr::spread(key=key, value=value)
+# For old versions of tidyr that predate `pivot_wider()`:
+# tidyr::spread(key=key, value=value)
 ds_wide_2
 
 ## -----------------------------------------------------------------------------

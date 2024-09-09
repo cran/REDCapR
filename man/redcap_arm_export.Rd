@@ -4,11 +4,20 @@
 \alias{redcap_arm_export}
 \title{Export Arms}
 \usage{
-redcap_arm_export(redcap_uri, token, verbose = TRUE, config_options = NULL)
+redcap_arm_export(
+  redcap_uri,
+  token,
+  verbose = TRUE,
+  config_options = NULL,
+  handle_httr = NULL
+)
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -18,8 +27,13 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details in \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
@@ -27,7 +41,7 @@ Currently, a list is returned with the following elements:
 \item \code{has_arms}: a \code{logical} value indicating if the REDCap project has
 arms (\emph{i.e.}, "TRUE") or is a classic non-longitudinal project
 (\emph{i.e.}, "FALSE").
-\item \code{data}: a \code{\link{tibble}} with one row per arm.  The columns are
+\item \code{data}: a \code{\link[tibble:tibble]{tibble::tibble()}} with one row per arm.  The columns are
 \code{arm_number} (an integer) and \code{arm_name} (a human-friendly string).
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.

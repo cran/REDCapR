@@ -6,28 +6,27 @@ report_id           <- 5980L
 
 test_that("smoke test", {
   testthat::skip_on_cran()
-  expect_message(
-    returned_object <-
-      redcap_report(
-        redcap_uri    = credential$redcap_uri,
-        token         = credential$token,
-        report_id     = report_id
-      )
-  )
+  returned_object <-
+    redcap_report(
+      redcap_uri    = credential$redcap_uri,
+      token         = credential$token,
+      report_id     = report_id,
+      verbose       = FALSE
+    )
+  expect_type(returned_object, "list")
 })
 test_that("default", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/report/default.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    regexp          = expected_outcome_message,
-    returned_object <- redcap_report(
+  returned_object <-
+    redcap_report(
       redcap_uri    = credential$redcap_uri,
       token         = credential$token,
-      report_id     = report_id
+      report_id     = report_id,
+      verbose       = FALSE
     )
-  )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -37,6 +36,8 @@ test_that("default", {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+
+  expect_s3_class(returned_object$data, "tbl")
 })
 test_that("col_types", {
   testthat::skip_on_cran()
@@ -51,16 +52,14 @@ test_that("col_types", {
     ethnicity          = readr::col_integer()
   )
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <-
-        REDCapR::redcap_report(
-          redcap_uri = credential$redcap_uri,
-          token      = credential$token,
-          report_id  = report_id,
-          col_types  = col_types
-        )
-  )
+  returned_object <-
+    REDCapR::redcap_report(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      report_id   = report_id,
+      col_types   = col_types,
+      verbose     = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -70,22 +69,22 @@ test_that("col_types", {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+
+  expect_s3_class(returned_object$data, "tbl")
 })
 test_that("force-character-type", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/report/force-character-type.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <-
-      redcap_report(
-        redcap_uri  = credential$redcap_uri,
-        token       = credential$token,
-        report_id   = report_id,
-        guess_type  = FALSE
-      )
-  )
+  returned_object <-
+    redcap_report(
+      redcap_uri  = credential$redcap_uri,
+      token       = credential$token,
+      report_id   = report_id,
+      guess_type  = FALSE,
+      verbose     = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -95,22 +94,22 @@ test_that("force-character-type", {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+
+  expect_s3_class(returned_object$data, "tbl")
 })
 test_that("raw", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/report/raw.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <-
-      redcap_report(
-        redcap_uri    = credential$redcap_uri,
-        token         = credential$token,
-        report_id     = report_id,
-        raw_or_label  = "raw"
-      )
-  )
+  returned_object <-
+    redcap_report(
+      redcap_uri    = credential$redcap_uri,
+      token         = credential$token,
+      report_id     = report_id,
+      raw_or_label  = "raw",
+      verbose       = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -120,50 +119,23 @@ test_that("raw", {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+
+  expect_s3_class(returned_object$data, "tbl")
 })
-# This test is removed because the vroom version adds digits to make the columns unique
-# test_that("label-header", {
-#   testthat::skip_on_cran()
-#   path_expected <- "test-data/specific-redcapr/report/label-header.R"
-#   expected_warning <- "Duplicated column names deduplicated: 'Complete\\?' => 'Complete\\?_1' \\[\\d+\\], 'Complete\\?' => 'Complete\\?_2' \\[\\d+\\]"
-#   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
-#
-#   expect_warning(
-#     regexp = expected_warning,
-#     expect_message(
-#       regexp           = expected_outcome_message,
-#       returned_object <- redcap_read_oneshot(redcap_uri=credential$redcap_uri, token=credential$token, raw_or_label_headers="label")
-#     )
-#   )
-#
-#   if (update_expectation) save_expected(returned_object$data, path_expected)
-#   expected_data_frame <- retrieve_expected(path_expected)
-#
-#   expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-#   expect_equal(returned_object$status_code, expected=200L)
-#   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-#   expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-#   expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-#   expect_true(returned_object$filter_logic=="", "A filter was not specified.")
-#   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
-#   expect_true(returned_object$success)
-# })
 test_that("export_checkbox_label", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/report/export_checkbox_label.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
-  expect_message(
-    regexp           = expected_outcome_message,
-    returned_object <-
-      redcap_report(
-        redcap_uri            = credential$redcap_uri,
-        token                 = credential$token,
-        report_id             = report_id,
-        export_checkbox_label = TRUE,
-        raw_or_label          = "label"
-      )
-  )
+  returned_object <-
+    redcap_report(
+      redcap_uri            = credential$redcap_uri,
+      token                 = credential$token,
+      report_id             = report_id,
+      export_checkbox_label = TRUE,
+      raw_or_label          = "label",
+      verbose               = FALSE
+    )
 
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
@@ -173,6 +145,8 @@ test_that("export_checkbox_label", {
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
+
+  expect_s3_class(returned_object$data, "tbl")
 })
 
 test_that("bad token -Error", {

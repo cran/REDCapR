@@ -8,13 +8,9 @@ redcap_read_oneshot(
   redcap_uri,
   token,
   records = NULL,
-  records_collapsed = "",
   fields = NULL,
-  fields_collapsed = "",
   forms = NULL,
-  forms_collapsed = "",
   events = NULL,
-  events_collapsed = "",
   raw_or_label = "raw",
   raw_or_label_headers = "raw",
   export_checkbox_label = FALSE,
@@ -23,18 +19,24 @@ redcap_read_oneshot(
   filter_logic = "",
   datetime_range_begin = as.POSIXct(NA),
   datetime_range_end = as.POSIXct(NA),
+  blank_for_gray_form_status = FALSE,
   col_types = NULL,
+  na = c("", "NA"),
   guess_type = TRUE,
-  guess_max = 1000L,
+  guess_max = 1000,
   http_response_encoding = "UTF-8",
   locale = readr::default_locale(),
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
@@ -42,26 +44,14 @@ project.  Required.}
 \item{records}{An array, where each element corresponds to the ID of a
 desired record.  Optional.}
 
-\item{records_collapsed}{A single string, where the desired ID values
-are separated by commas.  Optional.}
-
 \item{fields}{An array, where each element corresponds to a desired project
 field.  Optional.}
-
-\item{fields_collapsed}{A single string, where the desired field names are
-separated by commas.  Optional.}
 
 \item{forms}{An array, where each element corresponds to a desired project
 form.  Optional.}
 
-\item{forms_collapsed}{A single string, where the desired form names are
-separated by commas.  Optional.}
-
 \item{events}{An array, where each element corresponds to a desired project
 event.  Optional.}
-
-\item{events_collapsed}{A single string, where the desired event names are
-separated by commas.  Optional.}
 
 \item{raw_or_label}{A string (either \code{'raw'} or \code{'label'}) that specifies
 whether to export the raw coded values or the labels for the options of
@@ -103,14 +93,25 @@ modified \emph{before} a given datetime, provide a
 value.
 If not specified, REDCap will assume no end time.}
 
+\item{blank_for_gray_form_status}{A boolean value that specifies whether
+or not to export blank values for instrument complete status fields that have
+a gray status icon. All instrument complete status fields having a gray icon
+can be exported either as a blank value or as "0" (Incomplete). Blank values
+are recommended in a data export if the data will be re-imported into a
+REDCap project. Default is \code{FALSE}.}
+
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
 \code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
 
+\item{na}{A \link{character} vector passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}.
+Defaults to \code{c("", "NA")}.}
+
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If false, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
+returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
 data type for each column.  Ignored if \code{col_types} is not null.}
 
-\item{guess_max}{A positive integer passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
+\item{guess_max}{A positive \link[base:numeric]{base::numeric} value
+passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
 specifies the maximum number of records to use for guessing column types.}
 
 \item{http_response_encoding}{The encoding value passed to
@@ -125,13 +126,18 @@ to the R console during the operation.  The verbose output might contain
 sensitive information (\emph{e.g.} PHI), so turn this off if the output might
 be visible somewhere public. Optional.}
 
-\item{config_options}{A list of options to pass to \code{POST} method in the
-\code{httr} package.  See the details below. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements:
 \itemize{
-\item \code{data}: An R \code{\link[base:data.frame]{base::data.frame()}} of the desired records and columns.
+\item \code{data}: A \code{\link[tibble:tibble]{tibble::tibble()}} of the desired records and columns.
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
@@ -149,45 +155,71 @@ string, separated by commas.
 REDCap.  If an operation is successful, the \code{raw_text} is returned as an
 empty string to save RAM.
 }
+
+If no records are retrieved (such as no records meet the filter criteria),
+a zero-row tibble is returned.
+Currently the empty tibble has zero columns, but that may change in the future.
 }
 \description{
 This function uses REDCap's API to select and return data.
 }
 \details{
-The full list of configuration options accepted by the \code{httr} package is
-viewable by executing \code{\link[httr:httr_options]{httr::httr_options()}}.  The \code{httr} package and
-documentation is available at https://cran.r-project.org/package=httr.
-
-If you do not pass in this \code{export_data_access_groups} value, it will default
+If you do not pass an \code{export_data_access_groups} value, it will default
 to \code{FALSE}. The following is from the API help page for version 10.5.1:
 \emph{This flag is only viable if the user whose token is being used to make the
 API request is \strong{not} in a data access group. If the user is in a group,
 then this flag will revert to its default value}.
+
+The REDCap project may contain "pseudofields", depending on its structure.
+Pseudofields are exported for certain project structures, but are not
+defined by users and do not appear in the codebook.
+If a recognized pseudofield is passed to the \code{fields} api parameter,
+it is suppressed by \code{\link[=redcap_read]{redcap_read()}} and \code{\link[=redcap_read_oneshot]{redcap_read_oneshot()}}
+so the server doesn't throw an error.
+Requesting a pseudofield is discouraged, so a message is returned to the user.
+
+Pseudofields include:
+\itemize{
+\item \code{redcap_event_name}: for longitudinal projects or multi-arm projects.
+\item \code{redcap_repeat_instrument}:  for projects with repeating instruments.
+\item \code{redcap_repeat_instance}:   for projects with repeating instruments.
+\item \code{redcap_data_access_group}: for projects with DAGs when the
+\code{export_data_access_groups} api parameter is TRUE.
+\item \code{redcap_survey_identifier}:  for projects with surveys when the
+\code{export_survey_fields} api parameter is TRUE.
+\item \emph{instrument_name}\verb{_timestamp}: for projects with surveys.
+For example, an instrument called "demographics" will have a pseudofield
+named \code{demographics_timestamp}.
+REDCapR does not suppress requests for timestamps, so the server will
+throw an error like
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ERROR: The following values in the parameter fields are not valid: 'demographics_timestamp'
+}\if{html}{\out{</div>}}
+}
 }
 \examples{
 \dontrun{
 uri      <- "https://bbmc.ouhsc.edu/redcap/api/"
 token    <- "9A81268476645C4E5F03428B8AC3AA7B"
 
-#Return all records and all variables.
+# Return all records and all variables.
 ds <- REDCapR::redcap_read_oneshot(redcap_uri=uri, token=token)$data
 
-#Return only records with IDs of 1 and 3
+# Return only records with IDs of 1 and 3
 desired_records_v1 <- c(1, 3)
 ds_some_rows_v1 <- REDCapR::redcap_read_oneshot(
-   redcap_uri = uri,
-   token      = token,
-   records    = desired_records_v1
+  redcap_uri = uri,
+  token      = token,
+  records    = desired_records_v1
 )$data
 
-#Return only the fields record_id, name_first, and age
+# Return only the fields record_id, name_first, and age
 desired_fields_v1 <- c("record_id", "name_first", "age")
 ds_some_fields_v1 <- REDCapR::redcap_read_oneshot(
-   redcap_uri = uri,
-   token      = token,
-   fields     = desired_fields_v1
+  redcap_uri = uri,
+  token      = token,
+  fields     = desired_fields_v1
 )$data
-
 
 # Specify the column types.
 col_types <- readr::cols(
@@ -200,11 +232,10 @@ col_types <- readr::cols(
   race___6   = readr::col_logical()
 )
 ds_col_types <- REDCapR::redcap_read_oneshot(
-   redcap_uri = uri,
-   token      = token,
-   col_types  = col_types
+  redcap_uri = uri,
+  token      = token,
+  col_types  = col_types
 )$data
-
 }
 }
 \references{

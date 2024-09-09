@@ -2,7 +2,7 @@
 % Please edit documentation in R/redcap-survey-link-export-oneshot.R
 \name{redcap_survey_link_export_oneshot}
 \alias{redcap_survey_link_export_oneshot}
-\title{Download a file from a REDCap project record}
+\title{Get survey link from REDCap}
 \usage{
 redcap_survey_link_export_oneshot(
   redcap_uri,
@@ -11,33 +11,45 @@ redcap_survey_link_export_oneshot(
   instrument,
   event = "",
   verbose = TRUE,
-  config_options = NULL
+  config_options = NULL,
+  handle_httr = NULL
 )
 }
 \arguments{
-\item{redcap_uri}{The URI (uniform resource identifier) of the REDCap
-project.  Required.}
+\item{redcap_uri}{The
+\href{https://en.wikipedia.org/wiki/Uniform_Resource_Identifier}{uri}/url
+of the REDCap server
+typically formatted as "https://server.org/apps/redcap/api/".
+Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
 
-\item{record}{The record ID where the file is to be imported. Required}
+\item{record}{The record ID associated with the
+survey link. Required}
 
 \item{instrument}{The name of the instrument associated with the
 survey link.  Required}
 
-\item{event}{The name of the event where the file is saved in REDCap.
+\item{event}{The name of the event associated with the
+survey link.
 Optional}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  Optional.}
 
-\item{config_options}{A list of options to pass to \code{\link[httr:POST]{httr::POST()}} method
-in the 'httr' package.  See the details below. Optional.}
+\item{config_options}{A list of options passed to \code{\link[httr:POST]{httr::POST()}}.
+See details at \code{\link[httr:httr_options]{httr::httr_options()}}. Optional.}
+
+\item{handle_httr}{The value passed to the \code{handle} parameter of
+\code{\link[httr:POST]{httr::POST()}}.
+This is useful for only unconventional authentication approaches.  It
+should be \code{NULL} for most institutions.  Optional.}
 }
 \value{
 Currently, a list is returned with the following elements,
 \itemize{
+\item \code{survey_link}: a character string containing the URL for the survey.
 \item \code{success}: A boolean value indicating if the operation was apparently
 successful.
 \item \code{status_code}: The
@@ -45,18 +57,18 @@ successful.
 of the operation.
 \item \code{outcome_message}: A human readable string indicating the operation's
 outcome.
-\item \code{records_affected_count}: The number of records inserted or updated.
-\item \code{affected_ids}: The subject IDs of the inserted or updated records.
+\item \code{instrument}: The instrument associated with the survey link.
+\item \code{records_affected_count}: The number of records associated with
+the survey link.
+\item \code{affected_ids}: The subject IDs associated with the survey link.
 \item \code{elapsed_seconds}: The duration of the function.
 \item \code{raw_text}: If an operation is NOT successful, the text returned by
 REDCap.  If an operation is successful, the \code{raw_text} is returned as an
 empty string to save RAM.
-\item \code{file_name}: The name of the file persisted to disk. This is useful if
-the name stored in REDCap is used (which is the default).
 }
 }
 \description{
-This function uses REDCap's API to download a file.
+This function uses REDCap's API to get the link for a survey.
 }
 \details{
 Currently, the function doesn't modify any variable types to conform to
@@ -70,7 +82,7 @@ To use this method, you must have API Export privileges in the project.
 \examples{
 \dontrun{
 uri     <- "https://bbmc.ouhsc.edu/redcap/api/"
-token   <- "8FA9A6BDAE2C0B5DD3CB472DD8E8918C" #pid=817
+token   <- "8FA9A6BDAE2C0B5DD3CB472DD8E8918C" # pid=817
 record  <- 1
 instrument   <- "participant_morale_questionnaire"
 # event <- "" # only for longitudinal projects

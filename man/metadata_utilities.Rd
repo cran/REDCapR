@@ -22,7 +22,7 @@ Default is \code{TRUE}. Optional.}
 to determine the \code{id} and \code{label} values.  Required.}
 }
 \value{
-Currently, a \code{\link[base:data.frame]{base::data.frame()}} is returned a row for each match,
+Currently, a \code{\link[tibble:tibble]{tibble::tibble()}} is returned a row for each match,
 and a column for each \emph{named} group within a match.  For the
 \code{retrieve_checkbox_choices()} function, the columns will be.
 \itemize{
@@ -37,12 +37,16 @@ project metadata.
 \details{
 The \code{\link[=regex_named_captures]{regex_named_captures()}} function is general, and not specific to
 REDCap; it accepts any arbitrary regular expression.
-It returns a \code{\link[base:data.frame]{base::data.frame()}} with as many columns as named matches.
+It returns a \code{\link[tibble:tibble]{tibble::tibble()}} with as many columns as named matches.
 
 The \code{\link[=checkbox_choices]{checkbox_choices()}} function is specialized, and accommodates the
 "select choices" for a \emph{single} REDCap checkbox group (where multiple boxes
-can be selected).  It returns a \code{\link[base:data.frame]{base::data.frame()}} with two columns, one
+can be selected).  It returns a \code{\link[tibble:tibble]{tibble::tibble()}} with two columns, one
 for the numeric id and one for the text label.
+
+The parse will probably fail if a label contains a pipe (\emph{i.e.}, \code{|}),
+since that the delimiter REDCap uses to separate choices
+presented to the user.
 }
 \examples{
 # The weird ranges are to avoid the pipe character;
@@ -55,7 +59,8 @@ choices_1 <- paste0(
   "3, Native Hawaiian or Other Pacific Islander | ",
   "4, Black or African American | ",
   "5, White | ",
-  "6, Unknown / Not Reported")
+  "6, Unknown / Not Reported"
+)
 
 # This calls the general function, and requires the correct regex pattern.
 REDCapR::regex_named_captures(pattern=pattern_boxes, text=choices_1)
@@ -67,16 +72,16 @@ REDCapR::checkbox_choices(select_choices=choices_1)
 uri         <- "https://bbmc.ouhsc.edu/redcap/api/"
 token       <- "9A81268476645C4E5F03428B8AC3AA7B"
 
-ds_metadata <- redcap_metadata_read(redcap_uri=uri, token=token)$data
-choices_2   <- ds_metadata[ds_metadata$field_name=="race", "select_choices_or_calculations"]
+ds_metadata <- redcap_metadata_read(uri, token)$data
+choices_2   <- ds_metadata[ds_metadata$field_name == "race", ]$select_choices_or_calculations
 
-REDCapR::regex_named_captures(pattern=pattern_boxes, text=choices_2)
+REDCapR::regex_named_captures(pattern = pattern_boxes, text = choices_2)
 }
 
-path_3         <- system.file(package="REDCapR", "test-data/project-simple/simple-metadata.csv")
+path_3     <- system.file(package = "REDCapR", "test-data/project-simple/metadata.csv")
 ds_metadata_3  <- read.csv(path_3)
-choices_3      <- ds_metadata_3[ds_metadata_3$field_name=="race", "select_choices_or_calculations"]
-REDCapR::regex_named_captures(pattern=pattern_boxes, text=choices_3)
+choices_3  <- ds_metadata_3[ds_metadata_3$field_name=="race", "select_choices_or_calculations"]
+REDCapR::regex_named_captures(pattern = pattern_boxes, text = choices_3)
 }
 \references{
 See the official documentation for permissible characters in a

@@ -1,6 +1,6 @@
 library(testthat)
 
-read_arms <- function (path) {
+read_arms <- function(path) {
   full_path   <- system.file(path, package = "REDCapR")
   if (!file.exists(full_path))
     stop("The expected file `", full_path, "` was not found.")  # nocov
@@ -9,11 +9,11 @@ read_arms <- function (path) {
     arm_num = readr::col_integer(),
     name    = readr::col_character()
   )
-  full_path |>
+  full_path %>%
     readr::read_csv(col_types = col_types) %>%
     dplyr::select(
-      arm_number  = arm_num,
-      arm_name    = name
+      arm_number  = "arm_num",
+      arm_name    = "name"
     )
 }
 
@@ -32,14 +32,12 @@ test_that("delete-multiple-arm", {
   # start_clean_result <- REDCapR:::clean_start_delete_single_arm()
 
   expected_outcome_message <- "The list of arms was retrieved from the REDCap project in \\d+(\\.\\d+\\W|\\W)seconds\\."
-  expect_message(
-    returned_object <-
-      redcap_arm_export(
-        redcap_uri        = credential$redcap_uri,
-        token             = credential$token
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_arm_export(
+      redcap_uri        = credential$redcap_uri,
+      token             = credential$token,
+      verbose           = FALSE
+    )
 
   expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) #returned_object2$data$bmi<-NULL; returned_object2$data$age<-NULL;dput(returned_object2$data)
   expect_equal(returned_object$status_code, expected=200L)
@@ -53,14 +51,14 @@ test_that("delete-single-arm", {
   credential  <- retrieve_credential_testing(2626L)
 
   expected_outcome_message <- "A 'classic' REDCap project has no arms.  Retrieved in \\d+(\\.\\d+\\W|\\W)seconds\\."
-  expect_message(
+  expect_message({
     returned_object <-
       redcap_arm_export(
         redcap_uri        = credential$redcap_uri,
-        token             = credential$token
-      ),
-    regexp = expected_outcome_message
-  )
+        token             = credential$token,
+        verbose           = TRUE
+      )
+  })
 
   expect_equal(returned_object$data, expected=empty_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) #returned_object2$data$bmi<-NULL; returned_object2$data$age<-NULL;dput(returned_object2$data)
   expect_equal(returned_object$status_code, expected=400L)
@@ -77,14 +75,12 @@ test_that("Longitudinal Two Arms", {
   expected_data_frame <- read_arms(path_expected)
 
   expected_outcome_message <- "The list of arms was retrieved from the REDCap project in \\d+(\\.\\d+\\W|\\W)seconds\\."
-  expect_message(
-    returned_object <-
-      redcap_arm_export(
-        redcap_uri        = credential$redcap_uri,
-        token             = credential$token
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_arm_export(
+      redcap_uri        = credential$redcap_uri,
+      token             = credential$token,
+      verbose           = FALSE
+    )
 
   expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) #returned_object2$data$bmi<-NULL; returned_object2$data$age<-NULL;dput(returned_object2$data)
   expect_equal(returned_object$status_code, expected=200L)
@@ -101,14 +97,12 @@ test_that("Longitudinal Single Arm", {
   expected_data_frame <- read_arms(path_expected)
 
   expected_outcome_message <- "The list of arms was retrieved from the REDCap project in \\d+(\\.\\d+\\W|\\W)seconds\\."
-  expect_message(
-    returned_object <-
-      redcap_arm_export(
-        redcap_uri        = credential$redcap_uri,
-        token             = credential$token
-      ),
-    regexp = expected_outcome_message
-  )
+  returned_object <-
+    redcap_arm_export(
+      redcap_uri        = credential$redcap_uri,
+      token             = credential$token,
+      verbose           = FALSE
+    )
 
   expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) #returned_object2$data$bmi<-NULL; returned_object2$data$age<-NULL;dput(returned_object2$data)
   expect_equal(returned_object$status_code, expected=200L)
@@ -126,7 +120,8 @@ test_that("Bad Token", {
   expect_error(
     redcap_arm_export(
       redcap_uri        = credential$redcap_uri,
-      token             = bad_token
+      token             = bad_token,
+      verbose           = FALSE
     ),
     regexp = expected_error_message
   )

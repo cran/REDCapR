@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## -----------------------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -13,16 +13,16 @@ requireNamespace("REDCapR")
 ## ----retrieve-credential------------------------------------------------------
 path_credential <- system.file("misc/example.credentials", package = "REDCapR")
 credential  <- REDCapR::retrieve_credential_local(
-  path_credential = path_credential, 
+  path_credential = path_credential,
   project_id      = 153
 )
 
 credential
 
 ## ----unstructured-1-----------------------------------------------------------
-ds_1 <- 
+ds_1 <-
   REDCapR::redcap_read(
-    redcap_uri  = credential$redcap_uri, 
+    redcap_uri  = credential$redcap_uri,
     token       = credential$token
   )$data
 
@@ -95,4 +95,11 @@ REDCapR::redcap_read(
   verbose     = FALSE,
   col_types   = col_types
 )$data
+
+## ----session-info, echo=FALSE-------------------------------------------------
+if (requireNamespace("sessioninfo", quietly = TRUE)) {
+  sessioninfo::session_info()
+} else {
+  sessionInfo()
+}
 

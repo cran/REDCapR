@@ -1,21 +1,31 @@
-#' @title Enumerate the exported variables
+#' @title
+#' Enumerate the exported variables
 #'
-#' @description This function calls the 'exportFieldNames' function of the
+#' @description
+#' This function calls the 'exportFieldNames' function of the
 #' REDCap API.
 #'
-#' @param redcap_uri The URI (uniform resource identifier) of the REDCap
-#' project.  Required.
+#' @param redcap_uri The
+#' [uri](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier)/url
+#' of the REDCap server
+#' typically formatted as "https://server.org/apps/redcap/api/".
+#' Required.
 #' @param token The user-specific string that serves as the password for a
 #' project.  Required.
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
 #' be visible somewhere public. Optional.
-#' @param config_options A list of options to pass to `POST` method in the
-#' `httr` package.  See the details below. Optional.
+#' @param config_options A list of options passed to [httr::POST()].
+#' See details at [httr::httr_options()]. Optional.
+#' @param handle_httr The value passed to the `handle` parameter of
+#' [httr::POST()].
+#' This is useful for only unconventional authentication approaches.  It
+#' should be `NULL` for most institutions.  Optional.
 #'
-#' @return Currently, a list is returned with the following elements,
-#' * `data`: An R [base::data.frame()] where each row represents one column
+#' @return
+#' Currently, a list is returned with the following elements,
+#' * `data`: A [tibble::tibble()] where each row represents one column
 #' in the REDCap dataset.
 #' * `success`: A boolean value indicating if the operation was apparently
 #' successful.
@@ -30,17 +40,15 @@
 #' empty string to save RAM.
 #'
 #' @details
-#' The full list of configuration options accepted by the `httr` package is
-#' viewable by executing [httr::httr_options()].  The `httr` package and
-#' documentation is available at https://cran.r-project.org/package=httr.
-#'
 #' As of REDCap version 6.14.2, three variable types are *not* returned in
 #' this call: calculated, file, and descriptive.  All variables returned are
 #' writable/uploadable.
 #'
-#' @author Will Beasley
+#' @author
+#' Will Beasley
 #'
-#' @references The official documentation can be found on the 'API Help Page'
+#' @references
+#' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
 #' https://community.projectredcap.org/articles/456/api-documentation.html and
 #' https://community.projectredcap.org/articles/462/api-examples.html).
@@ -59,7 +67,8 @@ redcap_variables <- function(
   redcap_uri,
   token,
   verbose           = TRUE,
-  config_options    = NULL
+  config_options    = NULL,
+  handle_httr       = NULL
 ) {
 
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -74,24 +83,45 @@ redcap_variables <- function(
     format    = "csv"
   )
 
-  # This is the important line that communicates with the REDCap server.
-  kernel <- kernel_api(redcap_uri, post_body, config_options)
+  # This is the important call that communicates with the REDCap server.
+  kernel <-
+    kernel_api(
+      redcap_uri      = redcap_uri,
+      post_body       = post_body,
+      config_options  = config_options,
+      handle_httr     = handle_httr
+    )
 
-  if (kernel$success) {
+  if (!kernel$success) {
+    if (is.null(kernel$raw_text)) {
+      # nocov start
+      rlang::abort(
+        message = "REDCapR::redcap_variables() encountered an error communicating with the server."
+      )
+      # nocov end
+    } else {
+      # nocov start
+      rlang::abort(
+        message = kernel$raw_text
+      )
+      # nocov end
+    }
+  } else {
     try(
       {
+        # Convert the raw text to a dataset.
         ds <-
           readr::read_csv(
             file            = I(kernel$raw_text),
             show_col_types  = FALSE
           )
-      }, #Convert the raw text to a dataset.
+      },
       silent = TRUE
       # Don't print the warning in the try block.  Print it below, where
       #    it's under the control of the caller.
     )
 
-    if (exists("ds") & inherits(ds, "data.frame")) {
+    if (exists("ds") && inherits(ds, "data.frame")) {
       outcome_message <- sprintf(
         "%s variable metadata records were read from REDCap in %0.1f seconds.  The http status code was %i.",
         format(nrow(ds), big.mark = ",", scientific = FALSE, trim = TRUE),
@@ -106,7 +136,7 @@ redcap_variables <- function(
     } else {
       # nocov start
       kernel$success  <- FALSE # Override the 'success' http status code.
-      ds              <- data.frame() #Return an empty data.frame
+      ds              <- tibble::tibble() # Return an empty data.frame
 
       outcome_message <- sprintf(
         "The REDCap variable retrieval failed.  The http status code was %i.  The 'raw_text' returned was '%s'.",
@@ -115,19 +145,21 @@ redcap_variables <- function(
       )
       # nocov end
     }
-  } else {
-    ds              <- data.frame() #Return an empty data.frame
-    outcome_message <- if (any(grepl(kernel$regex_empty, kernel$raw_text))) {
-      "The REDCapR read/export operation was not successful.  The returned dataset (of variables) was empty."
-    } else {
-      sprintf(
-        "The REDCapR variable retrieval was not successful.  The error message was:\n%s",
-        kernel$raw_text
-      )
-    }
   }
+  # } else {
+  #   ds              <- tibble::tibble() # Return an empty data.frame
+  #   outcome_message <-
+  #     if (any(grepl(kernel$regex_empty, kernel$raw_text))) {
+  #       "The REDCapR read/export operation was not successful.  The returned dataset (of variables) was empty." # nocov
+  #     } else {
+  #       sprintf(
+  #         "The REDCapR variable retrieval was not successful.  The error message was:\n%s",
+  #         kernel$raw_text
+  #       )
+  #     }
+  # }
 
-  if( verbose )
+  if (verbose)
     message(outcome_message)
 
   list(
