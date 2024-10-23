@@ -13,8 +13,8 @@ opts_chunk$set(
 
 ## ----project_values-----------------------------------------------------------
 library(REDCapR) # Load the package into the current R session.
-uri   <- "https://bbmc.ouhsc.edu/redcap/api/"
-token <- "9A81268476645C4E5F03428B8AC3AA7B" # `UnitTestPhiFree` user and simple project (pid 153)
+uri   <- "https://redcap-dev-2.ouhsc.edu/redcap/api/"
+token <- "9A068C425B1341D69E83064A2D273A70" # simple
 
 ## ----return_all---------------------------------------------------------------
 # Return all records and all variables.

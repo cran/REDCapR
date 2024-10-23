@@ -35,10 +35,10 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 library(magrittr)
 
 # Retrieve token
-path_credential <- system.file("misc/example.credentials", package = "REDCapR")
+path_credential <- system.file("misc/dev-2.credentials", package = "REDCapR")
 credential  <- REDCapR::retrieve_credential_local(
   path_credential = path_credential,
-  project_id      = 3181
+  project_id      = 62
 )
 
 ## ----redcapr-intake-----------------------------------------------------------

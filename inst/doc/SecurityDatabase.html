@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-09-07" />
+<meta name="date" content="2024-10-22" />
 
 <title>Security Database</title>
 
@@ -61,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Security Database</h1>
-<h4 class="date">2024-09-07</h4>
+<h4 class="date">2024-10-22</h4>
 
 
 
@@ -358,7 +358,7 @@ retrieved by <code>REDCapR::retrieve_credential_mssql()</code>.</p>
 <p>After executing the SQL code in an existing database, create an ODBC
 <a href="https://en.wikipedia.org/wiki/Data_source_name">DSN</a> on
 <em>each</em> client machine that calls the database. Download the most
-recent drivers (as of Aug 2018, the <a href="https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server">most
+recent drivers (as of Aug 2018, the <a href="https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server">most
 recent version is 17</a> for Windows and Linux), then run the wizard.
 Many values in the wizard will remain at the default values. Here are
 the important ones to change.</p>

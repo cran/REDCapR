@@ -61,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -399,8 +399,8 @@ project.</li>
 and your institution may have a formal process for API approval. Your
 REDCap admin can help.</p>
 <p>For this vignette, we’ll use a fake dataset hosted at
-<code>https://bbmc.ouhsc.edu/redcap/api/</code> and accessible with the
-token “9A81268476645C4E5F03428B8AC3AA7B”.</p>
+<code>https://redcap-dev-2.ouhsc.edu/redcap/api/</code> and accessible
+with the token “9A068C425B1341D69E83064A2D273A70”.</p>
 <p>Note to REDCap Admins:</p>
 <blockquote>
 <p>For <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>REDCapR::redcap_read()</code></a>
@@ -453,32 +453,32 @@ function in the <a href="https://ouhscbbmc.github.io/REDCapR/">REDCapR</a> packa
 relevant information from a csv into R. The plain-text file might look
 like this:</p>
 <pre class="csv"><code>redcap_uri,username,project_id,token,comment
-&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,153,9A81268476645C4E5F03428B8AC3AA7B,&quot;simple&quot;
-&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,212,0434F0E9CF53ED0587847AB6E51DE762,&quot;longitudinal&quot;
-&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,213,D70F9ACD1EDD6F151C6EA78683944E98,&quot;write data&quot;</code></pre>
+&quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,&quot;33&quot;,&quot;9A068C425B1341D69E83064A2D273A70&quot;,&quot;simple&quot;
+&quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,&quot;34&quot;,&quot;DA6F2BB23146BD5A7EA3408C1A44A556&quot;,&quot;longitudinal&quot;
+&quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,&quot;36&quot;,&quot;F9CBFFF78C3D78F641BAE9623F6B7E6A&quot;,&quot;simple-write&quot;</code></pre>
 <p>To retrieve the credentials for the first project listed above, pass
-the value of “153” to <code>project_id</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
+the value of “33” to <code>project_id</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/dev-2.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">153</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">33</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>credential</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; $redcap_uri</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $username</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;myusername&quot;</span></span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; $project_id</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1] 153</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [1] 33</span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; $token</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; [1] &quot;9A068C425B1341D69E83064A2D273A70&quot;</span></span>
 <span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [1] &quot;simple static (read-only) test project&quot;</span></span></code></pre></div>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [1] &quot;simple&quot;</span></span></code></pre></div>
 <p>A credential file is already created for this vignette. In your next
 real project, call <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>create_credential_local()</code></a>
 to start a well-formed csv file that can contain tokens.</p>
@@ -505,13 +505,13 @@ both are in the credential object created in the previous section.</p>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:40.486384.</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-10-22 18:47:52.162601.</span></span>
 <span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
 <span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span></code></pre></div>
 <p>At this point, the data.frame <code>ds_1</code> has everything you
@@ -999,7 +999,7 @@ mugshot-5.jpg
 </table>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">hist</span>(ds_1<span class="sc">$</span>weight)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">summary</span>(ds_1)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;    record_id  name_first         name_last           address         </span></span>
@@ -2104,43 +2104,43 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 </summary>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.4.1 (2024-06-14)
-#&gt;  os       Ubuntu 24.04.1 LTS
-#&gt;  system   x86_64, linux-gnu
-#&gt;  ui       X11
+#&gt;  version  R version 4.4.1 Patched (2024-07-03 r86870 ucrt)
+#&gt;  os       Windows 11 x64 (build 26100)
+#&gt;  system   x86_64, mingw32
+#&gt;  ui       RTerm
 #&gt;  language (EN)
 #&gt;  collate  C
-#&gt;  ctype    en_US.UTF-8
+#&gt;  ctype    English_United States.utf8
 #&gt;  tz       America/Chicago
-#&gt;  date     2024-09-07
-#&gt;  pandoc   3.1.11 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown)
+#&gt;  date     2024-10-22
+#&gt;  pandoc   3.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────
 #&gt;  package     * version date (UTC) lib source
-#&gt;  archive       1.1.8   2024-04-28 [3] CRAN (R 4.4.0)
+#&gt;  archive       1.1.9   2024-09-12 [3] CRAN (R 4.4.1)
 #&gt;  backports     1.5.0   2024-05-23 [3] CRAN (R 4.4.0)
-#&gt;  bit           4.0.5   2022-11-15 [3] CRAN (R 4.4.0)
-#&gt;  bit64         4.0.5   2020-08-30 [3] CRAN (R 4.4.0)
+#&gt;  bit           4.5.0   2024-09-20 [3] CRAN (R 4.4.1)
+#&gt;  bit64         4.5.2   2024-09-22 [3] CRAN (R 4.4.1)
 #&gt;  bslib         0.8.0   2024-07-29 [3] CRAN (R 4.4.1)
 #&gt;  cachem        1.1.0   2024-05-16 [3] CRAN (R 4.4.0)
 #&gt;  checkmate     2.3.2   2024-07-29 [3] CRAN (R 4.4.1)
 #&gt;  cli           3.6.3   2024-06-21 [3] CRAN (R 4.4.1)
 #&gt;  colorspace    2.1-1   2024-07-26 [3] CRAN (R 4.4.1)
 #&gt;  crayon        1.5.3   2024-06-20 [3] CRAN (R 4.4.1)
-#&gt;  curl          5.2.2   2024-08-26 [3] CRAN (R 4.4.1)
+#&gt;  curl          5.2.3   2024-09-20 [3] CRAN (R 4.4.1)
 #&gt;  digest        0.6.37  2024-08-19 [3] CRAN (R 4.4.1)
 #&gt;  dplyr         1.1.4   2023-11-17 [3] CRAN (R 4.4.0)
-#&gt;  evaluate      0.24.0  2024-06-10 [3] CRAN (R 4.4.1)
+#&gt;  evaluate      1.0.1   2024-10-10 [3] CRAN (R 4.4.1)
 #&gt;  fansi         1.0.6   2023-12-08 [3] CRAN (R 4.4.0)
 #&gt;  fastmap       1.2.0   2024-05-15 [3] CRAN (R 4.4.0)
 #&gt;  generics      0.1.3   2022-07-05 [3] CRAN (R 4.4.0)
-#&gt;  glue          1.7.0   2024-01-09 [3] CRAN (R 4.4.0)
+#&gt;  glue          1.8.0   2024-09-30 [3] CRAN (R 4.4.1)
 #&gt;  highr         0.11    2024-05-26 [3] CRAN (R 4.4.0)
 #&gt;  hms           1.1.3   2023-03-21 [3] CRAN (R 4.4.0)
 #&gt;  htmltools     0.5.8.1 2024-04-04 [3] CRAN (R 4.4.0)
 #&gt;  httr          1.4.7   2023-08-15 [3] CRAN (R 4.4.0)
 #&gt;  jquerylib     0.1.4   2021-04-26 [3] CRAN (R 4.4.0)
-#&gt;  jsonlite      1.8.8   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  jsonlite      1.8.9   2024-09-20 [3] CRAN (R 4.4.1)
 #&gt;  kableExtra    1.4.0   2024-01-24 [3] CRAN (R 4.4.0)
 #&gt;  knitr       * 1.48    2024-07-07 [3] CRAN (R 4.4.1)
 #&gt;  lifecycle     1.0.4   2023-11-07 [3] CRAN (R 4.4.0)
@@ -2152,10 +2152,10 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 #&gt;  purrr         1.0.2   2023-08-10 [3] CRAN (R 4.4.0)
 #&gt;  R6            2.5.1   2021-08-19 [3] CRAN (R 4.4.0)
 #&gt;  readr         2.1.5   2024-01-10 [3] CRAN (R 4.4.0)
-#&gt;  REDCapR     * 1.2.0   2024-09-07 [1] local
+#&gt;  REDCapR     * 1.3.0   2024-10-22 [1] local
 #&gt;  rlang         1.1.4   2024-06-04 [3] CRAN (R 4.4.0)
 #&gt;  rmarkdown     2.28    2024-08-17 [3] CRAN (R 4.4.1)
-#&gt;  rstudioapi    0.16.0  2024-03-24 [3] CRAN (R 4.4.0)
+#&gt;  rstudioapi    0.17.0  2024-10-16 [3] CRAN (R 4.4.1)
 #&gt;  sass          0.4.9   2024-03-15 [3] CRAN (R 4.4.0)
 #&gt;  scales        1.3.0   2023-11-28 [3] CRAN (R 4.4.0)
 #&gt;  sessioninfo   1.2.2   2021-12-06 [3] CRAN (R 4.4.0)
@@ -2172,16 +2172,15 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 #&gt;  viridisLite   0.4.2   2023-05-02 [3] CRAN (R 4.4.0)
 #&gt;  vroom         1.6.5   2023-12-05 [3] CRAN (R 4.4.0)
 #&gt;  withr         3.0.1   2024-07-31 [3] CRAN (R 4.4.1)
-#&gt;  xfun          0.47    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  xfun          0.48    2024-10-03 [3] CRAN (R 4.4.1)
 #&gt;  xml2          1.3.6   2023-12-04 [3] CRAN (R 4.4.0)
 #&gt;  yaml          2.3.10  2024-07-26 [3] CRAN (R 4.4.1)
 #&gt; 
-#&gt;  [1] /tmp/RtmpHXOXHl/Rinst3543a76242474
-#&gt;  [2] /tmp/RtmpdEHRth/temp_libpath275e142605d6e
-#&gt;  [3] /home/wibeasley/R/x86_64-pc-linux-gnu-library/4.4
-#&gt;  [4] /usr/local/lib/R/site-library
-#&gt;  [5] /usr/lib/R/site-library
-#&gt;  [6] /usr/lib/R/library
+#&gt;  [1] C:/Users/wibea/AppData/Local/Temp/Rtmpe4oEow/Rinstbcbcf4f69bf
+#&gt;  [2] C:/Users/wibea/AppData/Local/Temp/RtmpQ39SYc/temp_libpath4ef035ed24cb
+#&gt;  [3] D:/projects/r-libraries
+#&gt;  [4] C:/Users/wibea/AppData/Local/R/win-library/4.4
+#&gt;  [5] C:/Program Files/R/R-4.4.1patched/library
 #&gt; 
 #&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </details>

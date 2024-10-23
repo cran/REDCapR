@@ -22,4 +22,5 @@ NA), dob = structure(c(12294, 12121, -13051, -6269, -5375, NA
     0, 1, 0, 0, 0), race___5 = c(1, 1, 1, 1, 0, 0), race___6 = c(0, 
     0, 0, 0, 1, 0), ethnicity = c(1, 1, 0, 1, 2, NA), interpreter_needed = c(0, 
     0, 1, NA, 0, NA), race_and_ethnicity_complete = c(2, 0, 2, 
-    2, 2, NA)), row.names = c(NA, -6L), class = "data.frame")
+    2, 2, NA)), row.names = c(NA, -6L), class = c("spec_tbl_df", 
+"tbl_df", "tbl", "data.frame"))

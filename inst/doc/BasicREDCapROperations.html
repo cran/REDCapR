@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-09-07" />
+<meta name="date" content="2024-10-22" />
 
 <title>Basic REDCapR Operations</title>
 
@@ -61,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -338,12 +338,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Basic REDCapR Operations</h1>
-<h4 class="date">2024-09-07</h4>
+<h4 class="date">2024-10-22</h4>
 
 
 
 <p>This vignette covers the the basic functions exposed by the <a href="https://github.com/r-lib/httr">httr</a> and <a href="https://cran.r-project.org/package=curl">curl</a> packages which
-allow you to interact with <a href="https://www.project-redcap.org/">REDCap</a> through its API.</p>
+allow you to interact with <a href="https://projectredcap.org/">REDCap</a> through its API.</p>
 <div id="reading-redcap-data" class="section level1">
 <h1>Reading REDCap Data</h1>
 <p>The functions <a href="https://ouhscbbmc.github.io/REDCapR/reference/redcap_read.html"><code>redcap_read()</code></a>
@@ -357,8 +357,8 @@ package to call the REDCap API.</p>
 opposed to an individual operation. This includes the (1) uri of the
 server, and the (2) token for the user’s project.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(REDCapR) <span class="co"># Load the package into the current R session.</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>uri   <span class="ot">&lt;-</span> <span class="st">&quot;https://bbmc.ouhsc.edu/redcap/api/&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>token <span class="ot">&lt;-</span> <span class="st">&quot;9A81268476645C4E5F03428B8AC3AA7B&quot;</span> <span class="co"># `UnitTestPhiFree` user and simple project (pid 153)</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>uri   <span class="ot">&lt;-</span> <span class="st">&quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>token <span class="ot">&lt;-</span> <span class="st">&quot;9A068C425B1341D69E83064A2D273A70&quot;</span> <span class="co"># simple</span></span></code></pre></div>
 </div>
 <div id="read-all-records-and-fields" class="section level2">
 <h2>Read all records and fields</h2>
@@ -370,15 +370,15 @@ will be printed on the R console with the number of records and fields
 returned.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Return all records and all variables.</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>ds_all_rows_all_fields <span class="ot">&lt;-</span> <span class="fu">redcap_read</span>(<span class="at">redcap_uri =</span> uri, <span class="at">token =</span> token)<span class="sc">$</span>data</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:15.371273.</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-10-22 18:47:32.004068.</span></span>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.3 seconds.  The http status code was 200.</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; 5 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>ds_all_rows_all_fields <span class="co"># Inspect the returned dataset</span></span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 25</span></span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;   record_id name_first name_last address  telephone email dob          age   sex</span></span>
@@ -413,13 +413,13 @@ converts the array into the format needed by the API.</p>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">records    =</span> desired_records</span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 2 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2024-09-07 15:18:17.398206.</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2024-10-22 18:47:33.621071.</span></span>
 <span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 3 (ie, 2 unique subject records).</span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 2 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span></code></pre></div>
 </div>
@@ -442,13 +442,13 @@ the format required by the API (<em>i.e.</em>,
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">fields     =</span> desired_fields</span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:19.303143.</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.4 seconds.  The http status code was 200.</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-10-22 18:47:35.382249.</span></span>
 <span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
 <span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; 5 records and 3 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span></code></pre></div>
 </div>
@@ -474,13 +474,13 @@ columns, but only for the identified records.</p>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">fields     =</span> desired_fields_v3</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:21.208983.</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-10-22 18:47:36.988327.</span></span>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 5 records and 3 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
 <span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a></span>
@@ -511,13 +511,13 @@ columns, but only for the identified records.</p>
 <span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a>  <span class="at">records    =</span> desired_records_v3</span>
 <span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a>)<span class="sc">$</span>data</span>
-<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a><span class="co">#&gt; 2 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2024-09-07 15:18:23.114561.</span></span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a><span class="co">#&gt; Starting to read 2 records  at 2024-10-22 18:47:38.583.</span></span>
 <span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 3 through 5 (ie, 2 unique subject records).</span></span>
 <span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a><span class="co">#&gt; 2 records and 25 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
 <span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a></span>
@@ -564,13 +564,13 @@ call.</li>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">fields     =</span> desired_fields</span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; 24 variable metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; The data dictionary describing 17 fields was read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; 3 instrument metadata records were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 1 rows were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 2 data access groups were read from REDCap in 0.1 seconds.  The http status code was 200.</span></span>
 <span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 5 records and 1 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-09-07 15:18:25.05904.</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; Starting to read 5 records  at 2024-10-22 18:47:40.196258.</span></span>
 <span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; Reading batch 1 of 1, with subjects 1 through 5 (ie, 5 unique subject records).</span></span>
 <span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 5 records and 3 columns were read from REDCap in 0.2 seconds.  The http status code was 200.</span></span>
 <span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>all_information <span class="co">#Inspect the additional information</span></span>
@@ -615,7 +615,7 @@ call.</li>
 <span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span>
 <span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a><span class="co">#&gt; $elapsed_seconds</span></span>
-<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a><span class="co">#&gt; [1] 1.850209</span></span></code></pre></div>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a><span class="co">#&gt; [1] 1.544751</span></span></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level1">
@@ -629,42 +629,42 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 </summary>
 <pre><code>#&gt; ─ Session info ───────────────────────────────────────────────────────────────
 #&gt;  setting  value
-#&gt;  version  R version 4.4.1 (2024-06-14)
-#&gt;  os       Ubuntu 24.04.1 LTS
-#&gt;  system   x86_64, linux-gnu
-#&gt;  ui       X11
+#&gt;  version  R version 4.4.1 Patched (2024-07-03 r86870 ucrt)
+#&gt;  os       Windows 11 x64 (build 26100)
+#&gt;  system   x86_64, mingw32
+#&gt;  ui       RTerm
 #&gt;  language (EN)
 #&gt;  collate  C
-#&gt;  ctype    en_US.UTF-8
+#&gt;  ctype    English_United States.utf8
 #&gt;  tz       America/Chicago
-#&gt;  date     2024-09-07
-#&gt;  pandoc   3.1.11 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown)
+#&gt;  date     2024-10-22
+#&gt;  pandoc   3.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
 #&gt; 
 #&gt; ─ Packages ───────────────────────────────────────────────────────────────────
 #&gt;  package     * version date (UTC) lib source
-#&gt;  archive       1.1.8   2024-04-28 [3] CRAN (R 4.4.0)
+#&gt;  archive       1.1.9   2024-09-12 [3] CRAN (R 4.4.1)
 #&gt;  backports     1.5.0   2024-05-23 [3] CRAN (R 4.4.0)
-#&gt;  bit           4.0.5   2022-11-15 [3] CRAN (R 4.4.0)
-#&gt;  bit64         4.0.5   2020-08-30 [3] CRAN (R 4.4.0)
+#&gt;  bit           4.5.0   2024-09-20 [3] CRAN (R 4.4.1)
+#&gt;  bit64         4.5.2   2024-09-22 [3] CRAN (R 4.4.1)
 #&gt;  bslib         0.8.0   2024-07-29 [3] CRAN (R 4.4.1)
 #&gt;  cachem        1.1.0   2024-05-16 [3] CRAN (R 4.4.0)
 #&gt;  checkmate     2.3.2   2024-07-29 [3] CRAN (R 4.4.1)
 #&gt;  cli           3.6.3   2024-06-21 [3] CRAN (R 4.4.1)
 #&gt;  colorspace    2.1-1   2024-07-26 [3] CRAN (R 4.4.1)
 #&gt;  crayon        1.5.3   2024-06-20 [3] CRAN (R 4.4.1)
-#&gt;  curl          5.2.2   2024-08-26 [3] CRAN (R 4.4.1)
+#&gt;  curl          5.2.3   2024-09-20 [3] CRAN (R 4.4.1)
 #&gt;  digest        0.6.37  2024-08-19 [3] CRAN (R 4.4.1)
 #&gt;  dplyr         1.1.4   2023-11-17 [3] CRAN (R 4.4.0)
-#&gt;  evaluate      0.24.0  2024-06-10 [3] CRAN (R 4.4.1)
+#&gt;  evaluate      1.0.1   2024-10-10 [3] CRAN (R 4.4.1)
 #&gt;  fansi         1.0.6   2023-12-08 [3] CRAN (R 4.4.0)
 #&gt;  fastmap       1.2.0   2024-05-15 [3] CRAN (R 4.4.0)
 #&gt;  generics      0.1.3   2022-07-05 [3] CRAN (R 4.4.0)
-#&gt;  glue          1.7.0   2024-01-09 [3] CRAN (R 4.4.0)
+#&gt;  glue          1.8.0   2024-09-30 [3] CRAN (R 4.4.1)
 #&gt;  hms           1.1.3   2023-03-21 [3] CRAN (R 4.4.0)
 #&gt;  htmltools     0.5.8.1 2024-04-04 [3] CRAN (R 4.4.0)
 #&gt;  httr          1.4.7   2023-08-15 [3] CRAN (R 4.4.0)
 #&gt;  jquerylib     0.1.4   2021-04-26 [3] CRAN (R 4.4.0)
-#&gt;  jsonlite      1.8.8   2023-12-04 [3] CRAN (R 4.4.0)
+#&gt;  jsonlite      1.8.9   2024-09-20 [3] CRAN (R 4.4.1)
 #&gt;  kableExtra    1.4.0   2024-01-24 [3] CRAN (R 4.4.0)
 #&gt;  knitr       * 1.48    2024-07-07 [3] CRAN (R 4.4.1)
 #&gt;  lifecycle     1.0.4   2023-11-07 [3] CRAN (R 4.4.0)
@@ -674,10 +674,10 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 #&gt;  pkgconfig     2.0.3   2019-09-22 [3] CRAN (R 4.4.0)
 #&gt;  R6            2.5.1   2021-08-19 [3] CRAN (R 4.4.0)
 #&gt;  readr         2.1.5   2024-01-10 [3] CRAN (R 4.4.0)
-#&gt;  REDCapR     * 1.2.0   2024-09-07 [1] local
+#&gt;  REDCapR     * 1.3.0   2024-10-22 [1] local
 #&gt;  rlang         1.1.4   2024-06-04 [3] CRAN (R 4.4.0)
 #&gt;  rmarkdown     2.28    2024-08-17 [3] CRAN (R 4.4.1)
-#&gt;  rstudioapi    0.16.0  2024-03-24 [3] CRAN (R 4.4.0)
+#&gt;  rstudioapi    0.17.0  2024-10-16 [3] CRAN (R 4.4.1)
 #&gt;  sass          0.4.9   2024-03-15 [3] CRAN (R 4.4.0)
 #&gt;  scales        1.3.0   2023-11-28 [3] CRAN (R 4.4.0)
 #&gt;  sessioninfo   1.2.2   2021-12-06 [3] CRAN (R 4.4.0)
@@ -693,20 +693,19 @@ Environment <span class="glyphicon glyphicon-plus-sign"></span>
 #&gt;  viridisLite   0.4.2   2023-05-02 [3] CRAN (R 4.4.0)
 #&gt;  vroom         1.6.5   2023-12-05 [3] CRAN (R 4.4.0)
 #&gt;  withr         3.0.1   2024-07-31 [3] CRAN (R 4.4.1)
-#&gt;  xfun          0.47    2024-08-17 [3] CRAN (R 4.4.1)
+#&gt;  xfun          0.48    2024-10-03 [3] CRAN (R 4.4.1)
 #&gt;  xml2          1.3.6   2023-12-04 [3] CRAN (R 4.4.0)
 #&gt;  yaml          2.3.10  2024-07-26 [3] CRAN (R 4.4.1)
 #&gt; 
-#&gt;  [1] /tmp/RtmpHXOXHl/Rinst3543a76242474
-#&gt;  [2] /tmp/RtmpdEHRth/temp_libpath275e142605d6e
-#&gt;  [3] /home/wibeasley/R/x86_64-pc-linux-gnu-library/4.4
-#&gt;  [4] /usr/local/lib/R/site-library
-#&gt;  [5] /usr/lib/R/site-library
-#&gt;  [6] /usr/lib/R/library
+#&gt;  [1] C:/Users/wibea/AppData/Local/Temp/Rtmpe4oEow/Rinstbcbcf4f69bf
+#&gt;  [2] C:/Users/wibea/AppData/Local/Temp/RtmpQ39SYc/temp_libpath4ef035ed24cb
+#&gt;  [3] D:/projects/r-libraries
+#&gt;  [4] C:/Users/wibea/AppData/Local/R/win-library/4.4
+#&gt;  [5] C:/Program Files/R/R-4.4.1patched/library
 #&gt; 
 #&gt; ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </details>
-<p>Report rendered by wibeasley at 2024-09-07, 15:18 -0500 in 13
+<p>Report rendered by wibea at 2024-10-22, 18:47 -0500 in 11
 seconds.</p>
 </div>
 

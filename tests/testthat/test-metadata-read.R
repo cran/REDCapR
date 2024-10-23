@@ -1,11 +1,18 @@
 library(testthat)
 
 credential            <- retrieve_credential_testing()
-credential_super_wide <- retrieve_credential_testing(753L)
-credential_super_wide_2<-retrieve_credential_testing(2593L)
-credential_super_wide_3<-retrieve_credential_testing(2597L)
-credential_problem    <- retrieve_credential_testing(1425L)
+credential_super_wide_1 <- retrieve_credential_testing("super-wide-1")
+credential_super_wide_2<-retrieve_credential_testing("super-wide-2")
+credential_super_wide_3<-retrieve_credential_testing("super-wide-3")
+credential_problem    <- retrieve_credential_testing("potentially-problematic-dictionary")
 update_expectation    <- FALSE
+
+if (credential$redcap_uri != "https://redcap-dev-2.ouhsc.edu/redcap/api/") {
+  testthat::skip("Skipping EAV test on non-dev server")
+  # The two servers have different outputs/spaces around the pipes.
+  # dev : "0, Female|1, Male"
+  # bbmc: "0, Female | 1, Male"
+}
 
 test_that("Smoke Test", {
   testthat::skip_on_cran()
@@ -209,8 +216,8 @@ test_that("super-wide", {
 
   returned_object <-
     redcap_metadata_read(
-      redcap_uri  = credential_super_wide$redcap_uri,
-      token       = credential_super_wide$token,
+      redcap_uri  = credential_super_wide_1$redcap_uri,
+      token       = credential_super_wide_1$token,
       verbose     = FALSE
     )
 
@@ -307,7 +314,8 @@ test_that("Problematic Dictionary", {
 })
 
 rm(credential           )
-rm(credential_super_wide)
+rm(credential_super_wide_1)
 rm(credential_super_wide_2)
+rm(credential_super_wide_3)
 rm(credential_problem   )
 rm(update_expectation)

@@ -89,7 +89,7 @@ Follow these steps to adapt to your desired REDCap project(s):
 \enumerate{
 \item Modify the credential file for the REDCap API with a text editor
 like \href{https://notepad-plus-plus.org/}{Notepad++},
-\href{https://code.visualstudio.com}{Visual Studio Code}, or
+Visual Studio Code, or
 \href{https://www.nano-editor.org/}{nano}.
 Replace existing records with the information from your projects.
 Delete the remaining example records.
@@ -124,9 +124,9 @@ It does not need to be the same as the official username in REDCap.
 }
 \examples{
 # ---- Local File Example ----------------------------
-path <- system.file("misc/example.credentials", package = "REDCapR")
-(p1  <- REDCapR::retrieve_credential_local(path, 153L))
-(p2  <- REDCapR::retrieve_credential_local(path, 212L))
+path <- system.file("misc/dev-2.credentials", package = "REDCapR")
+(p1  <- REDCapR::retrieve_credential_local(path, 33L))
+(p2  <- REDCapR::retrieve_credential_local(path, 34L))
 
 
 \dontrun{

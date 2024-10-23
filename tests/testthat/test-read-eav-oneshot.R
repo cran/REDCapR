@@ -4,6 +4,10 @@ credential  <- retrieve_credential_testing()
 update_expectation  <- FALSE
 path_expected_default <- "test-data/specific-redcapr/read-eav-oneshot/default.R"
 
+if (credential$redcap_uri != "https://redcap-dev-2.ouhsc.edu/redcap/api/") {
+  testthat::skip("Skipping EAV test on non-dev server")
+}
+
 test_that("smoke test", {
   testthat::skip_on_cran()
   expect_message({
@@ -41,8 +45,6 @@ test_that("default", {
 
   expect_s3_class(returned_object$data, "tbl")
 })
-
-
 test_that("specify-records", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/specify-records.R"
@@ -155,7 +157,6 @@ test_that("specify-fields-zero-length", {
 
   expect_s3_class(returned_object$data, "tbl")
 })
-
 test_that("specify-forms", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/specify-forms.R"
@@ -243,7 +244,7 @@ test_that("filter-character", {
 })
 test_that("blank-for-gray-status-true", {
   testthat::skip_on_cran()
-  credential_blank_for_gray  <- retrieve_credential_testing(3003L)
+  credential_blank_for_gray  <- retrieve_credential_testing("blank-for-gray-status")
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/blank-for-gray-true.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
@@ -255,10 +256,14 @@ test_that("blank-for-gray-status-true", {
       verbose                     = FALSE
     )
 
-  if (update_expectation) save_expected(returned_object$data, path_expected)
+  d <-
+    returned_object$data |>
+    dplyr::filter(field_name != "mugshot") # Don't compare file IDs across servers.
+
+  if (update_expectation) save_expected(d, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_equal(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
   expect_equal(returned_object$status_code, expected=200L)
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
@@ -271,7 +276,7 @@ test_that("blank-for-gray-status-true", {
 })
 test_that("blank-for-gray-status-false", {
   testthat::skip_on_cran()
-  credential_blank_for_gray  <- retrieve_credential_testing(3003L)
+  credential_blank_for_gray  <- retrieve_credential_testing("blank-for-gray-status")
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/blank-for-gray-false.R"
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
@@ -283,10 +288,14 @@ test_that("blank-for-gray-status-false", {
       verbose                     = FALSE
     )
 
-  if (update_expectation) save_expected(returned_object$data, path_expected)
+  d <-
+    returned_object$data |>
+    dplyr::filter(field_name != "mugshot") # Don't compare file IDs across servers.
+
+  if (update_expectation) save_expected(d, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_equal(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
   expect_equal(returned_object$status_code, expected=200L)
   expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
@@ -297,7 +306,6 @@ test_that("blank-for-gray-status-false", {
 
   expect_s3_class(returned_object$data, "tbl")
 })
-
 test_that("date-range", {
   testthat::skip_on_cran()
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
@@ -327,7 +335,6 @@ test_that("date-range", {
 
   expect_s3_class(returned_object$data, "tbl")
 })
-
 test_that("bad token -Error", {
   testthat::skip_on_cran()
   expected_outcome_message <- "The REDCapR read/export operation was not successful\\."
