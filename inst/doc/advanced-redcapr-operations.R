@@ -1,139 +1,141 @@
 ## ----set_options--------------------------------------------------------------
 report_render_start_time <- Sys.time()
+report_render_duration_in_seconds <- -999 # In case the vignette isn't evaluated (on CRAN)
 
 library(knitr)
 library(magrittr)
 suppressPackageStartupMessages(requireNamespace("kableExtra"))
 
 opts_chunk$set(
+  eval    = !REDCapR:::on_cran(),
   comment = "#>",
   tidy    = FALSE
 )
 
 ## ----project_values-----------------------------------------------------------
-library(REDCapR) #Load the package into the current R session.
-uri                   <- "https://redcap-dev-2.ouhsc.edu/redcap/api/"
-token_simple          <- "9A068C425B1341D69E83064A2D273A70"
-token_longitudinal    <- "DA6F2BB23146BD5A7EA3408C1A44A556"
+# library(REDCapR) #Load the package into the current R session.
+# uri                   <- "https://redcap-dev-2.ouhsc.edu/redcap/api/"
+# token_simple          <- "9A068C425B1341D69E83064A2D273A70"
+# token_longitudinal    <- "DA6F2BB23146BD5A7EA3408C1A44A556"
 
 ## ----retrieve-longitudinal----------------------------------------------------
-library(magrittr)
-suppressPackageStartupMessages(requireNamespace("dplyr"))
-suppressPackageStartupMessages(requireNamespace("tidyr"))
-events_to_retain  <- c("dose_1_arm_1", "visit_1_arm_1", "dose_2_arm_1", "visit_2_arm_1")
-
-ds_long <- REDCapR::redcap_read_oneshot(redcap_uri = uri, token = token_longitudinal)$data
-ds_long %>%
-  dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4)
+# library(magrittr)
+# suppressPackageStartupMessages(requireNamespace("dplyr"))
+# suppressPackageStartupMessages(requireNamespace("tidyr"))
+# events_to_retain  <- c("dose_1_arm_1", "visit_1_arm_1", "dose_2_arm_1", "visit_2_arm_1")
+# 
+# ds_long <- REDCapR::redcap_read_oneshot(redcap_uri = uri, token = token_longitudinal)$data
+# ds_long %>%
+#   dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4)
 
 ## ----widen-simple-------------------------------------------------------------
-ds_wide <-
-  ds_long %>%
-  dplyr::select(study_id, redcap_event_name, pmq1) %>%
-  dplyr::filter(redcap_event_name %in% events_to_retain) %>%
-  tidyr::pivot_wider(
-    id_cols     = study_id,
-    names_from  = redcap_event_name,
-    values_from = pmq1
-  )
-ds_wide
+# ds_wide <-
+#   ds_long %>%
+#   dplyr::select(study_id, redcap_event_name, pmq1) %>%
+#   dplyr::filter(redcap_event_name %in% events_to_retain) %>%
+#   tidyr::pivot_wider(
+#     id_cols     = study_id,
+#     names_from  = redcap_event_name,
+#     values_from = pmq1
+#   )
+# ds_wide
 
 ## ----widen-typical------------------------------------------------------------
-pattern <- "^(\\w+?)_arm_(\\d)$"
-ds_wide <-
-  ds_long %>%
-  dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) %>%
-  dplyr::mutate(
-    event = sub(pattern, "\\1", redcap_event_name),
-    event = dplyr::recode(event, "first_dose"="dose_1", "first_visit"="visit_1"),
-    arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
-  ) %>%
-  dplyr::select(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) %>%
-  dplyr::filter(!(event %in%
-    c("enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
-  )) %>%
-  tidyr::pivot_wider(
-    id_cols     = c(study_id, arm),
-    names_from  = event,
-    values_from = c(pmq1, pmq2, pmq3, pmq4)
-  )
-
-ds_wide
+# pattern <- "^(\\w+?)_arm_(\\d)$"
+# ds_wide <-
+#   ds_long %>%
+#   dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) %>%
+#   dplyr::mutate(
+#     event = sub(pattern, "\\1", redcap_event_name),
+#     event = dplyr::recode(event, "first_dose"="dose_1", "first_visit"="visit_1"),
+#     arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
+#   ) %>%
+#   dplyr::select(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) %>%
+#   dplyr::filter(!(event %in%
+#     c("enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
+#   )) %>%
+#   tidyr::pivot_wider(
+#     id_cols     = c(study_id, arm),
+#     names_from  = event,
+#     values_from = c(pmq1, pmq2, pmq3, pmq4)
+#   )
+# 
+# ds_wide
 
 ## ----widen-long-first---------------------------------------------------------
-ds_eav <-
-  ds_long %>%
-  dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) %>%
-  dplyr::mutate(
-    event = sub(pattern, "\\1", redcap_event_name),
-    event = dplyr::recode(event, "first_dose" = "dose_1", "first_visit" = "visit_1"),
-    arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
-  ) %>%
-  dplyr::select(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) %>%
-  tidyr::pivot_longer(
-    cols      = c(pmq1, pmq2, pmq3, pmq4),
-    names_to  = "key",
-    values_to = "value"
-  ) %>%
-  # For old versions of tidyr that predate `pivot_wider()`:
-  # tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %>%
-  dplyr::filter(!(event %in% c(
-    "enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
-  )) %>%
-  dplyr::mutate( # Simulate correcting for mismatched names across arms:
-    key = paste0(key, "_", event)
-  ) %>%
-  dplyr::select(-event)
-
-# Show the first 10 rows of the EAV table.
-ds_eav %>%
-  head(10)
-
-# Spread the EAV to wide.
-ds_wide_2 <-
-  ds_eav %>%
-  tidyr::pivot_wider(
-    id_cols     = c(study_id, arm),
-    names_from  = key,
-    values_from = value
-  )
-# For old versions of tidyr that predate `pivot_wider()`:
-# tidyr::spread(key=key, value=value)
-ds_wide_2
-
-## -----------------------------------------------------------------------------
-cert_location <- system.file("cacert.pem", package = "openssl")
-if (file.exists(cert_location)) {
-  config_options         <- list(cainfo = cert_location)
-  ds_different_cert_file <- redcap_read_oneshot(
-    redcap_uri     = uri,
-    token          = token_simple,
-    config_options = config_options
-  )$data
-}
+# ds_eav <-
+#   ds_long %>%
+#   dplyr::select(study_id, redcap_event_name, pmq1, pmq2, pmq3, pmq4) %>%
+#   dplyr::mutate(
+#     event = sub(pattern, "\\1", redcap_event_name),
+#     event = dplyr::recode(event, "first_dose" = "dose_1", "first_visit" = "visit_1"),
+#     arm   = as.integer(sub(pattern, "\\2", redcap_event_name))
+#   ) %>%
+#   dplyr::select(study_id, event, arm, pmq1, pmq2, pmq3, pmq4) %>%
+#   tidyr::pivot_longer(
+#     cols      = c(pmq1, pmq2, pmq3, pmq4),
+#     names_to  = "key",
+#     values_to = "value"
+#   ) %>%
+#   # For old versions of tidyr that predate `pivot_wider()`:
+#   # tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %>%
+#   dplyr::filter(!(event %in% c(
+#     "enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
+#   )) %>%
+#   dplyr::mutate( # Simulate correcting for mismatched names across arms:
+#     key = paste0(key, "_", event)
+#   ) %>%
+#   dplyr::select(-event)
+# 
+# # Show the first 10 rows of the EAV table.
+# ds_eav %>%
+#   head(10)
+# 
+# # Spread the EAV to wide.
+# ds_wide_2 <-
+#   ds_eav %>%
+#   tidyr::pivot_wider(
+#     id_cols     = c(study_id, arm),
+#     names_from  = key,
+#     values_from = value
+#   )
+# # For old versions of tidyr that predate `pivot_wider()`:
+# # tidyr::spread(key=key, value=value)
+# ds_wide_2
 
 ## -----------------------------------------------------------------------------
-config_options <- list(sslversion = 3)
-ds_ssl_3 <- redcap_read_oneshot(
-  redcap_uri     = uri,
-  token          = token_simple,
-  config_options = config_options
-)$data
+# cert_location <- system.file("cacert.pem", package = "openssl")
+# if (file.exists(cert_location)) {
+#   config_options         <- list(cainfo = cert_location)
+#   ds_different_cert_file <- redcap_read_oneshot(
+#     redcap_uri     = uri,
+#     token          = token_simple,
+#     config_options = config_options
+#   )$data
+# }
 
-config_options <- list(ssl.verifypeer = FALSE)
-ds_no_ssl <- redcap_read_oneshot(
-  redcap_uri     = uri,
-  token          = token_simple,
-  config_options = config_options
-)$data
+## -----------------------------------------------------------------------------
+# config_options <- list(sslversion = 3)
+# ds_ssl_3 <- redcap_read_oneshot(
+#   redcap_uri     = uri,
+#   token          = token_simple,
+#   config_options = config_options
+# )$data
+# 
+# config_options <- list(ssl.verifypeer = FALSE)
+# ds_no_ssl <- redcap_read_oneshot(
+#   redcap_uri     = uri,
+#   token          = token_simple,
+#   config_options = config_options
+# )$data
 
 ## ----session-info, echo=FALSE-------------------------------------------------
-if (requireNamespace("sessioninfo", quietly = TRUE)) {
-  sessioninfo::session_info()
-} else {
-  sessionInfo()
-}
+# if (requireNamespace("sessioninfo", quietly = TRUE)) {
+#   sessioninfo::session_info()
+# } else {
+#   sessionInfo()
+# }
 
 ## ----session-duration, echo=FALSE---------------------------------------------
-report_render_duration_in_seconds <- round(as.numeric(difftime(Sys.time(), report_render_start_time, units = "secs")))
+# report_render_duration_in_seconds <- round(as.numeric(difftime(Sys.time(), report_render_start_time, units = "secs")))
 

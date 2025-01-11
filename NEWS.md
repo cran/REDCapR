@@ -1,12 +1,14 @@
-Release History
+Version 1.4.0  (released 2025-01-11)
 ==========================================================
 
-<!-- pkgdown won't show this section because the header doesn't match a pattern. -->
-Quick links:
+### New Features
 
-* [CRAN Archive of older versions](https://cran.r-project.org/src/contrib/Archive/REDCapR/)
-* [Current & previous GitHub Issues](https://github.com/OuhscBbmc/REDCapR/issues?q=is%3Aissue)
-* [Documentation for current GitHub version](https://ouhscbbmc.github.io/REDCapR/)
+* `redcap_file_repo_list_oneshot()` export a list of files/folders from the file repository (requested by @agdamsbo, #549)
+
+### Minor Enhancements
+
+* Vignettes are not run/evaluated on CRAN, to comply with it policies. (#561)
+* Alt text for figures. (#550)
 
 Version 1.3.0  (released 2024-10-22)
 ==========================================================

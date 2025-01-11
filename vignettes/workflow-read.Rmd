@@ -12,6 +12,7 @@ vignette: >
 ```{r}
 #| include = FALSE
 knitr::opts_chunk$set(
+  eval    = !REDCapR:::on_cran(),
   collapse = TRUE,
   comment = "#>",
   tidy    = FALSE
@@ -202,7 +203,7 @@ ds_1 <-
 
 At this point, the data.frame `ds_1` has everything you need to start analyzing the project.
 
-```{r unstructured-2}
+```{r unstructured-2, fig.alt = "histogram of patient weight"}
 ds_1
 
 hist(ds_1$weight)
