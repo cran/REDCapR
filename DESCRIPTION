@@ -6,7 +6,7 @@ Description: Encapsulates functions to streamline calls from R to the REDCap
     University.  The Application Programming Interface (API) offers an avenue
     to access and modify data programmatically, improving the capacity for
     literate and reproducible programming.
-Version: 1.5.0
+Version: 1.6.0
 Authors@R: c(person("Will", "Beasley", role = c("aut", "cre"), email =
     "wibeasley@hotmail.com", comment = c(ORCID = "0000-0002-5613-5006")),
     person("David", "Bard", role = "ctb", comment = c(ORCID = "0000-0002-3922-8489")),
@@ -39,7 +39,7 @@ URL: https://ouhscbbmc.github.io/REDCapR/,
         https://github.com/OuhscBbmc/REDCapR,
         https://www.ouhsc.edu/bbmc/, https://projectredcap.org
 BugReports: https://github.com/OuhscBbmc/REDCapR/issues
-Depends: R (>= 4.1.0)
+Depends: R(>= 3.5.0)
 Imports: checkmate (>= 2.0), dplyr (>= 1.0), httr (>= 1.4.0), jsonlite,
         magrittr (>= 1.5), methods, readr (>= 2.0), rlang (>= 0.4),
         tibble (>= 2.0), tidyr (>= 1.0)
@@ -49,11 +49,11 @@ Suggests: spelling, covr (>= 3.4), DBI (>= 1.1), kableExtra (>= 1.0),
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3
 Language: en-US
 NeedsCompilation: no
-Packaged: 2025-07-27 23:05:33 UTC; wibeasley
+Packaged: 2025-10-07 22:46:14 UTC; wibea
 Author: Will Beasley [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-5613-5006>),
   David Bard [ctb] (ORCID: <https://orcid.org/0000-0002-3922-8489>),
@@ -75,4 +75,4 @@ Author: Will Beasley [aut, cre] (ORCID:
   Matthew Schuelke [ctb] (ORCID: <https://orcid.org/0000-0001-5755-1725>)
 Maintainer: Will Beasley <wibeasley@hotmail.com>
 Repository: CRAN
-Date/Publication: 2025-07-28 22:20:02 UTC
+Date/Publication: 2025-10-08 12:20:02 UTC
