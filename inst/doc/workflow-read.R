@@ -1,9 +1,9 @@
 ## -----------------------------------------------------------------------------
 knitr::opts_chunk$set(
-  eval    = !REDCapR:::on_cran(),
+  eval     = !REDCapR:::on_cran(),
   collapse = TRUE,
-  comment = "#>",
-  tidy    = FALSE
+  comment  = "#>",
+  tidy     = FALSE
 )
 
 ## ----pre-req------------------------------------------------------------------
@@ -12,8 +12,8 @@ knitr::opts_chunk$set(
 # # If this fails, run `install.packages("REDCapR")` or `remotes::install_github(repo="OuhscBbmc/REDCapR")`
 
 ## ----retrieve-credential------------------------------------------------------
-# path_credential <- system.file("misc/dev-2.credentials", package = "REDCapR")
-# credential  <- REDCapR::retrieve_credential_local(
+# path_credential <- system.file("misc/example.credentials", package = "REDCapR")
+# credential <- REDCapR::retrieve_credential_local(
 #   path_credential = path_credential,
 #   project_id      = 33
 # )
@@ -101,6 +101,6 @@ knitr::opts_chunk$set(
 # if (requireNamespace("sessioninfo", quietly = TRUE)) {
 #   sessioninfo::session_info()
 # } else {
-#   sessionInfo()
+#   utils::sessionInfo()
 # }
 

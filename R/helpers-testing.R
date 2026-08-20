@@ -19,14 +19,13 @@ retrieve_credential_testing <- function(
   # This line avoids a warning from the package check.
   projects <- project_id <- instance <- tag <- NULL
 
-  if (!requireNamespace("yaml", quietly = TRUE)) {
-    # nocov start
-    stop(
-      "Package `yaml` must be installed to use this function.",
-      call. = FALSE
-    )
-    # nocov end
-  }
+  # nocov start
+  rlang::check_installed(
+    pkg     = "yaml",
+    reason  = "to use `retrieve_credential_testing()` for package test suite."
+  )
+  # nocov end
+
   d_map <-
     system.file("misc/project-redirection.yml", package = "REDCapR") %>%
     yaml::yaml.load_file(
@@ -61,7 +60,7 @@ retrieve_credential_testing <- function(
   }
 
   retrieve_credential_local(
-    path_credential = path_credential, # "misc/dev-2.credentials"
+    path_credential = path_credential, # "misc/example.credentials"
     project_id      = d_map$project_id,
     username        = username
   )
@@ -83,14 +82,14 @@ retrieve_plugins <- function(plugin_name) {
   # This line avoids a warning from the package check.
   plugins <- instance <- tag <- NULL
 
-  if (!requireNamespace("yaml", quietly = TRUE)) {
-    # nocov start
-    stop(
-      "Package `yaml` must be installed to use this function.",
-      call. = FALSE
-    )
-    # nocov end
-  }
+
+  # nocov start
+  rlang::check_installed(
+    pkg     = "yaml",
+    reason  = "to use `retrieve_credential_testing()` for package test suite."
+  )
+  # nocov end
+
   d_map <-
     system.file("misc/plugin-redirection.yml", package = "REDCapR") %>%
     yaml::yaml.load_file(
@@ -99,7 +98,7 @@ retrieve_plugins <- function(plugin_name) {
     dplyr::bind_rows() %>%
     tidyr::unnest(plugins) %>%
     tidyr::pivot_longer(
-      cols      = -c("instance"),
+      cols      = -"instance",
       names_to  = "tag",
       values_to = "url"
     ) %>%
@@ -125,8 +124,11 @@ save_expected <- function(o, path) {
   # nocov end
 }
 retrieve_expected <- function(path) {
-  full_path   <- system.file(path, package = "REDCapR")
-  if (!file.exists(full_path))
-    stop("The expected file `", full_path, "` was not found.")  # nocov
+  full_path <- system.file(path, package = "REDCapR")
+  # nocov start
+  if (!file.exists(full_path)) {
+    stop("The expected file `", full_path, "` was not found.")
+  }
+  # nocov end
   dget(full_path)
 }

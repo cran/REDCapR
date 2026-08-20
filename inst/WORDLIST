@@ -1,3 +1,4 @@
+ApiPrivilegeDashboard
 BBMC
 Balise
 Barbone
@@ -23,12 +24,14 @@ De
 Dev
 EAV
 EHR
+EmailVerified
 EMR
 EMRs
 EMs
 FHIR
 Funders
 Gabor
+goodpractice
 HRSA
 Hatem
 Hervera
@@ -36,7 +39,9 @@ Hofer
 Hosny
 IALSA
 João
+knitr
 LDAP
+MagnifyingGlass
 MCHB
 MIECHV
 MSSQL
@@ -51,9 +56,12 @@ OUHSC's
 POSIXct
 POSIXlt
 ParentPRO
+parentPRO
 PhpCap
+png
 Pre
 Pseudofields
+px
 PyCap
 RCurl
 RDoc

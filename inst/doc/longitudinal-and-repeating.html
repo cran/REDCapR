@@ -1080,8 +1080,8 @@ approaches.</p>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Retrieve token</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/dev-2.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential,</span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">62</span></span>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>)</span></code></pre></div>
@@ -1107,9 +1107,9 @@ object to ensure the desired variable data types.</p>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri, <span class="co"># From the previous code snippet.</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="fu">c</span>(<span class="st">&quot;intake&quot;</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="st">&quot;intake&quot;</span>,</span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="at">col_types   =</span> col_types_intake,</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>ds_intake</span></code></pre></div>
@@ -1131,7 +1131,7 @@ object to ensure the desired variable data types.</p>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="fu">c</span>(<span class="st">&quot;blood_pressure&quot;</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="st">&quot;blood_pressure&quot;</span>,</span>
 <span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>    <span class="at">col_types   =</span> col_types_blood_pressure,</span>
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
@@ -1139,7 +1139,7 @@ object to ensure the desired variable data types.</p>
 <span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>ds_blood_pressure <span class="sc">%&gt;%</span></span>
 <span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>(redcap_repeat_instrument)</span>
 <span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>col_types_laboratory  <span class="ot">&lt;-</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>col_types_laboratory <span class="ot">&lt;-</span></span>
 <span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">cols</span>(</span>
 <span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>    <span class="at">record_id                 =</span> readr<span class="sc">::</span><span class="fu">col_integer</span>(),</span>
 <span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>    <span class="at">redcap_repeat_instrument  =</span> readr<span class="sc">::</span><span class="fu">col_character</span>(),</span>
@@ -1149,11 +1149,11 @@ object to ensure the desired variable data types.</p>
 <span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>    <span class="at">laboratory_complete       =</span> readr<span class="sc">::</span><span class="fu">col_integer</span>()</span>
 <span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  )</span>
 <span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>ds_laboratory  <span class="ot">&lt;-</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>ds_laboratory <span class="ot">&lt;-</span></span>
 <span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>  REDCapR<span class="sc">::</span><span class="fu">redcap_read</span>(</span>
 <span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
 <span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
-<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="fu">c</span>(<span class="st">&quot;laboratory&quot;</span>),</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>    <span class="at">forms       =</span> <span class="st">&quot;laboratory&quot;</span>,</span>
 <span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>    <span class="at">col_types   =</span> col_types_laboratory,</span>
 <span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
@@ -1170,7 +1170,7 @@ call will retrieve it.</p>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">redcap_uri  =</span> credential<span class="sc">$</span>redcap_uri,</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">token       =</span> credential<span class="sc">$</span>token,</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">col_types   =</span> readr<span class="sc">::</span><span class="fu">cols</span>(<span class="at">.default =</span> readr<span class="sc">::</span><span class="fu">col_character</span>()),</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="at">verbose     =</span> <span class="cn">FALSE</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  )<span class="sc">$</span>data</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>ds_block</span></code></pre></div>

@@ -9,6 +9,7 @@ redcap_project_info_read(
   token,
   http_response_encoding = "UTF-8",
   locale = readr::default_locale(),
+  delimiter = ",",
   verbose = TRUE,
   config_options = NULL,
   handle_httr = NULL
@@ -29,7 +30,18 @@ project.  Required.}
 
 \item{locale}{a \code{\link[readr:locale]{readr::locale()}} object to specify preferences like
 number, date, and time formats.  This object is passed to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Defaults to \code{\link[readr:locale]{readr::default_locale()}}.}
+\code{\link[readr:read_csv]{readr::read_csv()}}.  Defaults to \code{\link[readr:default_locale]{readr::default_locale()}}.}
+
+\item{delimiter}{A single-character value passed to
+the \code{delim} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}.
+Options include:
+\enumerate{
+\item \verb{,} (a comma, the default),
+\item \verb{;} (a semi-colon),
+\item \code{|} (a pipe),
+\item \code{^} (a caret), or
+\item \verb{\\t} (a tab).
+}}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
@@ -70,11 +82,11 @@ production.  Returns a \code{\link[tibble:tibble]{tibble::tibble()}}.
 
 Several datetime variables are returned, such as the project's
 \code{creation_time}.  For the time to be meaningful, you'll need to set
-the time zone because this function uses \code{\link[readr:read_delim]{readr::read_csv()}},
+the time zone because this function uses \code{\link[readr:read_csv]{readr::read_csv()}},
 which assigns
 \href{https://en.wikipedia.org/wiki/Coordinated_Universal_Time}{UTC}
 if no timezone is specified.  Find your server's location listed in
-\code{\link[base:timezones]{base::OlsonNames()}}, and pass it to readr's \code{\link[readr:locale]{readr::locale()}} function,
+\code{\link[base:OlsonNames]{base::OlsonNames()}}, and pass it to readr's \code{\link[readr:locale]{readr::locale()}} function,
 and then pass that to \code{redcap_project_info_read()}.  See the examples below
 
 For more timezone details see the
@@ -128,7 +140,7 @@ client_locale <- readr::locale(tz = Sys.timezone())
 #   starting from a csv of REDCapR test projects.
 # The native pipes in this snippet require R 4.1+.
 d_all <-
-  system.file("misc/dev-2.credentials", package = "REDCapR") \%>\%
+  system.file("misc/example.credentials", package = "REDCapR") \%>\%
   readr::read_csv(
     comment     = "#",
     col_select  = c(redcap_uri, token),
@@ -148,9 +160,8 @@ d_all
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html
-and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus REDCap
 administrator to send you the static material.
 }

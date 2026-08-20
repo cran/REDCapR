@@ -72,18 +72,26 @@
 #' are recommended in a data export if the data will be re-imported into a
 #' REDCap project. Default is `FALSE`.
 #' @param col_types A [readr::cols()] object passed internally to
-#' [readr::read_csv()].  Optional.
-#' @param na A [character] vector passed internally to [readr::read_csv()].
+#' [readr::read_delim()].  Optional.
+#' @param na A [character] vector passed internally to [readr::read_delim()].
 #' Defaults to `c("", "NA")`.
 #' @param guess_type A boolean value indicating if all columns should be
-#' returned as character.  If true, [readr::read_csv()] guesses the intended
+#' returned as character.  If true, [readr::read_delim()] guesses the intended
 #' data type for each column.  Ignored if `col_types` is not null.
 #' @param guess_max Deprecated.
 #' @param http_response_encoding  The encoding value passed to
 #' [httr::content()].  Defaults to 'UTF-8'.
 #' @param locale a [readr::locale()] object to specify preferences like
 #' number, date, and time formats.  This object is passed to
-#' [readr::read_csv()].  Defaults to [readr::default_locale()].
+#' [readr::read_delim()].  Defaults to [readr::default_locale()].
+#' @param delimiter A single-character value passed to
+#' the `delim` parameter of [readr::read_delim()].
+#' Options include:
+#' 1. `,` (a comma, the default),
+#' 1. `;` (a semi-colon),
+#' 1. `|` (a pipe),
+#' 1. `^` (a caret), or
+#' 1. `\t` (a tab).
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
@@ -211,9 +219,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html
-#' and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -272,12 +279,12 @@ redcap_read <- function(
   guess_max                     = NULL, # Deprecated parameter
   http_response_encoding        = "UTF-8",
   locale                        = readr::default_locale(),
+  delimiter                     = ",",
   verbose                       = TRUE,
   config_options                = NULL,
   handle_httr                   = NULL,
   id_position                   = 1L
 ) {
-
   # Validate incoming parameters ----------------------------
   checkmate::assert_character(redcap_uri                , any.missing=FALSE,     len=1, pattern="^.{1,}$")
   checkmate::assert_character(token                     , any.missing=FALSE,     len=1, pattern="^.{1,}$")
@@ -303,6 +310,7 @@ redcap_read <- function(
 
   checkmate::assert_character(http_response_encoding    , any.missing=FALSE,     len=1)
   checkmate::assert_class(    locale, "locale"          , null.ok = FALSE)
+  checkmate::assert_character(delimiter                 , any.missing=FALSE, len=1, pattern = "^(?:,|;|\\||\\^|\\t)$")
 
   checkmate::assert_logical(  verbose                   , any.missing=FALSE,     len=1, null.ok=TRUE)
   checkmate::assert_list(     config_options            , any.missing=TRUE ,            null.ok=TRUE)
@@ -320,6 +328,7 @@ redcap_read <- function(
   metadata <- redcap_metadata_internal(
     redcap_uri         = redcap_uri,
     token              = token,
+    delimiter          = delimiter,
     verbose            = verbose,
     config_options     = config_options,
     handle_httr        = handle_httr
@@ -349,8 +358,7 @@ redcap_read <- function(
   } # end of !is.null(events)
 
   if (!is.null(fields) || !is.null(forms)) {
-    fields  <- base::union(metadata$record_id_name, fields)
-    # fields  <- base::union(metadata$plumbing_variables, fields)
+    fields <- base::union(metadata$record_id_name, fields)
   }
 
   # Retrieve list of record ids --------------------------------------
@@ -368,6 +376,7 @@ redcap_read <- function(
     guess_type                 = guess_type,
     http_response_encoding     = http_response_encoding,
     locale                     = locale,
+    delimiter                  = delimiter,
     verbose                    = verbose,
     config_options             = config_options,
     handle_httr                = handle_httr
@@ -501,8 +510,11 @@ redcap_read <- function(
         )
       )
 
-      if (continue_on_error) warning(error_message)
-      else stop(error_message)
+      if (continue_on_error) {
+        warning(error_message)
+      } else {
+        stop(error_message)
+      }
       # nocov end
     }
 

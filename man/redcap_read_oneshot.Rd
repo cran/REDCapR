@@ -26,6 +26,7 @@ redcap_read_oneshot(
   guess_max = 1000,
   http_response_encoding = "UTF-8",
   locale = readr::default_locale(),
+  delimiter = ",",
   verbose = TRUE,
   config_options = NULL,
   handle_httr = NULL
@@ -101,17 +102,17 @@ are recommended in a data export if the data will be re-imported into a
 REDCap project. Default is \code{FALSE}.}
 
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
+\code{\link[readr:read_delim]{readr::read_delim()}}.  Optional.}
 
-\item{na}{A \link{character} vector passed internally to \code{\link[readr:read_delim]{readr::read_csv()}}.
+\item{na}{A \link{character} vector passed internally to \code{\link[readr:read_delim]{readr::read_delim()}}.
 Defaults to \code{c("", "NA")}.}
 
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
+returned as character.  If true, \code{\link[readr:read_delim]{readr::read_delim()}} guesses the intended
 data type for each column.  Ignored if \code{col_types} is not null.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
-passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
+passed to \code{\link[readr:read_delim]{readr::read_delim()}} that
 specifies the maximum number of records to use for guessing column types.}
 
 \item{http_response_encoding}{The encoding value passed to
@@ -119,7 +120,18 @@ specifies the maximum number of records to use for guessing column types.}
 
 \item{locale}{a \code{\link[readr:locale]{readr::locale()}} object to specify preferences like
 number, date, and time formats.  This object is passed to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Defaults to \code{\link[readr:locale]{readr::default_locale()}}.}
+\code{\link[readr:read_delim]{readr::read_delim()}}.  Defaults to \code{\link[readr:default_locale]{readr::default_locale()}}.}
+
+\item{delimiter}{A single-character value passed to
+the \code{delim} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}.
+Options include:
+\enumerate{
+\item \verb{,} (a comma, the default),
+\item \verb{;} (a semi-colon),
+\item \code{|} (a pipe),
+\item \code{^} (a caret), or
+\item \verb{\\t} (a tab).
+}}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
@@ -241,8 +253,8 @@ ds_col_types <- REDCapR::redcap_read_oneshot(
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus REDCap
 administrator to send you the static material.
 }

@@ -52,8 +52,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -85,7 +85,6 @@ redcap_metadata_read <- function(
   config_options    = NULL,
   handle_httr       = NULL
 ) {
-
   checkmate::assert_character(redcap_uri  , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token       , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
@@ -128,7 +127,7 @@ redcap_metadata_read <- function(
           ) %>%
           tibble::as_tibble() %>%
           dplyr::mutate_all(
-            ~dplyr::na_if(.x, "")
+            ~ dplyr::na_if(.x, "")
           )
       },
       # Don't print the warning in the try block.  Print it below,
@@ -202,6 +201,8 @@ redcap_metadata_read <- function(
 #' \code{list(`element_names[0]` = x[1], `element_names[1]` = x[2], ...)}.
 #'
 #' If `x` is `NULL` then `NULL` is returned.
+
+#' @export
 to_api_array <- function(x, element_names) {
   checkmate::assert_character(x       , null.ok = TRUE, any.missing = FALSE)
   checkmate::assert_character(element_names, null.ok = TRUE, any.missing = FALSE, max.len = 1L, pattern = "^fields|forms$")

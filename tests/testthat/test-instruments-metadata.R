@@ -29,9 +29,9 @@ test_that("default", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
   expect_s3_class(returned_object$data, "tbl")
@@ -41,7 +41,7 @@ test_that("Bad URI", {
   testthat::skip()
   testthat::skip_on_cran()
   bad_uri <- "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com"
-  # expected_data_frame <- structure(list(), .Names = character(0), row.names = integer(0), class = "data.frame")
+  # expected_data_frame <- structure(list(), names = character(0), row.names = integer(0), class = "data.frame")
 
   # Windows gives a different message than Travis/Linux
   # expected_outcome_message <- "(https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com|Couldn't resolve host 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com')"
@@ -57,7 +57,7 @@ test_that("Bad URI", {
       )
   # )
   expect_false(returned_object$success)
-  expect_equal(returned_object$status_code, 403L)
+  expect_identical(returned_object$status_code, 403L)
   expect_match(returned_object$outcome_message, "The REDCapR instrument retrieval was not successful.+")
 })
 
@@ -75,8 +75,8 @@ test_that("bad token -Error", {
   )
 
   testthat::expect_false(returned_object$success)
-  testthat::expect_equal(returned_object$status_code, 403L)
-  testthat::expect_equal(returned_object$raw_text, expected_outcome_message)
+  testthat::expect_identical(returned_object$status_code, 403L)
+  testthat::expect_identical(returned_object$raw_text, expected_outcome_message)
 })
 
 rm(credential)

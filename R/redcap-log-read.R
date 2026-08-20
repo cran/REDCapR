@@ -63,9 +63,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html
-#' and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -180,7 +179,7 @@ redcap_log_read <- function(
       # If an operation is successful, the `raw_text` is no longer returned to
       #   save RAM.  The content is not really necessary with httr's status
       #   message exposed.
-      kernel$raw_text   <- ""
+      kernel$raw_text <- ""
     } else { # ds doesn't exist as a data.frame.
       # nocov start
       # Override the 'success' determination from the http status code.

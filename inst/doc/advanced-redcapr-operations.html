@@ -358,7 +358,7 @@ securely and avoiding hard-coding them like below. Our recommendation is
 to store tokens <a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html">in
 a database</a>. If that is not feasible for your institution, consider
 storing them in a secured csv and retrieving with <a href="https://ouhscbbmc.github.io/REDCapR/reference/retrieve_credential.html"><code>REDCapR::retrieve_credential_local()</code></a>.</em></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(REDCapR) <span class="co">#Load the package into the current R session.</span></span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(REDCapR) <span class="co"># Load the package into the current R session.</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>uri                   <span class="ot">&lt;-</span> <span class="st">&quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>token_simple          <span class="ot">&lt;-</span> <span class="st">&quot;9A068C425B1341D69E83064A2D273A70&quot;</span></span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>token_longitudinal    <span class="ot">&lt;-</span> <span class="st">&quot;DA6F2BB23146BD5A7EA3408C1A44A556&quot;</span></span></code></pre></div>
@@ -382,7 +382,7 @@ REDCap.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;dplyr&quot;</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">requireNamespace</span>(<span class="st">&quot;tidyr&quot;</span>))</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>events_to_retain  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dose_1_arm_1&quot;</span>, <span class="st">&quot;visit_1_arm_1&quot;</span>, <span class="st">&quot;dose_2_arm_1&quot;</span>, <span class="st">&quot;visit_2_arm_1&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>events_to_retain <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dose_1_arm_1&quot;</span>, <span class="st">&quot;visit_1_arm_1&quot;</span>, <span class="st">&quot;dose_2_arm_1&quot;</span>, <span class="st">&quot;visit_2_arm_1&quot;</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>ds_long <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">redcap_read_oneshot</span>(<span class="at">redcap_uri =</span> uri, <span class="at">token =</span> token_longitudinal)<span class="sc">$</span>data</span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>ds_long <span class="sc">%&gt;%</span></span>
@@ -445,8 +445,8 @@ direction and going wide.</p>
 <span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="co"># For old versions of tidyr that predate `pivot_wider()`:</span></span>
 <span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="co"># tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %&gt;%</span></span>
 <span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>(event <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="st">&quot;enrollment&quot;</span>, <span class="st">&quot;final_visit&quot;</span>, <span class="st">&quot;deadline_to_return&quot;</span>, <span class="st">&quot;deadline_to_opt_ou&quot;</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>( <span class="co"># Simulate correcting for mismatched names across arms:</span></span>
 <span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    <span class="at">key =</span> <span class="fu">paste0</span>(key, <span class="st">&quot;_&quot;</span>, event)</span>
 <span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
@@ -481,7 +481,7 @@ described above.</p>
 <p>If you require a feature that is not available from your instance’s
 API, first upgrade your institution’s REDCap instance and see if the
 feature has been added recently. Second, check if someone has released
-the desired API-like features as an <a href="https://redcap.vanderbilt.edu/consortium/modules/">REDCap External
+the desired API-like features as an <a href="https://redcap.vumc.org:443/consortium/modules/">REDCap External
 Module</a>.</p>
 <p>Third, you may need to query the database underneath REDCap’s web
 server. The <a href="https://ouhscbbmc.github.io/REDCapR/articles/SecurityDatabase.html#transfer-credentials">Transfer
@@ -573,7 +573,7 @@ expand.</p>
 Environment <span class="glyphicon glyphicon-plus-sign"></span>
 </summary>
 </details>
-<p>Report rendered by wibea at 2025-10-07, 17:46 -0500 in -999
+<p>Report rendered by wibeasley at 2026-08-19, 15:34 -0500 in -999
 seconds.</p>
 </div>
 

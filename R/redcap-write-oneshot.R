@@ -63,8 +63,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -99,6 +99,7 @@
 #' result_write$raw_text
 #' }
 
+
 #' @importFrom magrittr %>%
 #' @export
 redcap_write_oneshot <- function(
@@ -111,12 +112,6 @@ redcap_write_oneshot <- function(
   config_options                = NULL,
   handle_httr                   = NULL
 ) {
-
-  # This prevents the R CHECK NOTE: 'No visible binding for global variable Note in R CMD check';
-  # Also see  if( getRversion() >= "2.15.1" )    utils::globalVariables(names=c("csv_elements"))
-  # https://stackoverflow.com/questions/8096313/; https://stackoverflow.com/questions/9439256
-  csv_elements <- NULL
-
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token     , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
@@ -130,16 +125,7 @@ redcap_write_oneshot <- function(
       dplyr::mutate_if(is.logical, as.integer)
   }
 
-  con     <-  base::textConnection(
-    object  = "csv_elements",
-    open    = "w",
-    local   = TRUE
-  )
-  utils::write.csv(ds, con, row.names = FALSE, na = "")
-  close(con)
-
-  csv     <- paste(csv_elements, collapse = "\n")
-  rm(csv_elements, con)
+  csv <- serialize_csv_for_write(ds)
 
   post_body <- list(
     token     = token,
@@ -199,5 +185,13 @@ redcap_write_oneshot <- function(
     affected_ids              = affected_ids,
     elapsed_seconds           = kernel$elapsed_seconds,
     raw_text                  = kernel$raw_text
+  )
+}
+
+serialize_csv_for_write <- function(d) {
+  readr::format_csv(
+    x     = d,
+    na    = "",
+    quote = "all"
   )
 }

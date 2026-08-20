@@ -1,10 +1,10 @@
 ## -----------------------------------------------------------------------------
 library(knitr)
 knitr::opts_chunk$set(
-  eval    = !REDCapR:::on_cran(),
+  eval     = !REDCapR:::on_cran(),
   collapse = TRUE,
-  comment = "#>",
-  tidy    = FALSE
+  comment  = "#>",
+  tidy     = FALSE
 )
 
 knit_print.data.frame <- function(x, ...) {
@@ -13,7 +13,7 @@ knit_print.data.frame <- function(x, ...) {
   x %>%
     # rmarkdown::print.paged_df() %>%
     kable(
-      col.names = gsub("_", "<br>", colnames(.)),
+      col.names = gsub("_", "<br>", colnames(.), fixed = TRUE),
       # col.names = paste0("<code>", gsub("_", "<br>", colnames(.)), "</code>"),
       # col.names = gsub("_", " ", colnames(.)),
       escape = FALSE,
@@ -36,8 +36,8 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 # library(magrittr)
 # 
 # # Retrieve token
-# path_credential <- system.file("misc/dev-2.credentials", package = "REDCapR")
-# credential  <- REDCapR::retrieve_credential_local(
+# path_credential <- system.file("misc/example.credentials", package = "REDCapR")
+# credential <- REDCapR::retrieve_credential_local(
 #   path_credential = path_credential,
 #   project_id      = 62
 # )
@@ -55,9 +55,9 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 #   REDCapR::redcap_read(
 #     redcap_uri  = credential$redcap_uri, # From the previous code snippet.
 #     token       = credential$token,
-#     forms       = c("intake"),
+#     forms       = "intake",
 #     col_types   = col_types_intake,
-#     verbose     = FALSE,
+#     verbose     = FALSE
 #   )$data
 # 
 # ds_intake
@@ -77,7 +77,7 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 #   REDCapR::redcap_read(
 #     redcap_uri  = credential$redcap_uri,
 #     token       = credential$token,
-#     forms       = c("blood_pressure"),
+#     forms       = "blood_pressure",
 #     col_types   = col_types_blood_pressure,
 #     verbose     = FALSE
 #   )$data
@@ -85,7 +85,7 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 # ds_blood_pressure %>%
 #   tidyr::drop_na(redcap_repeat_instrument)
 # 
-# col_types_laboratory  <-
+# col_types_laboratory <-
 #   readr::cols(
 #     record_id                 = readr::col_integer(),
 #     redcap_repeat_instrument  = readr::col_character(),
@@ -95,11 +95,11 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 #     laboratory_complete       = readr::col_integer()
 #   )
 # 
-# ds_laboratory  <-
+# ds_laboratory <-
 #   REDCapR::redcap_read(
 #     redcap_uri  = credential$redcap_uri,
 #     token       = credential$token,
-#     forms       = c("laboratory"),
+#     forms       = "laboratory",
 #     col_types   = col_types_laboratory,
 #     verbose     = FALSE
 #   )$data
@@ -113,7 +113,7 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 #     redcap_uri  = credential$redcap_uri,
 #     token       = credential$token,
 #     col_types   = readr::cols(.default = readr::col_character()),
-#     verbose     = FALSE,
+#     verbose     = FALSE
 #   )$data
 # 
 # ds_block
@@ -122,6 +122,6 @@ registerS3method("knit_print", "data.frame", knit_print.data.frame)
 # if (requireNamespace("sessioninfo", quietly = TRUE)) {
 #   sessioninfo::session_info()
 # } else {
-#   sessionInfo()
+#   utils::sessionInfo()
 # }
 

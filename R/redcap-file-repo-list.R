@@ -62,8 +62,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -123,7 +123,6 @@ redcap_file_repo_list_oneshot <- function(
       config_options  = config_options,
       handle_httr     = handle_httr
     )
-  # browser()
 
   col_types <- readr::cols(
     folder_id   = readr::col_integer(),
@@ -158,7 +157,7 @@ redcap_file_repo_list_oneshot <- function(
       # If an operation is successful, the `raw_text` is no longer returned
       #   to save RAM.  The content is not really necessary with httr's status
       #   message exposed.
-      kernel$raw_text   <- ""
+      kernel$raw_text <- ""
     } else { # nocov start
       # Override the 'success' determination from the http status code
       #   and return an empty data.frame.

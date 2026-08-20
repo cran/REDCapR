@@ -69,8 +69,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -158,11 +158,11 @@ redcap_instrument_download <- function(
   if (kernel$success) {
     result_header <- kernel$result_headers$`content-type`
 
-    if (missing(file_name) || is.null(file_name)) {
+    if (is.null(file_name)) {
       file_name <- "instruments.pdf"
     }
 
-    file_path <- if (missing(directory) && is.null(directory)) {
+    file_path <- if (is.null(directory)) {
       file_name # Use relative path.
     } else {
       file.path(directory, file_name) # Qualify the file with its full path.

@@ -43,7 +43,6 @@ replace_nas_with_explicit <- function(
   create_factor     = FALSE,
   add_unknown_level = FALSE
 ) {
-
   if (create_factor && !is.factor(scores)) {
     scores <- factor(scores)
   }
@@ -61,13 +60,12 @@ replace_nas_with_explicit <- function(
 
   scores[is.na(scores)] <- new_na_label # "Unknown"
 
-  if (any(is.na(scores))) {
+  if (anyNA(scores)) {
     stop("The reassigned factor variable should not have any NA values.")
   }
 
   scores
 }
-
 
 #' @name collapse_vector
 #'
@@ -109,7 +107,8 @@ filter_logic_prepare <- function(filter_logic) {
   # This is an empty string if `filter_logic` is NULL.
   if (all(nchar(filter_logic) == 0L))
     filter_logic <- dplyr::if_else(is.null(filter_logic), "", filter_logic)
-  return( filter_logic )
+
+  filter_logic
 }
 
 ## We're intentionally not exporting this function.

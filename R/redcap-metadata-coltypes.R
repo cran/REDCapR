@@ -119,8 +119,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -165,7 +165,6 @@ redcap_metadata_coltypes <- function(
   config_options                = NULL,
   handle_httr                   = NULL
 ) {
-
   meat <-
     redcap_metadata_internal(
       redcap_uri              = redcap_uri,
@@ -214,16 +213,17 @@ redcap_metadata_internal <- function(
 
   http_response_encoding        = "UTF-8",
   locale                        = readr::default_locale(),
+  delimiter                     = ",",
   verbose                       = FALSE,
   config_options                = NULL,
   handle_httr                   = NULL
 ) {
-
   checkmate::assert_character(redcap_uri                , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token                     , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
   checkmate::assert_character(http_response_encoding    , any.missing=FALSE,     len=1)
   checkmate::assert_class(    locale, "locale"          , null.ok = FALSE)
+  checkmate::assert_character(delimiter                 , any.missing=FALSE, len=1, pattern = "^(?:,|;|\\||\\^|tab)$")
   checkmate::assert_logical(  verbose                   , any.missing=FALSE, len=1, null.ok=TRUE)
   checkmate::assert_list(     config_options            , any.missing=TRUE ,        null.ok=TRUE)
 
@@ -231,20 +231,20 @@ redcap_metadata_internal <- function(
   verbose             <- verbose_prepare(verbose)
 
   # Retrieve the info necessary to infer the likely data types
-  d_var  <- REDCapR::redcap_variables(        redcap_uri, token, verbose = verbose, handle_httr = handle_httr)$data
-  d_meta <- REDCapR::redcap_metadata_read(    redcap_uri, token, verbose = verbose, handle_httr = handle_httr)$data
-  d_inst <- REDCapR::redcap_instruments(      redcap_uri, token, verbose = verbose, handle_httr = handle_httr)$data
-  d_proj <- REDCapR::redcap_project_info_read(redcap_uri, token, verbose = verbose, handle_httr = handle_httr)$data
-  d_dags <- REDCapR::redcap_dag_read(         redcap_uri, token, verbose = verbose, handle_httr = handle_httr)
+  d_var  <- REDCapR::redcap_variables(        redcap_uri, token, delimiter = delimiter, verbose = verbose, handle_httr = handle_httr)$data
+  d_meta <- REDCapR::redcap_metadata_read(    redcap_uri, token                       , verbose = verbose, handle_httr = handle_httr)$data
+  d_inst <- REDCapR::redcap_instruments(      redcap_uri, token, delimiter = delimiter, verbose = verbose, handle_httr = handle_httr)$data
+  d_proj <- REDCapR::redcap_project_info_read(redcap_uri, token, delimiter = delimiter, verbose = verbose, handle_httr = handle_httr)$data
+  d_dags <- REDCapR::redcap_dag_read(         redcap_uri, token                       , verbose = verbose, handle_httr = handle_httr)
 
   # Determine status of autonumbering, instrument complete status, and decimal mark
   .record_field         <- d_var$original_field_name[1] # The first field should always be the "record" identifier.
   .autonumber           <- d_proj$record_autonumbering_enabled[1]
   # If the dags call fails, since the user is assigned to a DAG, then we assign .dags a value of TRUE
-  .dags                 <- (1L <= nrow(d_dags$data)) | (grepl("do not have permission", d_dags$raw_text))
+  .dags                 <- (1L <= nrow(d_dags$data)) | (grepl("do not have permission", d_dags$raw_text, fixed = TRUE))
   .plumbing_possibles   <- c(.record_field, "redcap_event_name", "redcap_repeat_instrument", "redcap_repeat_instance")
-  decimal_period        <- (locale$decimal_mark == ".")
-  decimal_comma         <- (locale$decimal_mark == ",")
+  decimal_period        <- (locale$decimal_mark == ".") # nolint: object_usage_linter
+  decimal_comma         <- (locale$decimal_mark == ",") # nolint: object_usage_linter
 
   # Prepare metadata to be joined
   d_var <-
@@ -257,10 +257,10 @@ redcap_metadata_internal <- function(
   d_inst <-
     d_inst %>%
     dplyr::select(
-      form_name   = "instrument_name",
+      form_name   = "instrument_name"
     ) %>%
     dplyr::mutate(
-      form_order  = seq_len(dplyr::n()),
+      form_order  = seq_len(dplyr::n())
     )
 
   # Dataset that holds the *_complete checkboxes
@@ -268,16 +268,16 @@ redcap_metadata_internal <- function(
     d_inst %>%
     dplyr::mutate(
       field_name      = paste0(.data$form_name, "_complete"),
-      field_name_base = .data$field_name,  # same for *_complete checkboxes
+      field_name_base = .data$field_name, # same for *_complete checkboxes
       field_type      = "complete",
-      vt              = NA_character_,
+      vt              = NA_character_
     ) %>%
     dplyr::select(
       "field_name",
       "field_name_base",
       "form_name",
       "field_type",
-      "vt",
+      "vt"
     )
 
   # Dataset that holds longitudinal/repeating variables
@@ -287,7 +287,7 @@ redcap_metadata_internal <- function(
       field_name_base   = character(0),
       form_name         = character(0),
       field_type        = character(0),
-      vt                = character(0),
+      vt                = character(0)
     )
 
   if (d_proj$is_longitudinal[1]) {
@@ -299,7 +299,7 @@ redcap_metadata_internal <- function(
           field_name_base = "redcap_event_name",
           form_name       = "longitudinal/repeating",
           field_type      = "event_name",
-          vt              = NA_character_,
+          vt              = NA_character_
         )
       )
   }
@@ -326,7 +326,7 @@ redcap_metadata_internal <- function(
           field_name_base = c("redcap_repeat_instrument", "redcap_repeat_instance"),
           form_name       = "longitudinal/repeating",
           field_type      = c("repeat_instrument"       , "repeat_instance"),
-          vt              = NA_character_,
+          vt              = NA_character_
         )
       )
   }
@@ -338,25 +338,25 @@ redcap_metadata_internal <- function(
       field_name_base  = "field_name",
       "form_name",
       "field_type",
-      "text_validation_type_or_show_slider_number",
+      "text_validation_type_or_show_slider_number"
     ) %>%
     dplyr::filter(.data$field_type != "descriptive") %>%
     dplyr::left_join(d_var, by = "field_name_base") %>%
     dplyr::mutate(
-      field_name = dplyr::coalesce(.data$field_name, .data$field_name_base),
+      field_name = dplyr::coalesce(.data$field_name, .data$field_name_base)
     ) %>%
     dplyr::select(
       "field_name",
       "field_name_base",
       "form_name",
       "field_type",
-      vt            = "text_validation_type_or_show_slider_number",
+      vt            = "text_validation_type_or_show_slider_number"
     )  %>%
     dplyr::union_all(d_complete) %>%
     dplyr::left_join(d_inst, by = "form_name") %>%
     dplyr::group_by(.data$form_name) %>%
     dplyr::mutate(
-      field_order_within_form  = seq_len(dplyr::n()),
+      field_order_within_form  = seq_len(dplyr::n())
     ) %>%
     dplyr::ungroup() %>%
     dplyr::arrange(.data$form_order,  .data$field_order_within_form) %>%
@@ -374,8 +374,8 @@ redcap_metadata_internal <- function(
   d <-
     d_meta %>%
     dplyr::mutate(
-      dags        = (.dags & (.data$field_name == .record_field)),
-      autonumber  = (.autonumber & (.data$field_name == .record_field)),
+      dags        = (.dags       & (.data$field_name == .record_field)),
+      autonumber  = (.autonumber & (.data$field_name == .record_field))
     ) %>%
     dplyr::mutate(
       response =
@@ -445,7 +445,7 @@ redcap_metadata_internal <- function(
           vt == "time_mm_ss"                                  ~ paste0("col_time(\"%M:%S\")"                  , "~~validation is 'time_mm_ss'"),
           vt == "vmrn"                                        ~ paste0("col_character()"                      , "~~validation is 'vmrn'"),
           vt == "zipcode"                                     ~ paste0("col_character()"                      , "~~validation is 'zipcode'"),
-          TRUE                                                ~ paste0("col_character()"                      , "~~validation doesn't have an associated col_type.  Tell us in a new REDCapR issue. "),
+          TRUE                                                ~ paste0("col_character()"                      , "~~validation doesn't have an associated col_type.  Tell us in a new REDCapR issue. ")
         )
     ) %>%
     dplyr::mutate(
@@ -475,7 +475,7 @@ redcap_metadata_internal <- function(
       # "padding2",
       "aligned",
       "field_name_base",
-      "plumbing",
+      "plumbing"
     )
 
   .plumbing_variables <- intersect(d$field_name, .plumbing_possibles)

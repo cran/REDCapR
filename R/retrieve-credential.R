@@ -117,7 +117,7 @@
 #' @examples
 #' \dontrun{
 #' # ---- Local File Example ----------------------------
-#' path <- system.file("misc/dev-2.credentials", package = "REDCapR")
+#' path <- system.file("misc/example.credentials", package = "REDCapR")
 #' (p1  <- REDCapR::retrieve_credential_local(path, 33L))
 #' (p2  <- REDCapR::retrieve_credential_local(path, 34L))
 #'
@@ -139,7 +139,6 @@ retrieve_credential_local <- function(
   check_token_pattern      = TRUE,
   username                 = NA_character_
 ) {
-
   checkmate::assert_character(path_credential  , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_file_exists(path_credential                                         )
   checkmate::assert_character(username         , any.missing=TRUE, len=1, pattern="^.{1,}$")
@@ -168,8 +167,9 @@ retrieve_credential_local <- function(
   } else if (
     !identical(
       colnames(d_credentials),
-      c("redcap_uri", "username", "project_id", "token", "comment"))
-    ) {
+      c("redcap_uri", "username", "project_id", "token", "comment")
+    )
+  ) {
     stop(
       "The credentials file did not contain the proper variables of ",
       "`redcap_uri`, `username`, `project_id`, `token`,  and `comment`."
@@ -217,47 +217,6 @@ retrieve_credential_local <- function(
   credential
 }
 
-# Privately-scoped function
-credential_local_validation <- function(
-  redcap_uri,
-  token,
-  username,
-  check_url                = TRUE,
-  check_username           = FALSE,
-  check_token_pattern      = TRUE
-
-) {
-  # Progress through the optional checks
-  if (check_url && !grepl("https://", redcap_uri, perl = TRUE)) {
-    error_message_username <- paste(
-      "The REDCap URL does not reference an https address.  First check",
-      "that the URL is correct, and then consider using SSL to encrypt",
-      "the REDCap webserver.  Set the `check_url` parameter to FALSE",
-      "if you're sure you have the correct file & file contents."
-    )
-    stop(error_message_username)
-
-  } else if (check_username && (Sys.info()["user"] != username)) {
-    error_message_username <- paste(
-      "The username (according to R's `Sys.info()['user']` doesn't match the",
-      "username in the credentials file.  This is a friendly check, and",
-      "NOT a security measure.  Set the `check_username` parameter to FALSE",
-      "if you're sure you have the correct file & file contents.",
-      "Otherwise, you may be pointing to the wrong credentials file."
-    )
-    stop(error_message_username)
-
-  } else if (check_token_pattern && !grepl("[A-F0-9]{32}", token, perl = TRUE)) {
-    error_message_token <- paste(
-      "A REDCap token should be a string of 32 digits and uppercase",
-      "characters.  The retrieved value was not.",
-      "Set the `check_token_pattern` parameter to FALSE",
-      "if you're sure you have the correct file & file contents."
-    )
-    stop(error_message_token)
-  }
-}
-
 #' @export
 create_credential_local <- function(path_credential) {
   path_source <- system.file(
@@ -295,9 +254,15 @@ retrieve_credential_mssql <- function(
   dsn         = NULL,
   channel     = NULL
 ) {
+  rlang::check_installed(
+    pkg     = "DBI",
+    reason  = "to use `REDCapR::retrieve_credential_mssql()`."
+  )
 
-  if (!requireNamespace("DBI") ) stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `DBI` package is not installed.  Please install it and try again.")
-  if (!requireNamespace("odbc")) stop("The function REDCapR::retrieve_credential_mssql() cannot run if the `odbc` package is not installed.  Please install it and try again.")
+  rlang::check_installed(
+    pkg     = "odbc",
+    reason  = "to use `REDCapR::retrieve_credential_mssql()`."
+  )
 
   regex_pattern_1 <- "^\\d+$"
   regex_pattern_2 <- "^\\[*[a-zA-Z0-9_]+\\]*$"
@@ -314,14 +279,13 @@ retrieve_credential_mssql <- function(
       "Either enclose in ",
       "quotes, or cast with `as.character()`."
     )
-  } else if (!(base::missing(dsn) || base::is.null(dsn)) && !(class(dsn) %in% c("character"))) {
+  } else if (!(base::missing(dsn) || base::is.null(dsn)) && !inherits(dsn, "character")) {
     stop(
       "The `dsn` parameter be a character type, or missing or NULL.  ",
       "Either enclose in quotes, or cast with `as.character()`."
     )
   } else if (!(base::missing(channel) || base::is.null(channel)) && !methods::is(channel, "DBIConnection")) {
     stop("The `channel` parameter be a `DBIConnection` type, or NULL.")
-
   } else if (length(project_id) != 1L) {
     stop("The `project_id` parameter should contain exactly one element.")
   } else if (length(instance) != 1L) {
@@ -394,4 +358,42 @@ retrieve_credential_mssql <- function(
   )
 
   credential
+}
+
+# Privately-scoped function
+credential_local_validation <- function(
+  redcap_uri,
+  token,
+  username,
+  check_url                = TRUE,
+  check_username           = FALSE,
+  check_token_pattern      = TRUE
+) {
+  # Progress through the optional checks
+  if (check_url && !grepl("https://", redcap_uri, fixed = TRUE)) {
+    error_message_username <- paste(
+      "The REDCap URL does not reference an https address.  First check",
+      "that the URL is correct, and then consider using SSL to encrypt",
+      "the REDCap webserver.  Set the `check_url` parameter to FALSE",
+      "if you're sure you have the correct file & file contents."
+    )
+    stop(error_message_username)
+  } else if (check_username && (Sys.info()["user"] != username)) {
+    error_message_username <- paste(
+      "The username (according to R's `Sys.info()['user']` doesn't match the",
+      "username in the credentials file.  This is a friendly check, and",
+      "NOT a security measure.  Set the `check_username` parameter to FALSE",
+      "if you're sure you have the correct file & file contents.",
+      "Otherwise, you may be pointing to the wrong credentials file."
+    )
+    stop(error_message_username)
+  } else if (check_token_pattern && !grepl("[A-F0-9]{32}", token, perl = TRUE)) {
+    error_message_token <- paste(
+      "A REDCap token should be a string of 32 digits and uppercase",
+      "characters.  The retrieved value was not.",
+      "Set the `check_token_pattern` parameter to FALSE",
+      "if you're sure you have the correct file & file contents."
+    )
+    stop(error_message_token)
+  }
 }

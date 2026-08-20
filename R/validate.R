@@ -1,14 +1,7 @@
 #' @name
 #' validate
 #'
-#' @aliases
-#' validate_for_write
-#' validate_data_frame_inherits
-#' validate_no_logical
-#' validate_field_names
-#' validate_record_id_name
-#' validate_repeat_instance
-#' validate_uniqueness
+#' @aliases validate_for_write validate_data_frame_inherits validate_no_logical validate_field_names validate_record_id_name validate_repeat_instance validate_uniqueness
 #'
 #' @usage
 #' validate_for_write( d, convert_logical_to_integer, record_id_name )
@@ -108,8 +101,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -174,7 +167,7 @@ validate_no_logical <- function(d, stop_on_error = FALSE) {
   checkmate::assert_data_frame(d)
   checkmate::assert_logical(stop_on_error, any.missing = FALSE, len = 1L)
 
-  indices <- which(vapply(d, function(x) {inherits(x, "logical")}, logical(1)))
+  indices <- which(vapply(d, function(x) inherits(x, "logical"), logical(1)))
 
   if (length(indices) == 0L) {
     tibble::tibble(
@@ -230,25 +223,6 @@ validate_field_names <- function(d, stop_on_error = FALSE) {
       concern            = "A REDCap project does not allow field names with an uppercase letter.",
       suggestion         = "Change the uppercase letters to lowercase, potentially with `base::tolower()`."
     )
-  }
-}
-
-# Intentionally not exported
-assert_field_names <- function(field_names) {
-  checkmate::assert_character(field_names, any.missing=FALSE, null.ok=TRUE, min.len=1, min.chars=1)
-  pattern <- "^[a-z][0-9a-z_]*$"
-
-  bad_names <- grep(pattern, x = field_names, perl = TRUE, invert = TRUE)
-
-  if (0L < length(bad_names)) {
-    paste(
-      "%i field name(s) violated the naming rules.  Only digits, lowercase ",
-      "letters, and underscores are allowed.  The variable must start with ",
-      "a letter.  The bad names are {%s}.",
-      collapse = ""
-    ) %>%
-      sprintf(length(bad_names), paste(bad_names, collapse = ", ")) %>%
-      stop()
   }
 }
 
@@ -338,7 +312,7 @@ validate_uniqueness <- function(d, record_id_name = "record_id", stop_on_error =
     d %>%
     dplyr::count(
       !!!rlang::parse_exprs(variables),
-      name  = "count_of_records"
+      name = "count_of_records"
     ) %>%
     dplyr::filter(1L < count_of_records)
 
@@ -356,7 +330,7 @@ validate_uniqueness <- function(d, record_id_name = "record_id", stop_on_error =
           knitr::kable() %>%
           paste(collapse = "\n")
       } else {
-        paste(d_replicates, collapse = "\n")  # nocov
+        paste(d_replicates, collapse = "\n") # nocov
       }
 
     "There are %i record(s) that violate the uniqueness requirement:\n%s" %>%
@@ -395,7 +369,7 @@ validate_for_write <- function(
   lst_concerns <- list(
     validate_data_frame_inherits(d),
     validate_field_names(d),
-    validate_record_id_name(d),
+    validate_record_id_name(d, record_id_name = record_id_name),
     validate_uniqueness(d, record_id_name = record_id_name),
     validate_repeat_instance(d)
   )
@@ -409,7 +383,25 @@ validate_for_write <- function(
     lst_concerns[[length(lst_concerns) + 1L]] <- validate_no_logical(d)
   }
 
-  # browser()
   # Vertically stack all the data.frames into a single data frame
   dplyr::bind_rows(lst_concerns)
+}
+
+# Intentionally not exported
+assert_field_names <- function(field_names) {
+  checkmate::assert_character(field_names, any.missing=FALSE, null.ok=TRUE, min.len=1, min.chars=1)
+  pattern <- "^[a-z][0-9a-z_]*$"
+
+  bad_names <- grep(pattern, x = field_names, perl = TRUE, invert = TRUE)
+
+  if (0L < length(bad_names)) {
+    paste(
+      "%i field name(s) violated the naming rules.  Only digits, lowercase ",
+      "letters, and underscores are allowed.  The variable must start with ",
+      "a letter.  The bad names are {%s}.",
+      collapse = ""
+    ) %>%
+      sprintf(length(bad_names), paste(bad_names, collapse = ", ")) %>%
+      stop()
+  }
 }

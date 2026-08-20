@@ -7,10 +7,10 @@ library(magrittr)
 requireNamespace("kableExtra")
 
 opts_chunk$set(
-  eval    = !REDCapR:::on_cran(),
+  eval     = !REDCapR:::on_cran(),
   collapse = TRUE,
-  comment = "#>",
-  tidy    = FALSE
+  comment  = "#>",
+  tidy     = FALSE
 )
 
 ## ----project_values-----------------------------------------------------------
@@ -51,7 +51,7 @@ opts_chunk$set(
 #   fields     = desired_fields_v3
 # )$data
 # 
-# ds_some_fields_v3 #Examine the these three variables.
+# ds_some_fields_v3 # Examine the these three variables.
 # 
 # ######
 # ## Step 2: identify desired records, based on age & weight
@@ -59,33 +59,33 @@ opts_chunk$set(
 # heavier_than_70_kg <- (ds_some_fields_v3$weight > 70)
 # desired_records_v3 <- ds_some_fields_v3[before_1960 & heavier_than_70_kg, ]$record_id
 # 
-# desired_records_v3 #Peek at IDs of the identified records
+# desired_records_v3 # Peek at IDs of the identified records
 # 
 # ######
 # ## Step 3: second call to REDCap
-# #Return only records that met the age & weight criteria.
+# # Return only records that met the age & weight criteria.
 # ds_some_rows_v3 <- redcap_read(
 #   redcap_uri = uri,
 #   token      = token,
 #   records    = desired_records_v3
 # )$data
 # 
-# ds_some_rows_v3 #Examine the results.
+# ds_some_rows_v3 # Examine the results.
 
 ## -----------------------------------------------------------------------------
-# #Return only the fields record_id, name_first, and age
+# # Return only the fields record_id, name_first, and age
 # all_information <- redcap_read(
 #   redcap_uri = uri,
 #   token      = token,
 #   fields     = desired_fields
 # )
-# all_information #Inspect the additional information
+# all_information # Inspect the additional information
 
 ## ----session-info, echo=FALSE-------------------------------------------------
 # if (requireNamespace("sessioninfo", quietly = TRUE)) {
 #   sessioninfo::session_info()
 # } else {
-#   sessionInfo()
+#   utils::sessionInfo()
 # }
 
 ## ----session-duration, echo=FALSE---------------------------------------------

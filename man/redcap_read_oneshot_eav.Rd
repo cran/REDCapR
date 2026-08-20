@@ -91,7 +91,7 @@ REDCap project. Default is \code{FALSE}.}
 
 \item{locale}{a \code{\link[readr:locale]{readr::locale()}} object to specify preferences like
 number, date, and time formats.  This object is passed to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Defaults to \code{\link[readr:locale]{readr::default_locale()}}.}
+\code{\link[readr:read_csv]{readr::read_csv()}}.  Defaults to \code{\link[readr:default_locale]{readr::default_locale()}}.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
@@ -161,17 +161,17 @@ ds_some_rows_v1    <- REDCapR:::redcap_read_oneshot_eav(
 # Return only the fields record_id, name_first, and age
 desired_fields_v1 <- c("record_id", "name_first", "age")
 ds_some_fields_v1 <- REDCapR:::redcap_read_oneshot_eav(
-   redcap_uri = uri,
-   token      = token,
-   fields     = desired_fields_v1
+  redcap_uri = uri,
+  token      = token,
+  fields     = desired_fields_v1
 )$data
 }
 }
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus
 REDCap administrator to send you the static material.
 }

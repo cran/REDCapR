@@ -1,3 +1,27 @@
+# REDCapR 1.7.0
+
+### New Features
+
+* New `redcap_instrument_repeating()` function exports repeating instrument-event mappings for a project (#585 & #589, @ezraporter).
+* `redcap_event_instruments()`, `redcap_event_read()`, `redcap_instruments()`, `redcap_project_info_read()`, `redcap_read()`, `redcap_read_oneshot()`and `redcap_variable()` accept a delimiter, to accommodate server instances in locales that use something other than a comma.  The delimiter is passed to `readr::read_delim()` (#570, @mrkskk).
+
+### Minor Enhancements
+
+* New columns returned from the server to `redcap_project_info_read()` no longer throw a warning (#587).
+* `redcap_file_repo_list_oneshot()` function tests for the new `dag` and `role` columns (#593).
+* `redcap_write()`  now accommodates single-column data.frames. Previously only single-column tibbles were accommodated (@brandonerose, #591 & #592).
+* Update urls for REDCap Community (#596).
+* Simplified token files for other people to test with (#594).
+* New test project that includes both longitudinal events, and repeated measures (#606, needed to test #589).
+* Update deprecated parameters for `base::structure (#605).
+* `validate_for_write()` now accommodates projects with a custom name for `record_id` (#601, #602, @vanbibn).
+* Follows new rules from the goodpractice package released in the past year (#610).
+* New example demonstrates removing non-existing `record_id` values before passing to `redcap_delete()` (#567).
+
+### Bug fixes
+
+* When writing to the server, a numeric value like "10000" will not be converted to scientific notation (#599, #600, @Olawemi5).
+
 # REDCapR 1.6.0  (released 2025-10-07)
 
 This release is primarily small changes to comply with a CRAN check.
@@ -102,8 +126,8 @@ This will help extract forms from longitudinal & repeating projects.
   * `redcap_file_upload_oneshot()` to `redcap_file_upload_oneshot()`
   * `redcap_download_instrument()` to `redcap_instrument_download()`
 
-* `redcap_dag_read()` has new `data_access_group_id` field (introduced maybe in [13.1.0](https://redcap.vanderbilt.edu/community/post.php?id=13)) (#459)
-* `redcap_users_export()` has new `mycap_participants` field (introduced maybe in [13.0.0](https://redcap.vanderbilt.edu/community/post.php?id=13)) (#459)
+* `redcap_dag_read()` has new `data_access_group_id` field (introduced maybe in 13.1.0 (#459)
+* `redcap_users_export()` has new `mycap_participants` field (introduced maybe in 13.0.0 (#459)
 * Accommodate older versions of REDCap that don't return project-level variable, like `has_repeating_instruments_or_events`, `missing_data_codes`, `external_modules`, `bypass_branching_erase_field_prompt` (@the-mad-statter, #465, #466)
 * `redcap_meta_coltypes()` correctly determines data type for autonumber `record_id` fields. It suggests a character if the project has DAGs, and an integer if not. (@pwildenhain, #472)
 * `redcap_log_read()` now returns a new column reflecting the affected record id value (ref #478)

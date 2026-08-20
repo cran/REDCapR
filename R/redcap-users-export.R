@@ -23,7 +23,7 @@
 #' should be `NULL` for most institutions.  Optional.
 #'
 #' @return
-#; Currently, a list is returned with the following elements:
+#' Currently, a list is returned with the following elements:
 #' * `data_user`: A [tibble::tibble()] of all users associated with the project.
 #' One row represents one user.
 #' * `data_user_form`: A [tibble::tibble()] of permissions for users and forms.
@@ -69,7 +69,6 @@ redcap_users_export <- function(
   config_options  = NULL,
   handle_httr       = NULL
 ) {
-
   checkmate::assert_character(redcap_uri , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token      , any.missing=FALSE, len=1, pattern="^.{1,}$")
 
@@ -117,7 +116,7 @@ redcap_users_export <- function(
     lock_records                  = readr::col_logical(),
     lock_records_customization    = readr::col_logical(),
     forms                         = readr::col_character(),
-    forms_export                  = readr::col_character(),  # Added sometime between 10.5.1 and 12.5.2
+    forms_export                  = readr::col_character()   # Added sometime between 10.5.1 and 12.5.2
   )
 
   # This is the important call that communicates with the REDCap server.
@@ -156,8 +155,8 @@ redcap_users_export <- function(
           #   convert = FALSE
           # ) %>%
           dplyr::mutate(
-            form_name     = sub("^(\\w+):([0-2])$", "\\1", .data$forms),
-            permission_id = sub("^(\\w+):([0-2])$", "\\2", .data$forms),
+            form_name     = sub("^(\\w+):(\\d{1,3})$", "\\1", .data$forms, perl = TRUE),
+            permission_id = sub("^(\\w+):(\\d{1,3})$", "\\2", .data$forms, perl = TRUE),
             permission_id = as.integer(.data$permission_id),
             permission    = constant_to_form_rights(.data$permission_id)
             #   translate_form_rights(
@@ -186,7 +185,7 @@ redcap_users_export <- function(
         kernel$elapsed_seconds,
         kernel$status_code
       )
-      kernel$raw_text   <- ""
+      kernel$raw_text <- ""
       # If an operation is successful, the `raw_text` is no longer returned
       #   to save RAM.  The content is not really necessary with httr's
       #   status message exposed.

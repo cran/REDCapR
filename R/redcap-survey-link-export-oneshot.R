@@ -61,8 +61,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -95,7 +95,6 @@ redcap_survey_link_export_oneshot <- function(
   config_options  = NULL,
   handle_httr     = NULL
 ) {
-
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token     , any.missing=FALSE, len=1, pattern="^.{1,}$")
   record  <- as.character(record)
@@ -131,7 +130,7 @@ redcap_survey_link_export_oneshot <- function(
     if (verbose)
       message("Preparing to export the survey link for the instrument `", instrument, "`.")
 
-    link  <- kernel$raw_text
+    link <- kernel$raw_text
 
     outcome_message <- sprintf(
       "exported the survey link in %0.1f seconds, for instrument `%s`, record `%s`.",

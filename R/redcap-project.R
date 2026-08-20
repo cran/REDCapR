@@ -56,7 +56,6 @@ redcap_project <- setRefClass(
   ),
 
   methods = list(
-
     read = function(
       batch_size                  = 100L,
       interbatch_delay            = 0,
@@ -80,10 +79,9 @@ redcap_project <- setRefClass(
 
       "Exports records from a REDCap project."
 
-      return(REDCapR::redcap_read(
+      REDCapR::redcap_read(
         batch_size                    = batch_size,
         interbatch_delay              = interbatch_delay,
-
         redcap_uri                    = redcap_uri,
         token                         = token,
         records                       = records,
@@ -102,7 +100,7 @@ redcap_project <- setRefClass(
         # placeholder guess_max
         verbose                       = verbose,
         config_options                = config_options
-      ))
+      )
     },
 
     write = function(
@@ -116,7 +114,7 @@ redcap_project <- setRefClass(
 
       "Imports records to a REDCap project."
 
-      return(REDCapR::redcap_write(
+      REDCapR::redcap_write(
         ds_to_write             = ds_to_write,
         batch_size              = batch_size,
         interbatch_delay        = interbatch_delay,
@@ -125,7 +123,7 @@ redcap_project <- setRefClass(
         token                   = token,
         verbose                 = verbose,
         config_options          = config_options
-      ))
+      )
     }
   ) # End methods list
 ) # End class

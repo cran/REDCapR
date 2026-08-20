@@ -59,20 +59,28 @@
 #' are recommended in a data export if the data will be re-imported into a
 #' REDCap project. Default is `FALSE`.
 #' @param col_types A [readr::cols()] object passed internally to
-#' [readr::read_csv()].  Optional.
-#' @param na A [character] vector passed internally to [readr::read_csv()].
+#' [readr::read_delim()].  Optional.
+#' @param na A [character] vector passed internally to [readr::read_delim()].
 #' Defaults to `c("", "NA")`.
 #' @param guess_type A boolean value indicating if all columns should be
-#' returned as character.  If true, [readr::read_csv()] guesses the intended
+#' returned as character.  If true, [readr::read_delim()] guesses the intended
 #' data type for each column.  Ignored if `col_types` is not null.
 #' @param guess_max A positive [base::numeric] value
-#' passed to [readr::read_csv()] that
+#' passed to [readr::read_delim()] that
 #' specifies the maximum number of records to use for guessing column types.
 #' @param http_response_encoding  The encoding value passed to
 #' [httr::content()].  Defaults to 'UTF-8'.
 #' @param locale a [readr::locale()] object to specify preferences like
 #' number, date, and time formats.  This object is passed to
-#' [readr::read_csv()].  Defaults to [readr::default_locale()].
+#' [readr::read_delim()].  Defaults to [readr::default_locale()].
+#' @param delimiter A single-character value passed to
+#' the `delim` parameter of [readr::read_delim()].
+#' Options include:
+#' 1. `,` (a comma, the default),
+#' 1. `;` (a semi-colon),
+#' 1. `|` (a pipe),
+#' 1. `^` (a caret), or
+#' 1. `\t` (a tab).
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
@@ -151,8 +159,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -222,6 +230,7 @@ redcap_read_oneshot <- function(
   guess_max                     = 1000,
   http_response_encoding        = "UTF-8",
   locale                        = readr::default_locale(),
+  delimiter                     = ",",
   verbose                       = TRUE,
   config_options                = NULL,
   handle_httr                   = NULL
@@ -253,6 +262,7 @@ redcap_read_oneshot <- function(
 
   checkmate::assert_character(http_response_encoding    , any.missing=FALSE,     len=1)
   checkmate::assert_class(    locale, "locale"          , null.ok = FALSE)
+  checkmate::assert_character(delimiter                 , any.missing=FALSE, len=1, pattern = "^(?:,|;|\\||\\^|\\t)$")
   checkmate::assert_logical(  verbose                   , any.missing=FALSE, len=1, null.ok=TRUE)
   checkmate::assert_list(     config_options            , any.missing=TRUE ,        null.ok=TRUE)
   # checkmate::assert_character(encode_httr               , any.missing=FALSE, len=1, null.ok = FALSE)
@@ -268,7 +278,7 @@ redcap_read_oneshot <- function(
   )
 
   if (1L <= length(fields) && any(fields %in% pseudofields)) {
-    fields  <- setdiff(fields, pseudofields) # Remove any that are requested.
+    fields <- setdiff(fields, pseudofields) # Remove any that are requested.
     message(
       "At least one 'pseudofield' was requested and will be suppressed before calling the server. ",
       "The server will return it if it's appropriate for the project structure.\n\n",
@@ -303,6 +313,7 @@ redcap_read_oneshot <- function(
     dateRangeBegin          = datetime_range_begin,
     dateRangeEnd            = datetime_range_end,
     exportBlankForGrayFormStatus = blank_for_gray_form_status
+    # csvDelimiter            = delimiter
     # record, fields, forms & events are specified below
   )
 
@@ -323,19 +334,23 @@ redcap_read_oneshot <- function(
 
   if (kernel$success) {
     col_types <-
-      if (!is.null(col_types)) col_types
-      else if (guess_type)     NULL
-      else                     readr::cols(.default = readr::col_character())
-
+      if (!is.null(col_types)) {
+        col_types
+      } else if (guess_type) {
+        NULL
+      } else {
+        readr::cols(.default = readr::col_character())
+      }
     try(
       # Convert the raw text to a dataset.
       ds <-
-        readr::read_csv(
+        readr::read_delim(
           file            = I(kernel$raw_text),
           col_types       = col_types,
           na              = na,
           guess_max       = guess_max,
           locale          = locale,
+          delim           = delimiter,
           show_col_types  = FALSE
         ),
 
@@ -356,7 +371,7 @@ redcap_read_oneshot <- function(
       # If an operation is successful, the `raw_text` is no longer returned to
       #   save RAM.  The content is not really necessary with httr's status
       #   message exposed.
-      kernel$raw_text   <- ""
+      kernel$raw_text <- ""
     } else { # ds doesn't exist as a data.frame.
       # nocov start
       # Override the 'success' determination from the http status code.

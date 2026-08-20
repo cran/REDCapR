@@ -19,6 +19,14 @@
 #' @param locale a [readr::locale()] object to specify preferences like
 #' number, date, and time formats.  This object is passed to
 #' [readr::read_csv()].  Defaults to [readr::default_locale()].
+#' @param delimiter A single-character value passed to
+#' the `delim` parameter of [readr::read_delim()].
+#' Options include:
+#' 1. `,` (a comma, the default),
+#' 1. `;` (a semi-colon),
+#' 1. `|` (a pipe),
+#' 1. `^` (a caret), or
+#' 1. `\t` (a tab).
 #' @param verbose A boolean value indicating if `message`s should be printed
 #' to the R console during the operation.  The verbose output might contain
 #' sensitive information (*e.g.* PHI), so turn this off if the output might
@@ -82,9 +90,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html
-#' and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -118,7 +125,7 @@
 #' #   starting from a csv of REDCapR test projects.
 #' # The native pipes in this snippet require R 4.1+.
 #' d_all <-
-#'   system.file("misc/dev-2.credentials", package = "REDCapR") %>%
+#'   system.file("misc/example.credentials", package = "REDCapR") %>%
 #'   readr::read_csv(
 #'     comment     = "#",
 #'     col_select  = c(redcap_uri, token),
@@ -141,6 +148,7 @@ redcap_project_info_read <- function(
   token,
   http_response_encoding        = "UTF-8",
   locale                        = readr::default_locale(),
+  delimiter                     = ",",
   verbose                       = TRUE,
   config_options                = NULL,
   handle_httr       = NULL
@@ -148,6 +156,7 @@ redcap_project_info_read <- function(
 
   checkmate::assert_character(redcap_uri                , any.missing = FALSE, len = 1, pattern = "^.{1,}$")
   checkmate::assert_character(token                     , any.missing = FALSE, len = 1, pattern = "^.{1,}$")
+  checkmate::assert_character(delimiter                 , any.missing=FALSE, len=1, pattern = "^(?:,|;|\\||\\^|\\t)$")
 
   checkmate::assert_character(http_response_encoding    , any.missing=FALSE,   len = 1)
   checkmate::assert_class(    locale, classes = "locale", null.ok = FALSE)
@@ -195,6 +204,7 @@ redcap_project_info_read <- function(
     project_grant_number                    = readr::col_character(),
     project_pi_firstname                    = readr::col_character(),
     project_pi_lastname                     = readr::col_character(),
+    project_pi_email                        = readr::col_character(),
     display_today_now_button                = readr::col_logical(),
     missing_data_codes                      = readr::col_character(),
     external_modules                        = readr::col_character(),
@@ -208,10 +218,11 @@ redcap_project_info_read <- function(
         # Read column names returned by the API.
         present_names <-
           names(
-            readr::read_csv(
+            readr::read_delim(
               file           = I(kernel$raw_text),
               locale         = locale,
               n_max          = 0,
+              delim          = delimiter,
               show_col_types = FALSE
             )
           )
@@ -219,15 +230,18 @@ redcap_project_info_read <- function(
         # Build a column specification that matches the API response.
         col_types <- readr::cols()
         for (present_name in present_names) {
-          col_types$cols <- c(col_types$cols, all_col_types$cols[present_name])
+          if (!is.null(all_col_types$cols[[present_name]])) {
+            col_types$cols <- c(col_types$cols, all_col_types$cols[present_name])
+          }
         }
 
         # Convert the raw text to a dataset.
         ds <-
-          readr::read_csv(
+          readr::read_delim(
             file            = I(kernel$raw_text),
             locale          = locale,
             col_types       = col_types,
+            delim           = delimiter,
             show_col_types  = FALSE
           )
 
@@ -259,7 +273,7 @@ redcap_project_info_read <- function(
       # If an operation is successful, the `raw_text` is no longer returned to
       #   save RAM.  The content is not really necessary with httr's status
       #   message exposed.
-      kernel$raw_text   <- ""
+      kernel$raw_text <- ""
     } else { # ds doesn't exist as a tibble.
       # nocov start
       # Override the 'success' determination from the http status code.

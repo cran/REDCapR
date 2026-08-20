@@ -7,6 +7,7 @@
 redcap_event_read(
   redcap_uri,
   token,
+  delimiter = ",",
   verbose = TRUE,
   config_options = NULL,
   handle_httr = NULL
@@ -21,6 +22,17 @@ Required.}
 
 \item{token}{The user-specific string that serves as the password for a
 project.  Required.}
+
+\item{delimiter}{A single-character value passed to
+the \code{delim} parameter of \code{\link[readr:read_delim]{readr::read_delim()}}.
+Options include:
+\enumerate{
+\item \verb{,} (a comma, the default),
+\item \verb{;} (a semi-colon),
+\item \code{|} (a pipe),
+\item \code{^} (a caret), or
+\item \verb{\\t} (a tab).
+}}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
@@ -81,8 +93,8 @@ result_3$data
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus REDCap
 administrator to send you the static material.
 }

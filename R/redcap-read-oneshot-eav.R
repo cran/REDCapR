@@ -108,8 +108,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus
 #' REDCap administrator to send you the static material.
 #'
@@ -132,11 +132,11 @@
 #' # Return only the fields record_id, name_first, and age
 #' desired_fields_v1 <- c("record_id", "name_first", "age")
 #' ds_some_fields_v1 <- REDCapR:::redcap_read_oneshot_eav(
-#'    redcap_uri = uri,
-#'    token      = token,
-#'    fields     = desired_fields_v1
+#'   redcap_uri = uri,
+#'   token      = token,
+#'   fields     = desired_fields_v1
 #' )$data
-#'}
+#' }
 
 #' @importFrom magrittr %>%
 #' @importFrom utils type.convert
@@ -159,7 +159,6 @@ redcap_read_oneshot_eav <- function(
   datetime_range_begin          = as.POSIXct(NA),
   datetime_range_end            = as.POSIXct(NA),
   blank_for_gray_form_status    = FALSE,
-
   # placeholder: guess_type
   # placeholder: guess_max
   http_response_encoding        = "UTF-8",
@@ -168,7 +167,6 @@ redcap_read_oneshot_eav <- function(
   config_options                = NULL,
   handle_httr                   = NULL
 ) {
-
   checkmate::assert_character(redcap_uri                , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token                     , any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_atomic(records                      , any.missing=TRUE , min.len=0)
@@ -187,7 +185,6 @@ redcap_read_oneshot_eav <- function(
   checkmate::assert_posixct(  datetime_range_begin      , any.missing=TRUE , len=1, null.ok=TRUE)
   checkmate::assert_posixct(  datetime_range_end        , any.missing=TRUE , len=1, null.ok=TRUE)
   checkmate::assert_logical( blank_for_gray_form_status , any.missing=FALSE, len=1)
-
   # placeholder: checkmate::assert_logical(  guess_type                , any.missing=FALSE, len=1)
   # placeholder: checkmate::assert_numeric(  guess_max                , any.missing=FALSE, len=1, lower=1)
   checkmate::assert_character(http_response_encoding    , any.missing=FALSE,     len=1)
@@ -283,7 +280,7 @@ redcap_read_oneshot_eav <- function(
             is_checkbox   = (.data$field_type == "checkbox"),
             ids           = dplyr::if_else(.data$is_checkbox, .data$select_choices_or_calculations, "1"),
             ids           = gsub("(\\w+),.+?(\\||$)", "\\1", .data$ids),
-            ids           = strsplit(.data$ids, " ")
+            ids           = strsplit(.data$ids, " ", fixed = TRUE)
           ) %>%
           dplyr::select(-"select_choices_or_calculations", -"field_type") %>%
           tidyr::unnest("ids") %>%
@@ -362,7 +359,7 @@ redcap_read_oneshot_eav <- function(
         kernel$status_code
       )
 
-      kernel$raw_text   <- "" # If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
+      kernel$raw_text <- "" # If an operation is successful, the `raw_text` is no longer returned to save RAM.  The content is not really necessary with httr's status message exposed.
     } else {
       # nocov start
       kernel$success    <- FALSE # Override the 'success' determination from the http status code.

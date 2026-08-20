@@ -29,7 +29,7 @@ project.  Required.}
 
 \item{locale}{a \code{\link[readr:locale]{readr::locale()}} object to specify preferences like
 number, date, and time formats.  This object is passed to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Defaults to \code{\link[readr:locale]{readr::default_locale()}}.}
+\code{\link[readr:read_csv]{readr::read_csv()}}.  Defaults to \code{\link[readr:default_locale]{readr::default_locale()}}.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
 to the R console during the operation.  The verbose output might contain
@@ -74,9 +74,8 @@ REDCapR::redcap_dag_read(redcap_uri=uri, token=token)$data
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html
-and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus REDCap
 administrator to send you the static material.
 }

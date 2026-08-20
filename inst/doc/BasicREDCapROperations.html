@@ -434,7 +434,7 @@ columns, but only for the identified records.</p>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">fields     =</span> desired_fields_v3</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>)<span class="sc">$</span>data</span>
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>ds_some_fields_v3 <span class="co">#Examine the these three variables.</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>ds_some_fields_v3 <span class="co"># Examine the these three variables.</span></span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a></span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="do">######</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="do">## Step 2: identify desired records, based on age &amp; weight</span></span>
@@ -442,18 +442,18 @@ columns, but only for the identified records.</p>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>heavier_than_70_kg <span class="ot">&lt;-</span> (ds_some_fields_v3<span class="sc">$</span>weight <span class="sc">&gt;</span> <span class="dv">70</span>)</span>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>desired_records_v3 <span class="ot">&lt;-</span> ds_some_fields_v3[before_1960 <span class="sc">&amp;</span> heavier_than_70_kg, ]<span class="sc">$</span>record_id</span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>desired_records_v3 <span class="co">#Peek at IDs of the identified records</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>desired_records_v3 <span class="co"># Peek at IDs of the identified records</span></span>
 <span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="do">######</span></span>
 <span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="do">## Step 3: second call to REDCap</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#Return only records that met the age &amp; weight criteria.</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co"># Return only records that met the age &amp; weight criteria.</span></span>
 <span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>ds_some_rows_v3 <span class="ot">&lt;-</span> <span class="fu">redcap_read</span>(</span>
 <span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>  <span class="at">redcap_uri =</span> uri,</span>
 <span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>  <span class="at">records    =</span> desired_records_v3</span>
 <span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>)<span class="sc">$</span>data</span>
 <span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a></span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>ds_some_rows_v3 <span class="co">#Examine the results.</span></span></code></pre></div>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>ds_some_rows_v3 <span class="co"># Examine the results.</span></span></code></pre></div>
 </div>
 <div id="additional-returned-information" class="section level2">
 <h2>Additional Returned Information</h2>
@@ -480,13 +480,13 @@ shows which field subsets, if any, were requested.</li>
 <li>The <code>elapsed_seconds</code> measures the duration of the
 call.</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#Return only the fields record_id, name_first, and age</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Return only the fields record_id, name_first, and age</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>all_information <span class="ot">&lt;-</span> <span class="fu">redcap_read</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">redcap_uri =</span> uri,</span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">token      =</span> token,</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">fields     =</span> desired_fields</span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>all_information <span class="co">#Inspect the additional information</span></span></code></pre></div>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>all_information <span class="co"># Inspect the additional information</span></span></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level1">
@@ -499,7 +499,7 @@ expand.</p>
 Environment <span class="glyphicon glyphicon-plus-sign"></span>
 </summary>
 </details>
-<p>Report rendered by wibea at 2025-10-07, 17:46 -0500 in -999
+<p>Report rendered by wibeasley at 2026-08-19, 15:33 -0500 in -999
 seconds.</p>
 </div>
 

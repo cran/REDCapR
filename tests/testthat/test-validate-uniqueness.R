@@ -20,11 +20,11 @@ test_that("validate_uniqueness -good -all four", {
     2L, "e1", "i1", 1L,
     2L, "e1", "i1", 2L,
     2L, "e1", "i1", 3L,
-    2L, "e1", "i1", 4L,
+    2L, "e1", "i1", 4L
   )
 
   ds <- validate_uniqueness(d)
-  expect_equal(nrow(ds), 0)
+  expect_identical(nrow(ds), 0L)
 })
 
 test_that("validate_uniqueness -good -events", {
@@ -37,11 +37,11 @@ test_that("validate_uniqueness -good -events", {
     1L, "e5",
     2L, "e1",
     2L, "e2",
-    2L, "e3",
+    2L, "e3"
   )
 
   ds <- validate_uniqueness(d)
-  expect_equal(nrow(ds), 0)
+  expect_identical(nrow(ds), 0L)
 })
 
 test_that("validate_uniqueness -good -repeated", {
@@ -58,11 +58,11 @@ test_that("validate_uniqueness -good -repeated", {
     2L, "i1", 1L,
     2L, "i1", 2L,
     2L, "i1", 3L,
-    2L, "i1", 4L,
+    2L, "i1", 4L
   )
 
   ds <- validate_uniqueness(d)
-  expect_equal(nrow(ds), 0)
+  expect_identical(nrow(ds), 0L)
 })
 
 test_that("validate_uniqueness -bad -all four", {
@@ -80,9 +80,9 @@ test_that("validate_uniqueness -bad -all four", {
   )
 
   ds <- validate_uniqueness(d, stop_on_error = FALSE)
-  expect_equal(object = nrow(ds), expected = 1)
-  expect_equal(object = ds$field_name, expected = "record_id, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance")
-  expect_equal(object = ds$field_index, expected = "1, 2, 3, 4")
+  expect_identical(object = nrow(ds), expected = 1L)
+  expect_identical(object = ds$field_name, expected = "record_id, redcap_event_name, redcap_repeat_instrument, redcap_repeat_instance")
+  expect_identical(object = ds$field_index, expected = "1, 2, 3, 4")
 })
 
 test_that("validate_uniqueness -bad -events", {
@@ -95,7 +95,7 @@ test_that("validate_uniqueness -bad -events", {
     1L, "e5",
     2L, "e1",
     2L, "e2",
-    2L, "e1",
+    2L, "e1"
   )
 
   expect_error(
@@ -104,7 +104,7 @@ test_that("validate_uniqueness -bad -events", {
   )
 
   ds <- validate_uniqueness(d, stop_on_error = FALSE)
-  expect_equal(object = nrow(ds), expected = 1)
-  expect_equal(object = ds$field_name, expected = "record_id, redcap_event_name")
-  expect_equal(object = ds$field_index, expected = "1, 2")
+  expect_identical(object = nrow(ds), expected = 1L)
+  expect_identical(object = ds$field_name, expected = "record_id, redcap_event_name")
+  expect_identical(object = ds$field_index, expected = "1, 2")
 })

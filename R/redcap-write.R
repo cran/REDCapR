@@ -75,8 +75,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help
 #' Page' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -125,7 +125,6 @@ redcap_write <- function(
   config_options              = NULL,
   handle_httr                 = NULL
 ) {
-
   start_time <- base::Sys.time()
   checkmate::assert_character(redcap_uri, any.missing=FALSE, len=1, pattern="^.{1,}$")
   checkmate::assert_character(token     , any.missing=FALSE, len=1, pattern="^.{1,}$")
@@ -170,7 +169,7 @@ redcap_write <- function(
     }
 
     write_result <- REDCapR::redcap_write_oneshot(
-      ds                          = ds_to_write[selected_indices, ],
+      ds                          = ds_to_write[selected_indices, ,drop = FALSE],
       redcap_uri                  = redcap_uri,
       token                       = token,
       overwrite_with_blanks       = overwrite_with_blanks,
@@ -187,8 +186,11 @@ redcap_write <- function(
       error_message <- paste0("The `redcap_write()` call failed on iteration ", i, ".")
       error_message <- paste(error_message, ifelse(!verbose, "Set the `verbose` parameter to TRUE and rerun for additional information.", ""))
 
-      if (continue_on_error) warning(error_message)
-      else stop(error_message)
+      if (continue_on_error) {
+        warning(error_message)
+      } else {
+        stop(error_message)
+      }
     }
 
     affected_ids     <- c(affected_ids, write_result$affected_ids)

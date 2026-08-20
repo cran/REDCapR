@@ -120,8 +120,8 @@
 #' @references
 #' The official documentation can be found on the 'API Help Page'
 #' and 'API Examples' pages on the REDCap wiki (*i.e.*,
-#' https://community.projectredcap.org/articles/456/api-documentation.html and
-#' https://community.projectredcap.org/articles/462/api-examples.html).
+#' <https://redcap.vumc.org/community/post.php?id=456> and
+#' <https://redcap.vumc.org/community/post.php?id=462> ).
 #' If you do not have an account for the wiki, please ask your campus REDCap
 #' administrator to send you the static material.
 #'
@@ -286,8 +286,8 @@ redcap_read_eav_oneshot <- function(
           col_types       = readr::cols(.default = readr::col_character()),
           locale          = locale,
           show_col_types  = FALSE
-        ) %>%
-        dplyr::distinct(), # https://community.projectredcap.org/questions/135154/replicated-rows-for-eav-output-via-api.html
+        ), # %>%
+        # dplyr::distinct(), # hack until this was fixed: https://redcap.vumc.org/community/post.php?id=135154
 
       # Don't print the warning in the try block.  Print it below,
       #   where it's under the control of the caller.

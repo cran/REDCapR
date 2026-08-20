@@ -34,12 +34,12 @@ test_that("default", {
   if (update_expectation) save_expected(returned_object$data, path_expected_default)
   expected_data_frame <- retrieve_expected(path_expected_default)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -62,12 +62,12 @@ test_that("specify-records", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed==paste(desired_records, collapse=","))
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, paste(desired_records, collapse=","))
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -76,7 +76,7 @@ test_that("specify-records", {
 test_that("specify-records-zero-length", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/specify-records-zero-length.R"
-  desired_records <- c()
+  desired_records <- NULL
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
   returned_object <-
@@ -90,12 +90,12 @@ test_that("specify-records-zero-length", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed==paste(desired_records, collapse=","))
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, paste(desired_records, collapse=","))
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -118,12 +118,12 @@ test_that("specify-fields", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed==paste(desired_fields, collapse=","))
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, paste(desired_fields, collapse=","))
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -132,7 +132,7 @@ test_that("specify-fields", {
 test_that("specify-fields-zero-length", {
   testthat::skip_on_cran()
   path_expected <- "test-data/specific-redcapr/read-eav-oneshot/specify-fields-zero-length.R"
-  desired_fields <- c()
+  desired_fields <- NULL
   expected_outcome_message <- "\\d+ records and \\d+ columns were read from REDCap in \\d+(\\.\\d+\\W|\\W)seconds\\."
 
   returned_object <-
@@ -146,12 +146,12 @@ test_that("specify-fields-zero-length", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed==paste(desired_fields, collapse=","))
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, paste(desired_fields, collapse=","))
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -174,12 +174,12 @@ test_that("specify-forms", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -203,12 +203,12 @@ test_that("filter-numeric", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_equal(returned_object$filter_logic, filter)
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, filter)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -231,12 +231,12 @@ test_that("filter-character", {
   if (update_expectation) save_expected(returned_object$data, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_equal(returned_object$filter_logic, filter)
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, filter)
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -263,12 +263,12 @@ test_that("blank-for-gray-status-true", {
   if (update_expectation) save_expected(d, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -295,12 +295,12 @@ test_that("blank-for-gray-status-false", {
   if (update_expectation) save_expected(d, path_expected)
   expected_data_frame <- retrieve_expected(path_expected)
 
-  expect_equal(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_true(returned_object$filter_logic=="", "A filter was not specified.")
+  expect_identical(d, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "", "A filter was not specified.")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -324,12 +324,12 @@ test_that("date-range", {
 
   expected_data_frame <- retrieve_expected(path_expected_default)
 
-  expect_equal(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
-  expect_equal(returned_object$status_code, expected=200L)
-  expect_equal(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
-  expect_true(returned_object$records_collapsed=="", "A subset of records was not requested.")
-  expect_true(returned_object$fields_collapsed=="", "A subset of fields was not requested.")
-  expect_equal(returned_object$filter_logic, "")
+  expect_identical(returned_object$data, expected=expected_data_frame, label="The returned data.frame should be correct", ignore_attr = TRUE) # dput(returned_object$data)
+  expect_identical(returned_object$status_code, expected=200L)
+  expect_identical(returned_object$raw_text, expected="", ignore_attr = TRUE) # dput(returned_object$raw_text)
+  expect_identical(returned_object$records_collapsed, "", "A subset of records was not requested.")
+  expect_identical(returned_object$fields_collapsed, "", "A subset of fields was not requested.")
+  expect_identical(returned_object$filter_logic, "")
   expect_match(returned_object$outcome_message, regexp=expected_outcome_message, perl=TRUE)
   expect_true(returned_object$success)
 
@@ -347,7 +347,7 @@ test_that("bad token -Error", {
     )
 
   testthat::expect_false(returned_object$success)
-  testthat::expect_equal(returned_object$status_code, 403L)
-  testthat::expect_equal(returned_object$raw_text, "ERROR: You do not have permissions to use the API")
+  testthat::expect_identical(returned_object$status_code, 403L)
+  testthat::expect_identical(returned_object$raw_text, "ERROR: You do not have permissions to use the API")
 })
 rm(credential)

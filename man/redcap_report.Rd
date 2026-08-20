@@ -46,14 +46,14 @@ specifically when exporting the data as labels.  If \code{raw_or_label} is
 displayed to the users.  Otherwise, the values will be 0/1.}
 
 \item{col_types}{A \code{\link[readr:cols]{readr::cols()}} object passed internally to
-\code{\link[readr:read_delim]{readr::read_csv()}}.  Optional.}
+\code{\link[readr:read_csv]{readr::read_csv()}}.  Optional.}
 
 \item{guess_type}{A boolean value indicating if all columns should be
-returned as character.  If true, \code{\link[readr:read_delim]{readr::read_csv()}} guesses the intended
+returned as character.  If true, \code{\link[readr:read_csv]{readr::read_csv()}} guesses the intended
 data type for each column.  Ignored if \code{col_types} is not null.}
 
 \item{guess_max}{A positive \link[base:numeric]{base::numeric} value
-passed to \code{\link[readr:read_delim]{readr::read_csv()}} that
+passed to \code{\link[readr:read_csv]{readr::read_csv()}} that
 specifies the maximum number of records to use for guessing column types.}
 
 \item{verbose}{A boolean value indicating if \code{message}s should be printed
@@ -144,8 +144,8 @@ ds_2 <-
 \references{
 The official documentation can be found on the 'API Help Page'
 and 'API Examples' pages on the REDCap wiki (\emph{i.e.},
-https://community.projectredcap.org/articles/456/api-documentation.html and
-https://community.projectredcap.org/articles/462/api-examples.html).
+\url{https://redcap.vumc.org/community/post.php?id=456} and
+\url{https://redcap.vumc.org/community/post.php?id=462} ).
 If you do not have an account for the wiki, please ask your campus REDCap
 administrator to send you the static material.
 }

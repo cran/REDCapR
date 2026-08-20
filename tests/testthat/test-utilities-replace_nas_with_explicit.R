@@ -11,7 +11,7 @@ test_that("replace_nas_character_standard", {
   )
 
   a <- REDCapR:::replace_nas_with_explicit(a)
-  expect_equal(a, expected, label="The correct letters should have been replaced.")
+  expect_identical(a, expected, label="The correct letters should have been replaced.")
   expect_type(a, "character")
 })
 
@@ -22,13 +22,13 @@ test_that("replace_nas_factor_standard", {
 
   expected <- structure(
     c(1L, 2L, 27L, 4L, 5L, 27L, 7L, 27L, 9L, 10L, 11L, 12L, 13L, 14L, 15L, 16L, 17L, 18L, 19L, 20L, 21L, 22L, 23L, 24L, 27L, 26L),
-    .Label = c(letters, "Unknown"),
+    levels = c(letters, "Unknown"),
     class = "factor"
   )
 
   a <- REDCapR:::replace_nas_with_explicit(a, create_factor=FALSE, add_unknown_level=TRUE)
-  expect_equal(a, expected, label="The correct letters should have been replaced.")
-  expect_equal(class(a), "factor")
+  expect_identical(a, expected, label="The correct letters should have been replaced.")
+  expect_s3_class(a, "factor")
 })
 
 test_that("replace_nas_factor_create_not_existing", {
@@ -38,13 +38,13 @@ test_that("replace_nas_factor_create_not_existing", {
 
   expected <- structure(
     c(1L, 2L, 23L, 3L, 4L, 23L, 5L, 23L, 6L, 7L, 8L, 9L,  10L, 11L, 12L, 13L, 14L, 15L, 16L, 17L, 18L, 19L, 20L, 21L, 23L,  22L),
-    .Label = c("a", "b", "d", "e", "g", "i", "j", "k", "l",  "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "z", "Unknown"),
+    levels = c("a", "b", "d", "e", "g", "i", "j", "k", "l",  "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "z", "Unknown"),
     class = "factor"
   )
 
   a <- REDCapR:::replace_nas_with_explicit(a, create_factor=TRUE, add_unknown_level=TRUE)
-  expect_equal(a, expected, label="The correct letters should have been replaced.")
-  expect_equal(class(a), "factor")
+  expect_identical(a, expected, label="The correct letters should have been replaced.")
+  expect_s3_class(a, "factor")
 })
 
 test_that("replace_nas_factor_create_already_existing", {
@@ -54,13 +54,13 @@ test_that("replace_nas_factor_create_already_existing", {
 
   expected <- structure(
     c(1L, 2L, 27L, 4L, 5L, 27L, 7L, 27L, 9L, 10L, 11L, 12L, 13L, 14L, 15L, 16L, 17L, 18L, 19L, 20L, 21L, 22L, 23L, 24L, 27L, 26L),
-    .Label = c(letters, "Unknown"),
+    levels = c(letters, "Unknown"),
     class = "factor"
   )
 
   a <- REDCapR:::replace_nas_with_explicit(a, create_factor=TRUE, add_unknown_level=TRUE)
-  expect_equal(a, expected, label="The correct letters should have been replaced.")
-  expect_equal(class(a), "factor")
+  expect_identical(a, expected, label="The correct letters should have been replaced.")
+  expect_s3_class(a, "factor")
 })
 
 test_that("replace_nas_factor_not_yet", {

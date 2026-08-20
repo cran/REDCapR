@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Will Beasley, Geneva Marshall, &amp; Thomas Wilson, Biomedical &amp; Behavior Methodology Core, OUHSC Pediatrics" />
+<meta name="author" content="Will Beasley, Geneva Daniel, &amp; Thomas Wilson, Biomedical &amp; Behavior Methodology Core, OUHSC Pediatrics" />
 
 
 <title>Typical REDCap Workflow for a Data Analyst</title>
@@ -340,8 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Typical REDCap Workflow for a Data
 Analyst</h1>
-<h4 class="author">Will Beasley, Geneva Marshall, &amp; Thomas Wilson,
-<a href="https://www.ouhsc.edu/bbmc/team/">Biomedical &amp; Behavior
+<h4 class="author">Will Beasley, Geneva Daniel, &amp; Thomas Wilson, <a href="https://www.ouhsc.edu/bbmc/team/">Biomedical &amp; Behavior
 Methodology Core</a>, OUHSC Pediatrics</h4>
 
 
@@ -459,8 +458,8 @@ like this:</p>
 &quot;https://redcap-dev-2.ouhsc.edu/redcap/api/&quot;,&quot;myusername&quot;,&quot;36&quot;,&quot;F9CBFFF78C3D78F641BAE9623F6B7E6A&quot;,&quot;simple-write&quot;</code></pre>
 <p>To retrieve the credentials for the first project listed above, pass
 the value of “33” to <code>project_id</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/dev-2.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>credential  <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>path_credential <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;misc/example.credentials&quot;</span>, <span class="at">package =</span> <span class="st">&quot;REDCapR&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>credential <span class="ot">&lt;-</span> REDCapR<span class="sc">::</span><span class="fu">retrieve_credential_local</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">path_credential =</span> path_credential,</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">project_id      =</span> <span class="dv">33</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
@@ -650,7 +649,7 @@ Programming Patterns and Practices for Continuous Quality Improvement
 research tools available. Tomorrow, <a href="https://events.linuxfoundation.org/r-medicine/">R/Medicine</a> has
 a workshop on this topic using the exciting new <a href="https://quarto.org/">Quarto</a> program that’s similar to R
 Markdown. Also see the relevant <a href="https://www.youtube.com/playlist?list=PL4IzsxWztPdljYo7uE5G_R2PtYw3fUReo">R/Medicine
-2020 presentation videos</a>. And of course, <a href="https://www.amazon.com/Yihui-Xie/e/B00E9CQJGY?ref=sr_ntt_srch_lnk_1&amp;qid=1625895927&amp;sr=1-1">any
+2020 presentation videos</a>. And of course, <a href="https://www.amazon.com/stores/Yihui-Xie/author/B00E9CQJGY">any
 book by Yihui Xie and colleagues</a>.</p>
 </div>
 <div id="batching" class="section level2">

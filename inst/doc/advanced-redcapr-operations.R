@@ -13,7 +13,7 @@ opts_chunk$set(
 )
 
 ## ----project_values-----------------------------------------------------------
-# library(REDCapR) #Load the package into the current R session.
+# library(REDCapR) # Load the package into the current R session.
 # uri                   <- "https://redcap-dev-2.ouhsc.edu/redcap/api/"
 # token_simple          <- "9A068C425B1341D69E83064A2D273A70"
 # token_longitudinal    <- "DA6F2BB23146BD5A7EA3408C1A44A556"
@@ -22,7 +22,7 @@ opts_chunk$set(
 # library(magrittr)
 # suppressPackageStartupMessages(requireNamespace("dplyr"))
 # suppressPackageStartupMessages(requireNamespace("tidyr"))
-# events_to_retain  <- c("dose_1_arm_1", "visit_1_arm_1", "dose_2_arm_1", "visit_2_arm_1")
+# events_to_retain <- c("dose_1_arm_1", "visit_1_arm_1", "dose_2_arm_1", "visit_2_arm_1")
 # 
 # ds_long <- REDCapR::redcap_read_oneshot(redcap_uri = uri, token = token_longitudinal)$data
 # ds_long %>%
@@ -80,8 +80,8 @@ opts_chunk$set(
 #   # For old versions of tidyr that predate `pivot_wider()`:
 #   # tidyr::gather(key=key, value=value, pmq1, pmq2, pmq3, pmq4) %>%
 #   dplyr::filter(!(event %in% c(
-#     "enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou")
-#   )) %>%
+#     "enrollment", "final_visit", "deadline_to_return", "deadline_to_opt_ou"
+#   ))) %>%
 #   dplyr::mutate( # Simulate correcting for mismatched names across arms:
 #     key = paste0(key, "_", event)
 #   ) %>%
@@ -133,7 +133,7 @@ opts_chunk$set(
 # if (requireNamespace("sessioninfo", quietly = TRUE)) {
 #   sessioninfo::session_info()
 # } else {
-#   sessionInfo()
+#   utils::sessionInfo()
 # }
 
 ## ----session-duration, echo=FALSE---------------------------------------------
